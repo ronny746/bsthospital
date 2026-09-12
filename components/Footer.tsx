@@ -33,10 +33,11 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-bold mb-6 text-lg">Patient Support</h4>
             <ul className="space-y-3 text-sm">
+              <li><a href="/icu-booking" className="text-emerald-400 font-bold hover:underline">🚨 24/7 ICU Bed Booking</a></li>
+              <li><a href="/icu-status" className="hover:text-secondary transition-colors">Track ICU Request Status</a></li>
+              <li><a href="/admin/login" className="hover:text-secondary transition-colors">ICU Staff & Admin Portal</a></li>
               <li><a href="#appointment" className="hover:text-secondary transition-colors">Book an Appointment</a></li>
               <li><a href="#contact" className="hover:text-secondary transition-colors">Emergency Contacts</a></li>
-              <li><a href="#about" className="hover:text-secondary transition-colors">Admissions</a></li>
-              <li><a href="#facilities" className="hover:text-secondary transition-colors">Visiting Hours</a></li>
             </ul>
           </div>
           
