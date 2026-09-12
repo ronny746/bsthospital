@@ -17,10 +17,16 @@ export default function EmergencyTrauma() {
             Our specialized trauma team and state-of-the-art ICU are always prepared to handle critical medical and surgical emergencies with immediate response.
           </p>
         </div>
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 flex flex-col sm:flex-row gap-3">
+          <a 
+            href="/icu-booking" 
+            className="inline-block bg-[#172a34] text-white font-black text-base px-8 py-4 rounded-full shadow-2xl hover:scale-105 transition-transform text-center border-2 border-[#e5b64a]"
+          >
+            🚨 24/7 ICU Bed Booking ➔
+          </a>
           <a 
             href="tel:+917412077125" 
-            className="inline-block bg-white text-secondary font-bold text-xl px-10 py-5 rounded-full shadow-2xl hover:scale-105 transition-transform"
+            className="inline-block bg-white text-secondary font-bold text-base px-8 py-4 rounded-full shadow-2xl hover:scale-105 transition-transform text-center"
           >
             Call +91 74120 77125
           </a>
