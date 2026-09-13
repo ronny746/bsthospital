@@ -139,7 +139,7 @@ export async function POST(request: Request) {
         priority: newRequestData.priority as any,
         payment: newRequestData.payment as any,
         consentAccepted: newRequestData.consentAccepted,
-      });
+      }, requestId);
     } catch (storeErr) {
       console.error('Store sync error:', storeErr);
     }

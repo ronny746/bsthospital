@@ -84,9 +84,12 @@ export function getRequestByRequestId(requestId: string, mobileNumber?: string):
   return found;
 }
 
-export function createIcuRequest(data: Omit<IcuRequest, 'id' | 'requestId' | 'createdAt' | 'updatedAt' | 'auditLogs' | 'adminNotes'>): IcuRequest {
-  const requestId = generateRequestId();
-  const id = `req-${Date.now()}`;
+export function createIcuRequest(
+  data: Omit<IcuRequest, 'id' | 'requestId' | 'createdAt' | 'updatedAt' | 'auditLogs' | 'adminNotes'>,
+  customRequestId?: string
+): IcuRequest {
+  const requestId = customRequestId || generateRequestId();
+  const id = `req-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
   const now = new Date().toISOString();
 
   const newRequest: IcuRequest = {
