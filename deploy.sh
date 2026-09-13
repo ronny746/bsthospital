@@ -82,11 +82,12 @@ if pm2 describe "$APP_NAME" >/dev/null 2>&1; then
     pm2 delete "$APP_NAME"
 fi
 
-PORT=$PORT HOST=$HOST pm2 start "npx vinext dev --port $PORT" --name "$APP_NAME"
+PORT=$PORT HOST=$HOST pm2 start npm --name "$APP_NAME" -- run dev -- --port $PORT --host 0.0.0.0
 
 pm2 save
 
 pm2 startup | tail -1 | sudo bash || true
+
 
 # =====================================================
 # 7. Install Nginx
