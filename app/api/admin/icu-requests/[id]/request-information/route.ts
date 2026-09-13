@@ -7,7 +7,8 @@ export async function POST(
 ) {
   try {
     const { id } = await params;
-    const { description, performedBy } = await request.json();
+    const body: any = await request.json();
+    const { description, performedBy } = body;
 
     if (!description) {
       return NextResponse.json({ error: 'Description of required information is mandatory' }, { status: 400 });

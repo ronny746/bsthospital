@@ -7,7 +7,7 @@ export async function PATCH(
 ) {
   try {
     const { id } = await params;
-    const body = await request.json();
+    const body: any = await request.json();
     const { patientNotes, documents } = body;
 
     const req = icuStore.requests.find((r) => r.id === id || r.requestId === id);

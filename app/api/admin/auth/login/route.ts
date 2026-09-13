@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
-    const { username, password } = await request.json();
+    const body: any = await request.json();
+    const { username, password } = body;
 
     if ((username === 'admin' || username === 'admin@nims.edu.in') && password === 'admin123') {
       return NextResponse.json({

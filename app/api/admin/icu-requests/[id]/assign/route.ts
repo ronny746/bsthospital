@@ -7,7 +7,8 @@ export async function PATCH(
 ) {
   try {
     const { id } = await params;
-    const { reviewer, performedBy } = await request.json();
+    const body: any = await request.json();
+    const { reviewer, performedBy } = body;
 
     if (!reviewer || !reviewer.name) {
       return NextResponse.json({ error: 'Reviewer object is required' }, { status: 400 });

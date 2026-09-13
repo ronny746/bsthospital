@@ -32,7 +32,7 @@ function IcuStatusContent() {
       if (mobileToFetch) url += `&mobile=${encodeURIComponent(mobileToFetch)}`;
 
       const res = await fetch(url);
-      const data = await res.json();
+      const data: any = await res.json();
       setLoading(false);
 
       if (res.ok && data.request) {
@@ -71,7 +71,7 @@ function IcuStatusContent() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ patientNotes }),
       });
-      const data = await res.json();
+      const data: any = await res.json();
       setIsSubmittingInfo(false);
 
       if (res.ok && data.request) {

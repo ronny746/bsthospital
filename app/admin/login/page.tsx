@@ -23,7 +23,7 @@ export default function AdminLoginPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
       });
-      const data = await res.json();
+      const data: any = await res.json();
       setLoading(false);
 
       if (res.ok && data.success) {

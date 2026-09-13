@@ -7,7 +7,8 @@ export async function PATCH(
 ) {
   try {
     const { id } = await params;
-    const { status, performedBy, details, rejectionReason, requestedInfoDescription } = await request.json();
+    const body: any = await request.json();
+    const { status, performedBy, details, rejectionReason, requestedInfoDescription } = body;
 
     if (!status) {
       return NextResponse.json({ error: 'Status is required' }, { status: 400 });

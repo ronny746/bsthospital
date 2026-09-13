@@ -7,7 +7,8 @@ export async function POST(
 ) {
   try {
     const { id } = await params;
-    const { adminId, adminName, note } = await request.json();
+    const body: any = await request.json();
+    const { adminId, adminName, note } = body;
 
     if (!note) {
       return NextResponse.json({ error: 'Note text is required' }, { status: 400 });

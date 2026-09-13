@@ -74,7 +74,7 @@ export default function NavigationBar() {
               className="w-full lg:w-auto ml-0 lg:ml-2 bg-gradient-to-r from-[#bd171c] via-[#9e1217] to-[#791017] hover:from-[#791017] hover:to-[#bd171c] text-white px-5 py-2.5 rounded-full text-xs font-black shadow-lg shadow-red-900/20 hover:shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2 cursor-pointer border border-red-400/30"
             >
               <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-              <span>24/7 ICU Bed Booking ➔</span>
+              <span>Nims Tatkaal Seva (ICU Booking) ➔</span>
             </button>
           </nav>
         </div>

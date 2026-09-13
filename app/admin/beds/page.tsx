@@ -22,7 +22,7 @@ export default function AdminBedsPage() {
   const fetchBeds = async () => {
     try {
       const res = await fetch('/api/admin/icu-beds');
-      const data = await res.json();
+      const data: any = await res.json();
       if (res.ok) setBeds(data.beds || []);
     } catch (err) {
       // handled

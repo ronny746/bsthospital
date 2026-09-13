@@ -3,7 +3,8 @@ import { icuStore } from '@/lib/icu-store';
 
 export async function POST(request: Request) {
   try {
-    const { mobile } = await request.json();
+    const body: any = await request.json();
+    const { mobile } = body;
     if (!mobile || mobile.length < 10) {
       return NextResponse.json({ error: 'Valid 10-digit mobile number is required' }, { status: 400 });
     }

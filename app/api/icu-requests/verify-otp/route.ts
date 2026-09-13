@@ -3,7 +3,8 @@ import { icuStore } from '@/lib/icu-store';
 
 export async function POST(request: Request) {
   try {
-    const { mobile, otp } = await request.json();
+    const body: any = await request.json();
+    const { mobile, otp } = body;
     if (!mobile || !otp) {
       return NextResponse.json({ error: 'Mobile number and OTP are required' }, { status: 400 });
     }

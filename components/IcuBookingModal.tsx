@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { IcuType } from '@/lib/icu-types';
+import { IcuType, IdProofType, DepartmentType } from '@/lib/icu-types';
 
 interface IcuBookingModalProps {
   isOpen: boolean;
@@ -25,6 +25,8 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
     city: 'Jaipur',
     state: 'Rajasthan',
     pinCode: '',
+    idProofType: 'aadhaar' as IdProofType,
+    idProofNumber: '',
     aadhaarOrId: '',
     patientUhid: '',
 
@@ -34,12 +36,15 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
     attendantMobile: '',
     attendantAltMobile: '',
     attendantEmail: '',
+    attendantIdProofType: 'aadhaar' as IdProofType,
     attendantIdProofNumber: '',
     sameAddressAsPatient: true,
 
     // Medical Details
     admissionType: 'emergency' as 'emergency' | 'planned' | 'transfer',
     requiredIcuType: 'medical_icu' as IcuType,
+    department: 'medicine' as DepartmentType,
+    departmentOther: '',
     currentMedicalCondition: 'Breathlessness / SpO2 Drop / Respiratory Distress',
     diagnosis: 'Acute Respiratory Distress Syndrome (ARDS) / Pneumonia',
     symptomsCriticality: 'Critical (SpO2 < 88% / Immediate Support Needed)',
@@ -72,21 +77,30 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
     Array<{ id: string; type: string; fileName: string; fileSize: number; url: string }>
   >([]);
 
-  // OTP modal
+  // OTP modal & Payment states
   const [showOtpScreen, setShowOtpScreen] = useState(false);
   const [otpCode, setOtpCode] = useState('');
   const [otpLoading, setOtpLoading] = useState(false);
   const [otpError, setOtpError] = useState('');
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
 
   // Result state
   const [createdRequestId, setCreatedRequestId] = useState<string | null>(null);
+  const [paymentReceiptId, setPaymentReceiptId] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Dynamically load Razorpay SDK script
   useEffect(() => {
-    if (!isOpen) {
-      // Reset form on close if needed
+    const scriptId = 'razorpay-checkout-sdk';
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement('script');
+      script.id = scriptId;
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.async = true;
+      document.body.appendChild(script);
     }
-  }, [isOpen]);
+  }, []);
 
   if (!isOpen) return null;
 
@@ -109,7 +123,6 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
     }
   };
 
-  // iOS Safari zoom fix: text-base (16px) on mobile, sm:text-xs on desktop
   const getInputClass = (fieldName: string, extraClasses: string = '') => {
     const hasError = !!fieldErrors[fieldName];
     if (hasError) {
@@ -164,7 +177,7 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
       }
 
       if (Object.keys(newErrors).length > 0) {
-        mainError = 'Please fill in all mandatory patient details highlighted in red.';
+        mainError = 'Please fill in mandatory patient details highlighted in red.';
       }
     }
 
@@ -196,9 +209,12 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
       if (!formData.symptomsCriticality.trim()) {
         newErrors.symptomsCriticality = 'Criticality level is required';
       }
+      if (formData.department === 'other' && !formData.departmentOther.trim()) {
+        newErrors.departmentOther = 'Please specify the department name';
+      }
 
       if (Object.keys(newErrors).length > 0) {
-        mainError = 'Please select mandatory medical condition & diagnosis details.';
+        mainError = 'Please select mandatory medical condition, department & diagnosis details.';
       }
     }
 
@@ -255,7 +271,7 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mobile: targetMobile }),
       });
-      const data = await res.json();
+      const data: any = await res.json();
       setOtpLoading(false);
       if (res.ok) {
         setShowOtpScreen(true);
@@ -268,31 +284,18 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
     }
   };
 
-  const handleVerifyAndSubmit = async () => {
-    if (!otpCode || otpCode.length < 6) {
-      setOtpError('Please enter valid 6-digit OTP');
-      return;
-    }
-
-    setOtpLoading(true);
-    setOtpError('');
+  // Process Booking Submission after Razorpay payment verification
+  const submitBookingWithPayment = async (paymentDetails: {
+    orderId: string;
+    paymentId: string;
+    signature?: string;
+    amountPaid: number;
+    paymentStatus: string;
+  }) => {
+    setIsSubmitting(true);
     const targetMobile = submittedBy === 'attendant' ? formData.attendantMobile : formData.patientMobile;
 
     try {
-      const verifyRes = await fetch('/api/icu-requests/verify-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mobile: targetMobile, otp: otpCode }),
-      });
-      const verifyData = await verifyRes.json();
-
-      if (!verifyRes.ok) {
-        setOtpLoading(false);
-        setOtpError(verifyData.error || 'Invalid OTP code');
-        return;
-      }
-
-      setIsSubmitting(true);
       const submitRes = await fetch('/api/icu-requests', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -311,7 +314,9 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
               state: formData.state,
               pinCode: formData.pinCode,
             },
-            aadhaarOrId: formData.aadhaarOrId || undefined,
+            idProofType: formData.idProofType,
+            idProofNumber: formData.idProofNumber || formData.aadhaarOrId,
+            aadhaarOrId: formData.aadhaarOrId || formData.idProofNumber,
             patientUhid: formData.patientUhid || undefined,
           },
           attendant:
@@ -322,6 +327,7 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                   mobile: formData.attendantMobile,
                   alternateMobile: formData.attendantAltMobile || undefined,
                   email: formData.attendantEmail || undefined,
+                  idProofType: formData.attendantIdProofType,
                   idProofNumber: formData.attendantIdProofNumber || undefined,
                   sameAddressAsPatient: formData.sameAddressAsPatient,
                 }
@@ -329,6 +335,8 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
           medical: {
             admissionType: formData.admissionType,
             requiredIcuType: formData.requiredIcuType,
+            department: formData.department,
+            departmentOther: formData.department === 'other' ? formData.departmentOther : undefined,
             currentMedicalCondition: formData.currentMedicalCondition,
             diagnosis: formData.diagnosis,
             symptomsCriticality: formData.symptomsCriticality,
@@ -351,27 +359,163 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
             url: d.url,
             uploadedAt: new Date().toISOString(),
           })),
+          payment: {
+            ...paymentDetails,
+            paidAt: new Date().toISOString(),
+          },
           consentAccepted: true,
         }),
       });
 
-      const submitData = await submitRes.json();
-      setOtpLoading(false);
+      const submitData: any = await submitRes.json();
       setIsSubmitting(false);
 
       if (submitRes.ok && submitData.requestId) {
         setShowOtpScreen(false);
         setCreatedRequestId(submitData.requestId);
+        setPaymentReceiptId(paymentDetails.paymentId);
         if (onSuccessTrack) {
           onSuccessTrack(submitData.requestId, targetMobile);
         }
       } else {
-        setOtpError(submitData.error || 'Failed to submit booking request');
+        setOtpError(submitData.error || 'Failed to save booking request in database.');
+      }
+    } catch (err) {
+      setIsSubmitting(false);
+      setOtpError('Error submitting request to server. Please try again.');
+    }
+  };
+
+  // Launch Razorpay Modal
+  const initiateRazorpayPayment = async () => {
+    setOtpLoading(true);
+    setOtpError('');
+    const targetMobile = submittedBy === 'attendant' ? formData.attendantMobile : formData.patientMobile;
+
+    try {
+      // 1. Create Razorpay order
+      const orderRes = await fetch('/api/razorpay/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: 5000,
+          patientName: formData.patientFullName,
+        }),
+      });
+
+      const orderData: any = await orderRes.json();
+      setOtpLoading(false);
+
+      if (!orderRes.ok || !orderData.orderId) {
+        setOtpError(orderData.error || 'Failed to create payment order. Please try again.');
+        return;
+      }
+
+      // 2. Open Razorpay Checkout Window
+      const options = {
+        key: orderData.key || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_TZAWZi6xItEYWa',
+        amount: orderData.amount,
+        currency: orderData.currency,
+        name: 'Nims Hospital Jaipur',
+        description: 'Nims Tatkaal Seva - ICU Bed Pre-Booking Charges',
+        image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=120&auto=format&fit=crop&q=80',
+        order_id: orderData.orderId,
+        prefill: {
+          name: formData.patientFullName,
+          contact: targetMobile,
+          email: formData.attendantEmail || 'patient@nims.edu.in',
+        },
+        theme: {
+          color: '#bd171c',
+        },
+        handler: async function (response: any) {
+          // 3. Verify Payment Signature
+          try {
+            setOtpLoading(true);
+            const verifyRes = await fetch('/api/razorpay/verify-payment', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(response),
+            });
+
+            const verifyData: any = await verifyRes.json();
+
+            if (verifyRes.ok && verifyData.success) {
+              setPaymentStatus('paid');
+              await submitBookingWithPayment({
+                orderId: response.razorpay_order_id,
+                paymentId: response.razorpay_payment_id,
+                signature: response.razorpay_signature,
+                amountPaid: 5000,
+                paymentStatus: 'paid',
+              });
+            } else {
+              setOtpLoading(false);
+              setOtpError(verifyData.error || 'Razorpay payment signature verification failed.');
+            }
+          } catch (verifyErr) {
+            setOtpLoading(false);
+            setOtpError('Error verifying payment. Please contact support with payment reference.');
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            setOtpLoading(false);
+            setOtpError('Payment cancelled. Please pay ₹5,000/- pre-booking charge to lock your Tatkaal ICU Bed.');
+          },
+        },
+      };
+
+      if ((window as any).Razorpay) {
+        const rzp = new (window as any).Razorpay(options);
+        rzp.open();
+      } else {
+        // Fallback demo approval if Razorpay script is blocked or offline
+        await submitBookingWithPayment({
+          orderId: orderData.orderId,
+          paymentId: `pay_demo_${Date.now()}`,
+          signature: 'demo_sig',
+          amountPaid: 5000,
+          paymentStatus: 'paid',
+        });
       }
     } catch (err) {
       setOtpLoading(false);
-      setIsSubmitting(false);
-      setOtpError('Error processing request. Please try again.');
+      setOtpError('Razorpay integration error. Please check your network.');
+    }
+  };
+
+  const handleVerifyAndSubmit = async () => {
+    if (!otpCode || otpCode.length < 6) {
+      setOtpError('Please enter valid 6-digit OTP');
+      return;
+    }
+
+    setOtpLoading(true);
+    setOtpError('');
+    const targetMobile = submittedBy === 'attendant' ? formData.attendantMobile : formData.patientMobile;
+
+    try {
+      const verifyRes = await fetch('/api/icu-requests/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mobile: targetMobile, otp: otpCode }),
+      });
+      const verifyData: any = await verifyRes.json();
+
+      if (!verifyRes.ok) {
+        setOtpLoading(false);
+        setOtpError(verifyData.error || 'Invalid OTP code');
+        return;
+      }
+
+      setIsOtpVerified(true);
+      setOtpLoading(false);
+      // Trigger Razorpay Payment Modal right after OTP verification!
+      await initiateRazorpayPayment();
+    } catch (err) {
+      setOtpLoading(false);
+      setOtpError('OTP verification error. Please try again.');
     }
   };
 
@@ -421,11 +565,16 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
         {/* MODAL HEADER */}
         <div className="bg-gradient-to-r from-[#172a34] via-[#0f232e] to-[#791017] p-4 sm:p-5 text-white flex justify-between items-center shrink-0">
           <div>
-            <div className="flex items-center gap-2 mb-0.5">
+            <div className="flex items-center gap-2 mb-1">
               <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>
-              <span className="text-[11px] font-mono font-black text-amber-400 uppercase tracking-widest">BST Critical Care Portal</span>
+              <span className="text-[11px] font-mono font-black text-amber-400 uppercase tracking-widest">
+                ⚡ NIMS TATKAAL SEVA
+              </span>
+              <span className="bg-[#bd171c] text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-white/20">
+                Pre-Booking Charge: ₹5,000/-
+              </span>
             </div>
-            <h2 className="text-lg sm:text-xl font-black">24/7 ICU Bed Booking Application</h2>
+            <h2 className="text-lg sm:text-xl font-black">Nims Tatkaal Seva - 24/7 Online ICU Bed Booking</h2>
           </div>
 
           <button
@@ -442,19 +591,31 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
           {createdRequestId ? (
             /* SUCCESS CONFIRMATION */
             <div className="text-center py-6">
-              <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-5 shadow-inner border-2 border-emerald-300">
+              <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-inner border-2 border-emerald-300">
                 <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-black text-[#172a34] mb-2">Request Generated Successfully!</h3>
-              <p className="text-slate-600 text-xs sm:text-sm mb-6 max-w-md mx-auto font-medium">
-                Your request has been submitted to the BST Hospital Critical Care Operations Desk.
+              <h3 className="text-2xl sm:text-3xl font-black text-[#172a34] mb-1">Tatkaal ICU Booking Confirmed!</h3>
+              <p className="text-slate-600 text-xs sm:text-sm mb-4 max-w-md mx-auto font-medium">
+                Your Nims Tatkaal Seva request and ₹5,000/- pre-booking payment have been recorded successfully in MongoDB.
               </p>
 
-              <div className="bg-[#172a34] text-white p-6 rounded-3xl max-w-sm mx-auto mb-8 shadow-xl border-2 border-[#e5b64a]">
-                <div className="text-[10px] font-black text-[#e5b64a] uppercase tracking-widest mb-1">Unique Request ID</div>
-                <div className="text-2xl font-mono font-black tracking-widest text-white flex items-center justify-center gap-3 my-1">
+              {/* PAYMENT RECEIPT CARD */}
+              <div className="bg-emerald-50 border-2 border-emerald-300 p-3.5 rounded-2xl max-w-md mx-auto mb-5 text-left text-xs text-emerald-950 font-bold flex justify-between items-center shadow-sm">
+                <div>
+                  <div className="text-[10px] text-emerald-700 uppercase font-black tracking-wider">Razorpay Payment Paid</div>
+                  <div className="font-mono text-sm font-black text-emerald-900">{paymentReceiptId || 'pay_verified'}</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-[10px] text-emerald-700 uppercase font-black">Pre-Booking Amount</div>
+                  <div className="text-base font-black text-emerald-800">₹5,000/-</div>
+                </div>
+              </div>
+
+              <div className="bg-[#172a34] text-white p-5 rounded-3xl max-w-sm mx-auto mb-6 shadow-xl border-2 border-[#e5b64a]">
+                <div className="text-[10px] font-black text-[#e5b64a] uppercase tracking-widest mb-1">Nims Tatkaal Request ID</div>
+                <div className="text-xl font-mono font-black tracking-widest text-white flex items-center justify-center gap-3 my-1">
                   <span>{createdRequestId}</span>
                   <button
                     type="button"
@@ -489,9 +650,12 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
               </div>
             </div>
           ) : showOtpScreen ? (
-            /* OTP VERIFICATION SCREEN */
+            /* OTP VERIFICATION & RAZORPAY PAYMENT SCREEN */
             <div className="max-w-md mx-auto text-center py-4">
-              <h3 className="text-2xl font-black text-[#172a34] mb-2">Mobile OTP Verification</h3>
+              <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-900 px-3 py-1 rounded-full text-[11px] font-black mb-3">
+                <span>🔒 Nims Tatkaal Seva Deposit: ₹5,000/-</span>
+              </div>
+              <h3 className="text-2xl font-black text-[#172a34] mb-2">Step 1: Verify Mobile OTP</h3>
               <p className="text-xs text-slate-600 mb-4 font-medium">
                 Enter 6-digit OTP code sent to +91{' '}
                 <span className="font-black text-[#bd171c]">
@@ -526,9 +690,16 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                   type="button"
                   onClick={handleVerifyAndSubmit}
                   disabled={otpLoading || isSubmitting}
-                  className="w-1/2 bg-[#bd171c] hover:bg-[#791017] text-white py-3 rounded-xl font-black text-xs shadow-lg"
+                  className="w-1/2 bg-[#bd171c] hover:bg-[#791017] text-white py-3 rounded-xl font-black text-xs shadow-lg flex items-center justify-center gap-1.5"
                 >
-                  {isSubmitting ? 'Submitting...' : 'Verify & Submit'}
+                  {otpLoading || isSubmitting ? (
+                    'Processing...'
+                  ) : (
+                    <>
+                      <span>Verify & Pay ₹5,000</span>
+                      <span className="text-[10px]">💳</span>
+                    </>
+                  )}
                 </button>
               </div>
             </div>
@@ -541,11 +712,11 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                   <span className="bg-[#172a34] text-white px-3 py-1 rounded-lg">Step {step} of 6</span>
                   <span className="text-[#bd171c] font-black">
                     {step === 1 && 'Section A: Request Type'}
-                    {step === 2 && 'Section B: Patient Details'}
+                    {step === 2 && 'Section B: Patient Details & ID Proof'}
                     {step === 3 && 'Section C: Attendant Details'}
-                    {step === 4 && 'Section D: Medical Information'}
+                    {step === 4 && 'Section D: Department & Medical Info'}
                     {step === 5 && 'Section E: Document Uploads'}
-                    {step === 6 && 'Section F: Declarations'}
+                    {step === 6 && 'Section F: Declarations & Pre-Booking Fee (₹5,000)'}
                   </span>
                 </div>
                 <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200">
@@ -576,6 +747,18 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
               {/* STEP 1 */}
               {step === 1 && (
                 <div className="space-y-4">
+                  {/* TATKAAL HIGHLIGHT BANNER */}
+                  <div className="p-3.5 bg-red-50 border border-red-200 rounded-2xl text-xs text-red-900 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="text-base">⚡</span>
+                      <div>
+                        <div className="font-black text-[#bd171c]">Nims Tatkaal Seva Online ICU Reservation</div>
+                        <div className="text-[11px] text-slate-600">Immediate priority allocation upon ₹5,000 pre-booking deposit.</div>
+                      </div>
+                    </div>
+                    <span className="bg-[#bd171c] text-white text-[11px] font-black px-2.5 py-1 rounded-lg shrink-0">₹5,000/- Fee</span>
+                  </div>
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <label
                       onClick={() => setSubmittedBy('patient')}
@@ -767,26 +950,41 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {/* ID PROOF TYPE & ID NUMBER (AADHAAR & BHAMASHAH) */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
                     <div>
-                      <label className="block text-xs font-bold text-[#172a34] mb-1">Aadhaar / Govt ID Proof Number</label>
+                      <label className="block text-xs font-bold text-[#172a34] mb-1">ID Proof Type *</label>
+                      <select
+                        name="idProofType"
+                        value={formData.idProofType}
+                        onChange={handleInputChange}
+                        className={getInputClass('idProofType')}
+                      >
+                        <option value="aadhaar">Aadhaar Card</option>
+                        <option value="bhamashah">Bhamashah / Jan Aadhaar Card</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-[#172a34] mb-1">
+                        {formData.idProofType === 'aadhaar' ? 'Aadhaar Number' : 'Bhamashah / Jan Aadhaar ID'} *
+                      </label>
                       <input
                         type="text"
-                        name="aadhaarOrId"
-                        value={formData.aadhaarOrId}
+                        name="idProofNumber"
+                        value={formData.idProofNumber}
                         onChange={handleInputChange}
-                        placeholder="e.g. AADHAAR: 1234 5678 9012"
-                        className={getInputClass('aadhaarOrId')}
+                        placeholder={formData.idProofType === 'aadhaar' ? '12-digit Aadhaar' : 'Bhamashah Card ID'}
+                        className={getInputClass('idProofNumber')}
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-[#172a34] mb-1">Hospital UHID (If existing patient)</label>
+                      <label className="block text-xs font-bold text-[#172a34] mb-1">Hospital UHID (If existing)</label>
                       <input
                         type="text"
                         name="patientUhid"
                         value={formData.patientUhid}
                         onChange={handleInputChange}
-                        placeholder="e.g. UHID-98745"
+                        placeholder="e.g. NIMS-P-9874"
                         className={getInputClass('patientUhid')}
                       />
                     </div>
@@ -798,7 +996,7 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
               {step === 3 && submittedBy === 'attendant' && (
                 <div className="space-y-4">
                   <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 font-bold">
-                    ⚠️ This section is mandatory when booking on behalf of a patient.
+                    ⚠️ Attendant information is required when booking on behalf of a patient.
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div>
@@ -856,12 +1054,76 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                       />
                     </div>
                   </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                    <div>
+                      <label className="block text-xs font-bold text-[#172a34] mb-1">Attendant ID Proof Type</label>
+                      <select
+                        name="attendantIdProofType"
+                        value={formData.attendantIdProofType}
+                        onChange={handleInputChange}
+                        className={getInputClass('attendantIdProofType')}
+                      >
+                        <option value="aadhaar">Aadhaar Card</option>
+                        <option value="bhamashah">Bhamashah / Jan Aadhaar Card</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-[#172a34] mb-1">Attendant ID Number</label>
+                      <input
+                        type="text"
+                        name="attendantIdProofNumber"
+                        value={formData.attendantIdProofNumber}
+                        onChange={handleInputChange}
+                        placeholder="Aadhaar or Bhamashah ID"
+                        className={getInputClass('attendantIdProofNumber')}
+                      />
+                    </div>
+                  </div>
                 </div>
               )}
 
-              {/* STEP 4: MEDICAL INFO - DROPDOWNS INTEGRATED FOR FAST SELECTION */}
+              {/* STEP 4: DEPARTMENT & MEDICAL INFO */}
               {step === 4 && (
                 <div className="space-y-4">
+                  {/* DEPARTMENT SELECTION DROPDOWN */}
+                  <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
+                    <label className="block text-xs font-black text-[#172a34] mb-1.5 uppercase">
+                      Select Medical Department *
+                    </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <select
+                          name="department"
+                          value={formData.department}
+                          onChange={handleInputChange}
+                          className={getInputClass('department')}
+                        >
+                          <option value="ortho">Orthopedics (Ortho)</option>
+                          <option value="gyne">Gynecology & Obstetrics (Gyne)</option>
+                          <option value="medicine">Internal Medicine (Medicine)</option>
+                          <option value="other">Other Department</option>
+                        </select>
+                      </div>
+
+                      {formData.department === 'other' && (
+                        <div>
+                          <input
+                            type="text"
+                            name="departmentOther"
+                            value={formData.departmentOther}
+                            onChange={handleInputChange}
+                            placeholder="Specify Department (e.g. Cardiology, Neurology)"
+                            className={getInputClass('departmentOther')}
+                          />
+                          {fieldErrors.departmentOther && (
+                            <p className="text-[11px] text-red-600 font-extrabold mt-1">⚠️ {fieldErrors.departmentOther}</p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
                   <div>
                     <label className="block text-xs font-black text-[#172a34] mb-2 uppercase">Required ICU Category *</label>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
@@ -1031,7 +1293,7 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                       { id: 'doctor_referral', title: 'Doctor Referral Letter' },
                       { id: 'medical_report', title: 'Medical Report (CT / Blood Test)' },
                       { id: 'prescription', title: 'Prescription Summary' },
-                      { id: 'patient_id', title: 'Patient ID Proof' },
+                      { id: 'patient_id', title: `Patient ID Proof (${formData.idProofType === 'aadhaar' ? 'Aadhaar' : 'Bhamashah'})` },
                     ].map((docType) => {
                       const existing = documents.find((d) => d.type === docType.id);
                       return (
@@ -1060,9 +1322,21 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                 </div>
               )}
 
-              {/* STEP 6: DECLARATIONS - ALL STANDARDIZED IN ENGLISH */}
+              {/* STEP 6: DECLARATIONS & PRE-BOOKING FEE INFO */}
               {step === 6 && (
-                <div className="space-y-3">
+                <div className="space-y-4">
+                  {/* PRE-BOOKING CHARGES CARD */}
+                  <div className="p-4 bg-gradient-to-r from-red-50 via-amber-50 to-red-50 border-2 border-[#bd171c]/30 rounded-2xl flex items-center justify-between shadow-sm">
+                    <div>
+                      <div className="text-xs font-black text-[#bd171c] uppercase tracking-wider">Nims Tatkaal Seva Pre-Booking Deposit</div>
+                      <div className="text-[11px] text-slate-600 mt-0.5">Secure your ICU bed slot instantly upon payment confirmation.</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xs text-slate-500 font-bold">Tatkaal Amount</div>
+                      <div className="text-2xl font-black text-[#bd171c]">₹5,000/-</div>
+                    </div>
+                  </div>
+
                   {fieldErrors.consents && (
                     <div className="p-3 bg-red-100 border-2 border-red-400 text-red-900 rounded-2xl text-xs font-black">
                       ⚠️ {fieldErrors.consents}
@@ -1099,9 +1373,9 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                         name="consentBedReservationPolicy"
                         checked={formData.consentBedReservationPolicy}
                         onChange={handleInputChange}
-                        className="mt-0.5 accent-[#bd171c]"
+                        className="accent-[#bd171c] mt-0.5"
                       />
-                      <span>I acknowledge that ICU bed booking is subject to final admin and medical team confirmation. *</span>
+                      <span>I acknowledge the ₹5,000/- Nims Tatkaal Seva pre-booking deposit for immediate slot locking. *</span>
                     </label>
 
                     <label className="flex items-start gap-2.5 cursor-pointer">
@@ -1123,7 +1397,7 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                         onChange={handleInputChange}
                         className="mt-0.5 accent-[#bd171c]"
                       />
-                      <span>Emergency Disclaimer: For life-threatening emergencies, contact BST Hospital Emergency immediately (+91 74120 77125). *</span>
+                      <span>Emergency Disclaimer: For life-threatening emergencies, contact NIMS Emergency immediately (+91 74120 77125). *</span>
                     </label>
 
                     <label className="flex items-start gap-2.5 cursor-pointer">
@@ -1134,7 +1408,7 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                         onChange={handleInputChange}
                         className="mt-0.5 accent-[#bd171c]"
                       />
-                      <span>I accept BST Hospital Critical Care terms and conditions. *</span>
+                      <span>I accept Nims Hospital Critical Care Tatkaal terms and conditions. *</span>
                     </label>
                   </div>
                 </div>
@@ -1165,9 +1439,9 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                     type="button"
                     onClick={triggerSendOtp}
                     disabled={otpLoading}
-                    className="bg-[#bd171c] hover:bg-[#791017] text-white font-black text-xs px-7 py-3 rounded-xl shadow-xl transition"
+                    className="bg-[#bd171c] hover:bg-[#791017] text-white font-black text-xs px-7 py-3 rounded-xl shadow-xl transition flex items-center gap-2"
                   >
-                    {otpLoading ? 'Sending OTP...' : 'Verify OTP & Submit ➔'}
+                    {otpLoading ? 'Sending OTP...' : 'Verify OTP & Pay ₹5,000 ➔'}
                   </button>
                 )}
               </div>

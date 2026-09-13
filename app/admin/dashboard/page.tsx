@@ -33,9 +33,9 @@ export default function AdminDashboardPage() {
         fetch('/api/admin/icu-beds'),
       ]);
 
-      const mData = await mRes.json();
-      const rData = await rRes.json();
-      const bData = await bRes.json();
+      const mData: any = await mRes.json();
+      const rData: any = await rRes.json();
+      const bData: any = await bRes.json();
 
       setMetrics(mData.metrics);
       setRequests(rData.requests || []);
@@ -60,7 +60,7 @@ export default function AdminDashboardPage() {
           ...extra,
         }),
       });
-      const data = await res.json();
+      const data: any = await res.json();
       if (res.ok) {
         void fetchDashboardData();
         if (selectedReq?.id === reqId) setSelectedReq(data.request);
@@ -84,7 +84,7 @@ export default function AdminDashboardPage() {
           note: newNoteText,
         }),
       });
-      const data = await res.json();
+      const data: any = await res.json();
       if (res.ok) {
         setNewNoteText('');
         void fetchDashboardData();
@@ -105,7 +105,7 @@ export default function AdminDashboardPage() {
           performedBy: 'ICU Admin',
         }),
       });
-      const data = await res.json();
+      const data: any = await res.json();
       if (res.ok) {
         void fetchDashboardData();
         if (selectedReq?.id === reqId) setSelectedReq(data.request);
@@ -130,7 +130,7 @@ export default function AdminDashboardPage() {
           performedBy: 'ICU Bed Manager',
         }),
       });
-      const data = await res.json();
+      const data: any = await res.json();
       if (res.ok) {
         setShowReserveModal(false);
         void fetchDashboardData();

@@ -30,6 +30,19 @@ export type UserRole =
   | 'bed_manager'
   | 'viewer';
 
+export type IdProofType = 'aadhaar' | 'bhamashah';
+
+export type DepartmentType = 'ortho' | 'gyne' | 'medicine' | 'other';
+
+export interface PaymentInfo {
+  orderId: string;
+  paymentId: string;
+  signature?: string;
+  amountPaid: number; // in INR (e.g. 5000)
+  paymentStatus: 'paid' | 'pending' | 'failed';
+  paidAt?: string;
+}
+
 export interface PatientDetails {
   fullName: string;
   age: number;
@@ -43,6 +56,8 @@ export interface PatientDetails {
     state: string;
     pinCode: string;
   };
+  idProofType?: IdProofType;
+  idProofNumber?: string;
   aadhaarOrId?: string;
   patientUhid?: string;
 }
@@ -53,6 +68,7 @@ export interface AttendantDetails {
   mobile: string;
   alternateMobile?: string;
   email?: string;
+  idProofType?: IdProofType;
   idProofNumber?: string;
   sameAddressAsPatient: boolean;
 }
@@ -60,6 +76,8 @@ export interface AttendantDetails {
 export interface MedicalDetails {
   admissionType: 'emergency' | 'planned' | 'transfer';
   requiredIcuType: IcuType;
+  department?: DepartmentType;
+  departmentOther?: string;
   currentMedicalCondition: string;
   diagnosis: string;
   symptomsCriticality: string;
@@ -122,6 +140,7 @@ export interface IcuRequest {
   documents: DocumentAttachment[];
   status: RequestStatus;
   priority: PriorityLevel;
+  payment?: PaymentInfo;
   assignedTo?: {
     id: string;
     name: string;
