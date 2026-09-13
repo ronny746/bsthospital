@@ -108,6 +108,19 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
     }
   }, []);
 
+  const handleCloseModal = () => {
+    setStep(1);
+    setCreatedRequestId(null);
+    setPaymentReceiptId(null);
+    setIsOtpVerified(false);
+    setShowOtpScreen(false);
+    setPaymentStatus(null);
+    setDocuments([]);
+    setFieldErrors({});
+    setStepError(null);
+    onClose();
+  };
+
   if (!isOpen) return null;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -636,7 +649,7 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
           </div>
 
           <button
-            onClick={onClose}
+            onClick={handleCloseModal}
             className="w-9 h-9 rounded-2xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-lg font-black transition border border-white/20"
             title="Close Dialog"
           >
@@ -704,7 +717,7 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                 </a>
                 <button
                   type="button"
-                  onClick={onClose}
+                  onClick={handleCloseModal}
                   className="bg-slate-100 hover:bg-slate-200 text-[#172a34] font-bold px-6 py-3.5 rounded-xl transition text-xs border border-slate-300"
                 >
                   Close Dialog

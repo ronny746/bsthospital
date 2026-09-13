@@ -33,6 +33,8 @@ MONGO_URI=mongodb+srv://geniusattechie:tF2Oe1CBjJVdL9xZ@cluster0.oxahl6y.mongodb
 NEXT_PUBLIC_RAZORPAY_KEY_ID=rzp_test_TZAWZi6xItEYWa
 RAZORPAY_KEY_ID=rzp_test_TZAWZi6xItEYWa
 RAZORPAY_KEY_SECRET=zaCUtNZsCgq1jLERhZ7FidtX
+AWS_REGION=ap-south-1
+AWS_S3_BUCKET=lms-media-storage-2026
 PORT=$PORT
 EOF
         echo "✅ Default .env.local created successfully."
@@ -82,7 +84,7 @@ if pm2 describe "$APP_NAME" >/dev/null 2>&1; then
     pm2 delete "$APP_NAME"
 fi
 
-PORT=$PORT HOST=$HOST pm2 start npm --name "$APP_NAME" -- run dev -- --port $PORT --host 0.0.0.0
+pm2 start ./node_modules/.bin/vinext --name "$APP_NAME" -- start -p $PORT -H 0.0.0.0
 
 pm2 save
 

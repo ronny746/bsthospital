@@ -9,8 +9,49 @@ export async function POST(request: Request) {
     }
 
     const now = new Date().toISOString();
-    const requestId = `NIMS-ICU-${now.slice(0, 10).replace(/-/g, '')}-${String(Math.floor(1000 + Math.random() * 9000))}`;
-    const id = `req-${Date.now()}`;
+    const dateStr = now.slice(0, 10).replace(/-/g, '');
+    let seqNumber = Math.floor(1000 + Math.random() * 9000);
+
+    try {
+      const { connectToDatabase } = await import('@/lib/db/connect');
+      const conn = await connectToDatabase();
+      if (conn) {
+        const { IcuRequestModel } = await import('@/lib/db/models/IcuRequest');
+        const todayPrefix = `NIMS-ICU-${dateStr}-`;
+        const count = await IcuRequestModel.countDocuments({
+          requestId: { $regex: `^${todayPrefix}` }
+        });
+        seqNumber = count + 1;
+      }
+    } catch (e) {
+      console.error('Error counting documents for sequential ID:', e);
+    }
+
+    const seqFormatted = String(seqNumber).padStart(4, '0');
+    const requestId = `NIMS-ICU-${dateStr}-${seqFormatted}`;
+    const id = `req-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+    const processedDocuments = [];
+    if (Array.isArray(body.documents)) {
+      for (const doc of body.documents) {
+        if (doc.fileUrl && typeof doc.fileUrl === 'string' && doc.fileUrl.startsWith('data:')) {
+          try {
+            const { uploadToS3 } = await import('@/lib/s3');
+            const s3Url = await uploadToS3(
+              doc.fileUrl,
+              doc.fileName || `${doc.docType || 'document'}.pdf`,
+              `bsthospital/icu-requests/${requestId}`
+            );
+            processedDocuments.push({ ...doc, fileUrl: s3Url });
+          } catch (s3Err) {
+            console.error('Failed to upload document to AWS S3:', s3Err);
+            processedDocuments.push(doc);
+          }
+        } else {
+          processedDocuments.push(doc);
+        }
+      }
+    }
 
     const newRequestData = {
       id,
@@ -58,7 +99,7 @@ export async function POST(request: Request) {
         infectionIsolationRequired: body.medical?.infectionIsolationRequired ?? false,
         additionalRemarks: body.medical?.additionalRemarks,
       },
-      documents: body.documents || [],
+      documents: processedDocuments,
       status: 'submitted',
       priority:
         body.medical?.ventilatorRequired || body.medical?.symptomsCriticality?.toLowerCase().includes('critical')

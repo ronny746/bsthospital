@@ -46,8 +46,13 @@ export default defineConfig(async () => {
 
   return {
     css: { postcss: { plugins: [tailwindcss()] } },
+    resolve: {
+      alias: {
+        'punycode/': 'punycode',
+      },
+    },
     ssr: {
-      external: ['mongoose', 'mongodb'],
+      external: ['mongoose', 'mongodb', 'punycode', 'node:punycode'],
     },
     server: isCodexSeatbeltSandbox
       ? { watch: { useFsEvents: false, usePolling: true } }
