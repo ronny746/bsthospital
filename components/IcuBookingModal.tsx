@@ -20,12 +20,13 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
     dob: '',
     gender: 'male',
     patientMobile: '',
-    patientAltMobile: '',
+    patientAltMobile: '',    // ID proof & Address
+    idProofType: 'aadhaar' as 'aadhaar' | 'voter_id' | 'pan_card' | 'driving_license' | 'passport',
+    idProofNumber: '',
     street: '',
     city: 'Jaipur',
     state: 'Rajasthan',
     pinCode: '',
-    aadhaarOrId: '',
     patientUhid: '',
 
     // Attendant details
@@ -40,9 +41,9 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
     // Medical Details
     admissionType: 'emergency' as 'emergency' | 'planned' | 'transfer',
     requiredIcuType: 'medical_icu' as IcuType,
-    currentMedicalCondition: '',
-    diagnosis: '',
-    symptomsCriticality: '',
+    currentMedicalCondition: 'Breathlessness / SpO2 Drop / Respiratory Distress',
+    diagnosis: 'Acute Respiratory Distress Syndrome (ARDS) / Pneumonia',
+    symptomsCriticality: 'Critical (SpO2 < 88% / Immediate Support Needed)',
     oxygenRequired: true,
     ventilatorRequired: false,
     treatingDoctorName: '',
@@ -54,18 +55,51 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
     additionalRemarks: '',
 
     // Consents
-    consentAccuracy: false,
-    consentVerification: false,
-    consentBedReservationPolicy: false,
-    consentPrivacy: false,
-    consentEmergencyDisclaimer: false,
-    consentTerms: false,
+    consentAccepted: false,
   });
 
   // Validation errors
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [stepError, setStepError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+
+  // Predefined Medical Dropdown Options
+  const conditionOptions = [
+    'Breathlessness / SpO2 Drop / Respiratory Distress',
+    'Chest Pain / Cardiac Emergency / Heart Attack',
+    'Stroke / Unconscious / Neurological Emergency',
+    'Severe Trauma / Accident / Heavy Bleeding',
+    'High Fever / Severe Infection / Sepsis',
+    'Post-Operative Surgery Care Recovery',
+    'Kidney / Dialysis Emergency',
+    'Other Critical Condition',
+  ];
+
+  const diagnosisOptions = [
+    'Acute Respiratory Distress Syndrome (ARDS) / Pneumonia',
+    'Acute Myocardial Infarction / Cardiac Shock',
+    'Cerebrovascular Stroke / Head Injury',
+    'Septic Shock / Multi-Organ Failure',
+    'Post-Surgical Recovery Monitoring',
+    'Severe Polytrauma / Fractures',
+    'Acute Renal Failure',
+    'Under Evaluation / Not Confirmed Yet',
+  ];
+
+  const criticalityOptions = [
+    'Critical (SpO2 < 88% / Immediate Support Needed)',
+    'High Priority (SpO2 88-92% / Unstable Vitals)',
+    'Moderate (SpO2 > 92% on Oxygen Support)',
+    'Stable Monitoring Required',
+  ];
+
+  const idTypeLabels: Record<string, string> = {
+    aadhaar: 'Aadhaar Card (12-digit)',
+    voter_id: 'Voter ID Card',
+    pan_card: 'PAN Card',
+    driving_license: 'Driving License',
+    passport: 'Passport',
+  };
 
   // Uploaded docs
   const [documents, setDocuments] = useState<
@@ -112,9 +146,9 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
   const getInputClass = (fieldName: string, extraClasses: string = '') => {
     const hasError = !!fieldErrors[fieldName];
     if (hasError) {
-      return `w-full bg-red-50/80 border-2 border-red-500 rounded-xl px-4 py-2.5 text-xs text-red-950 font-bold focus:outline-none focus:border-red-600 focus:ring-2 focus:ring-red-200 transition ${extraClasses}`;
+      return `w-full bg-red-50 border-2 border-red-500 rounded-xl px-3 py-2 text-base sm:text-xs text-red-950 font-medium focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-200 transition ${extraClasses}`;
     }
-    return `w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-[#172a34] font-bold focus:outline-none focus:border-[#bd171c] transition ${extraClasses}`;
+    return `w-full bg-slate-50/90 border border-slate-300/80 rounded-xl px-3 py-2 text-base sm:text-xs text-slate-800 font-medium focus:bg-white focus:outline-none focus:border-[#bd171c] focus:ring-1 focus:ring-[#bd171c]/20 transition ${extraClasses}`;
   };
 
   const handleFileUpload = (type: string, e: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,12 +170,6 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
     let mainError: string | null = null;
 
     if (step === 1) {
-      setFieldErrors({});
-      setStepError(null);
-      return true;
-    }
-
-    if (step === 2) {
       if (!formData.patientFullName.trim()) {
         newErrors.patientFullName = 'Patient Full Name is required';
       }
@@ -153,6 +181,9 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
       } else if (!/^\d{10}$/.test(formData.patientMobile.trim())) {
         newErrors.patientMobile = 'Enter a valid 10-digit mobile number';
       }
+      if (!formData.idProofNumber.trim()) {
+        newErrors.idProofNumber = `${idTypeLabels[formData.idProofType] || 'ID Proof'} number is required`;
+      }
       if (!formData.city.trim()) {
         newErrors.city = 'City is required';
       }
@@ -162,30 +193,23 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
         newErrors.pinCode = 'Enter a valid 6-digit PIN code';
       }
 
-      if (Object.keys(newErrors).length > 0) {
-        mainError = 'Please fill in all mandatory patient details highlighted in red.';
-      }
-    }
-
-    if (step === 3 && submittedBy === 'attendant') {
-      if (!formData.attendantFullName.trim()) {
-        newErrors.attendantFullName = 'Attendant Full Name is required';
-      }
-      if (!formData.relationship.trim()) {
-        newErrors.relationship = 'Relationship with patient is required';
-      }
-      if (!formData.attendantMobile.trim()) {
-        newErrors.attendantMobile = 'Attendant mobile number is required';
-      } else if (!/^\d{10}$/.test(formData.attendantMobile.trim())) {
-        newErrors.attendantMobile = 'Enter a valid 10-digit mobile number';
+      if (submittedBy === 'attendant') {
+        if (!formData.attendantFullName.trim()) {
+          newErrors.attendantFullName = 'Attendant Full Name is required';
+        }
+        if (!formData.attendantMobile.trim()) {
+          newErrors.attendantMobile = 'Attendant Mobile is required';
+        } else if (!/^\d{10}$/.test(formData.attendantMobile.trim())) {
+          newErrors.attendantMobile = 'Enter a valid 10-digit mobile number';
+        }
       }
 
       if (Object.keys(newErrors).length > 0) {
-        mainError = 'Please fill in mandatory attendant details highlighted in red.';
+        mainError = 'Please complete all required identity and contact fields.';
       }
     }
 
-    if (step === 4) {
+    if (step === 2) {
       if (!formData.currentMedicalCondition.trim()) {
         newErrors.currentMedicalCondition = 'Current medical condition is required';
       }
@@ -193,25 +217,18 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
         newErrors.diagnosis = 'Medical diagnosis is required';
       }
       if (!formData.symptomsCriticality.trim()) {
-        newErrors.symptomsCriticality = 'Criticality notes / Vitals are required';
+        newErrors.symptomsCriticality = 'Criticality level is required';
       }
 
       if (Object.keys(newErrors).length > 0) {
-        mainError = 'Please fill in mandatory medical condition & diagnosis details.';
+        mainError = 'Please select mandatory medical condition & diagnosis details.';
       }
     }
 
-    if (step === 6) {
-      if (
-        !formData.consentAccuracy ||
-        !formData.consentVerification ||
-        !formData.consentBedReservationPolicy ||
-        !formData.consentPrivacy ||
-        !formData.consentEmergencyDisclaimer ||
-        !formData.consentTerms
-      ) {
-        newErrors.consents = 'All declarations and consents must be accepted';
-        mainError = 'Please accept all required declarations and consents to proceed.';
+    if (step === 3) {
+      if (!formData.consentAccepted) {
+        newErrors.consentAccepted = 'You must accept the admission terms declaration';
+        mainError = 'Please accept the mandatory terms and policy declaration to proceed.';
       }
     }
 
@@ -224,21 +241,13 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
   const handleNextStep = () => {
     if (!validateCurrentStep()) return;
     setStepError(null);
-    if (step === 2 && submittedBy === 'patient') {
-      setStep(4);
-    } else {
-      setStep((prev) => prev + 1);
-    }
+    setStep((prev) => prev + 1);
   };
 
   const handlePrevStep = () => {
     setStepError(null);
     setFieldErrors({});
-    if (step === 4 && submittedBy === 'patient') {
-      setStep(2);
-    } else {
-      setStep((prev) => prev - 1);
-    }
+    setStep((prev) => prev - 1);
   };
 
   const triggerSendOtp = async () => {
@@ -292,6 +301,7 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
       }
 
       setIsSubmitting(true);
+      const formattedIdStr = `${formData.idProofType.toUpperCase()}: ${formData.idProofNumber}`;
       const submitRes = await fetch('/api/icu-requests', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -310,7 +320,7 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
               state: formData.state,
               pinCode: formData.pinCode,
             },
-            aadhaarOrId: formData.aadhaarOrId || undefined,
+            aadhaarOrId: formattedIdStr,
             patientUhid: formData.patientUhid || undefined,
           },
           attendant:
@@ -321,8 +331,8 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                   mobile: formData.attendantMobile,
                   alternateMobile: formData.attendantAltMobile || undefined,
                   email: formData.attendantEmail || undefined,
-                  idProofNumber: formData.attendantIdProofNumber || undefined,
-                  sameAddressAsPatient: formData.sameAddressAsPatient,
+                  idProofNumber: formattedIdStr,
+                  sameAddressAsPatient: true,
                 }
               : undefined,
           medical: {
@@ -383,21 +393,21 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
   ];
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto animate-fade-in">
-      <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-4xl w-full my-auto overflow-hidden relative border-t-8 border-t-[#bd171c] max-h-[92vh] flex flex-col">
+    <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md flex items-center justify-center p-2.5 sm:p-5 overflow-y-auto animate-fade-in">
+      <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-2xl w-full my-auto overflow-hidden relative border-t-4 border-t-[#bd171c] max-h-[94vh] flex flex-col">
         {/* MODAL HEADER */}
-        <div className="bg-gradient-to-r from-[#172a34] via-[#0f232e] to-[#791017] p-5 sm:p-6 text-white flex justify-between items-center shrink-0">
+        <div className="bg-gradient-to-r from-[#172a34] via-[#0f232e] to-[#791017] px-4 py-3 sm:px-6 sm:py-3.5 text-white flex justify-between items-center shrink-0 border-b border-white/10">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>
-              <span className="text-[11px] font-mono font-black text-amber-400 uppercase tracking-widest">NIMS Critical Care Portal</span>
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+              <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-widest">NIMS Critical Care</span>
             </div>
-            <h2 className="text-xl sm:text-2xl font-black">24/7 ICU Bed Booking Dialog</h2>
+            <h2 className="text-sm sm:text-base font-extrabold text-white tracking-tight">24/7 ICU Bed Booking</h2>
           </div>
 
           <button
             onClick={onClose}
-            className="w-10 h-10 rounded-2xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xl font-black transition border border-white/20"
+            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-sm font-bold transition border border-white/20"
             title="Close Dialog"
           >
             ✕
@@ -405,23 +415,23 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
         </div>
 
         {/* MODAL BODY */}
-        <div className="p-6 sm:p-8 overflow-y-auto flex-1 bg-white">
+        <div className="p-4 sm:p-6 overflow-y-auto flex-1 bg-white">
           {createdRequestId ? (
             /* SUCCESS CONFIRMATION */
-            <div className="text-center py-6">
-              <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-5 shadow-inner border-2 border-emerald-300">
-                <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="text-center py-4">
+              <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-inner border border-emerald-300">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-black text-[#172a34] mb-2">Request Generated Successfully!</h3>
-              <p className="text-slate-600 text-xs sm:text-sm mb-6 max-w-md mx-auto font-medium">
-                Your request has been submitted to the BST Hospital Critical Care Operations Desk.
+              <h3 className="text-xl sm:text-2xl font-black text-[#172a34] mb-1.5">Request Generated Successfully!</h3>
+              <p className="text-slate-600 text-xs mb-5 max-w-xs mx-auto font-medium">
+                Your request has been submitted to the BST Hospital Critical Care Desk.
               </p>
 
-              <div className="bg-[#172a34] text-white p-6 rounded-3xl max-w-sm mx-auto mb-8 shadow-xl border-2 border-[#e5b64a]">
+              <div className="bg-[#172a34] text-white p-5 rounded-2xl max-w-xs mx-auto mb-6 shadow-lg border border-[#e5b64a]/50">
                 <div className="text-[10px] font-black text-[#e5b64a] uppercase tracking-widest mb-1">Unique Request ID</div>
-                <div className="text-2xl font-mono font-black tracking-widest text-white flex items-center justify-center gap-3 my-1">
+                <div className="text-xl font-mono font-black tracking-widest text-white flex items-center justify-center gap-2.5 my-1">
                   <span>{createdRequestId}</span>
                   <button
                     type="button"
@@ -430,26 +440,26 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                       setCopied(true);
                       setTimeout(() => setCopied(false), 2000);
                     }}
-                    className={`text-[11px] px-3 py-1 rounded-lg font-extrabold transition shadow ${
+                    className={`text-[10px] px-2.5 py-1 rounded-md font-bold transition shadow ${
                       copied ? 'bg-emerald-600 text-white' : 'bg-[#bd171c] hover:bg-[#791017] text-white'
                     }`}
                   >
-                    {copied ? '✓ Copied!' : 'Copy'}
+                    {copied ? '✓ Copied' : 'Copy'}
                   </button>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <div className="flex flex-col sm:flex-row gap-2.5 justify-center">
                 <a
                   href={`/icu-status?requestId=${createdRequestId}&mobile=${submittedBy === 'attendant' ? formData.attendantMobile : formData.patientMobile}`}
-                  className="bg-[#bd171c] hover:bg-[#791017] text-white font-black px-8 py-3.5 rounded-xl shadow-lg transition text-xs"
+                  className="bg-[#bd171c] hover:bg-[#791017] text-white font-bold px-6 py-2.5 rounded-xl shadow transition text-xs text-center"
                 >
                   Track Status Live ➔
                 </a>
                 <button
                   type="button"
                   onClick={onClose}
-                  className="bg-slate-100 hover:bg-slate-200 text-[#172a34] font-bold px-6 py-3.5 rounded-xl transition text-xs border border-slate-300"
+                  className="bg-slate-100 hover:bg-slate-200 text-[#172a34] font-semibold px-5 py-2.5 rounded-xl transition text-xs border border-slate-300"
                 >
                   Close Dialog
                 </button>
@@ -457,17 +467,17 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
             </div>
           ) : showOtpScreen ? (
             /* OTP VERIFICATION SCREEN */
-            <div className="max-w-md mx-auto text-center py-4">
-              <h3 className="text-2xl font-black text-[#172a34] mb-2">Mobile OTP Verification</h3>
-              <p className="text-xs text-slate-600 mb-4 font-medium">
+            <div className="max-w-xs mx-auto text-center py-2">
+              <h3 className="text-xl font-bold text-[#172a34] mb-1">Mobile OTP Verification</h3>
+              <p className="text-xs text-slate-600 mb-3 font-medium">
                 Enter 6-digit OTP code sent to +91{' '}
-                <span className="font-black text-[#bd171c]">
+                <span className="font-bold text-[#bd171c]">
                   {submittedBy === 'attendant' ? formData.attendantMobile : formData.patientMobile}
                 </span>
               </p>
 
-              <div className="p-3 bg-amber-50 border-2 border-amber-200 rounded-2xl text-xs text-amber-900 font-extrabold mb-4">
-                Demo Verification Code: <span className="font-mono text-base font-black text-[#172a34]">123456</span>
+              <div className="p-2.5 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 font-bold mb-3">
+                Demo Code: <span className="font-mono text-sm font-black text-[#172a34]">123456</span>
               </div>
 
               <input
@@ -476,150 +486,104 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                 onChange={(e) => setOtpCode(e.target.value)}
                 placeholder="123456"
                 maxLength={6}
-                className="w-full bg-slate-50 border-2 border-slate-300 rounded-2xl py-3 px-4 text-center font-mono text-3xl font-black tracking-widest text-[#172a34] mb-4 focus:outline-none focus:border-[#bd171c]"
+                className="w-full bg-slate-50 border border-slate-300 rounded-xl py-2.5 px-3 text-center font-mono text-2xl font-black tracking-widest text-[#172a34] mb-3 focus:outline-none focus:border-[#bd171c]"
               />
 
-              {otpError && <div className="text-xs text-red-600 font-bold mb-4 p-2.5 bg-red-50 border border-red-200 rounded-xl">⚠️ {otpError}</div>}
+              {otpError && <div className="text-xs text-red-600 font-bold mb-3 p-2 bg-red-50 border border-red-200 rounded-lg">⚠️ {otpError}</div>}
 
-              <div className="flex gap-3">
+              <div className="flex gap-2.5">
                 <button
                   type="button"
                   onClick={() => setShowOtpScreen(false)}
-                  className="w-1/2 bg-slate-100 hover:bg-slate-200 text-[#172a34] py-3 rounded-xl font-bold text-xs"
+                  className="w-1/2 bg-slate-100 hover:bg-slate-200 text-[#172a34] py-2.5 rounded-xl font-bold text-xs"
                 >
-                  Back to Form
+                  Back
                 </button>
                 <button
                   type="button"
                   onClick={handleVerifyAndSubmit}
                   disabled={otpLoading || isSubmitting}
-                  className="w-1/2 bg-[#bd171c] hover:bg-[#791017] text-white py-3 rounded-xl font-black text-xs shadow-lg"
+                  className="w-1/2 bg-[#bd171c] hover:bg-[#791017] text-white py-2.5 rounded-xl font-bold text-xs shadow"
                 >
                   {isSubmitting ? 'Submitting...' : 'Verify & Submit'}
                 </button>
               </div>
             </div>
           ) : (
-            /* WIZARD STEPS */
-            <div className="space-y-6">
-              {/* STEP TRACKER */}
-              <div>
-                <div className="flex justify-between items-center text-xs font-black uppercase text-[#172a34] mb-2">
-                  <span className="bg-[#172a34] text-white px-3 py-1 rounded-lg">Step {step} of 6</span>
-                  <span className="text-[#bd171c] font-black">
-                    {step === 1 && 'Section A: Request Type'}
-                    {step === 2 && 'Section B: Patient Details'}
-                    {step === 3 && 'Section C: Attendant Details'}
-                    {step === 4 && 'Section D: Medical Information'}
-                    {step === 5 && 'Section E: Document Uploads'}
-                    {step === 6 && 'Section F: Declarations'}
+            /* 3-STEP EXPRESS WIZARD STEPS */
+            <div className="space-y-4">
+              {/* STEP TRACKER HEADER */}
+              <div className="space-y-1.5 pb-1 border-b border-slate-100">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">
+                    Step {step} of 3
+                  </span>
+                  <span className="text-xs font-bold text-[#bd171c]">
+                    {step === 1 && 'Patient & Identity'}
+                    {step === 2 && 'Medical Needs & ICU Type'}
+                    {step === 3 && 'Uploads & Confirmation'}
                   </span>
                 </div>
-                <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+                <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200/60">
                   <div
                     className="h-full bg-gradient-to-r from-[#172a34] via-[#bd171c] to-[#e5b64a] transition-all duration-300 rounded-full"
-                    style={{ width: `${(step / 6) * 100}%` }}
+                    style={{ width: `${(step / 3) * 100}%` }}
                   ></div>
                 </div>
               </div>
 
               {/* TOP IN-FORM ERROR BANNER */}
               {stepError && (
-                <div className="p-3.5 bg-red-50 border-2 border-red-500 rounded-2xl text-xs font-black text-red-800 flex items-center justify-between shadow-md">
-                  <div className="flex items-center gap-2.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping shrink-0"></span>
+                <div className="p-2.5 bg-red-50 border border-red-400 rounded-xl text-xs font-bold text-red-900 flex items-center justify-between shadow-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-red-600 animate-ping shrink-0"></span>
                     <span>{stepError}</span>
                   </div>
                   <button
                     type="button"
                     onClick={() => setStepError(null)}
-                    className="text-red-500 hover:text-red-900 font-black text-sm px-1.5"
+                    className="text-red-500 hover:text-red-900 font-bold text-xs px-1"
                   >
                     ✕
                   </button>
                 </div>
               )}
 
-              {/* STEP 1 */}
+              {/* STEP 1: PATIENT & IDENTITY DETAILS */}
               {step === 1 && (
-                <div className="space-y-5">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <label
+                <div className="space-y-3">
+                  {/* BOOKING MODE SEGMENTED PILL TAB */}
+                  <div className="grid grid-cols-2 gap-1.5 bg-slate-100/90 p-1 rounded-xl border border-slate-200">
+                    <button
+                      type="button"
                       onClick={() => setSubmittedBy('patient')}
-                      className={`p-5 rounded-2xl border-2 cursor-pointer transition flex items-start gap-3 ${
+                      className={`py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 ${
                         submittedBy === 'patient'
-                          ? 'border-[#bd171c] bg-red-50/70 shadow-md'
-                          : 'border-slate-200 bg-slate-50/50 hover:bg-white'
+                          ? 'bg-white text-[#172a34] shadow-sm border border-slate-200'
+                          : 'text-slate-500 hover:text-slate-800'
                       }`}
                     >
-                      <input
-                        type="radio"
-                        name="submittedBy"
-                        checked={submittedBy === 'patient'}
-                        onChange={() => setSubmittedBy('patient')}
-                        className="mt-1 accent-[#bd171c]"
-                      />
-                      <div>
-                        <div className="font-extrabold text-[#172a34] text-sm">Booking by Patient</div>
-                        <div className="text-[11px] text-slate-500 mt-0.5">Patient or direct family member</div>
-                      </div>
-                    </label>
-
-                    <label
+                      <span>👤</span> Patient / Self
+                    </button>
+                    <button
+                      type="button"
                       onClick={() => setSubmittedBy('attendant')}
-                      className={`p-5 rounded-2xl border-2 cursor-pointer transition flex items-start gap-3 ${
+                      className={`py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 ${
                         submittedBy === 'attendant'
-                          ? 'border-[#bd171c] bg-red-50/70 shadow-md'
-                          : 'border-slate-200 bg-slate-50/50 hover:bg-white'
+                          ? 'bg-white text-[#172a34] shadow-sm border border-slate-200'
+                          : 'text-slate-500 hover:text-slate-800'
                       }`}
                     >
-                      <input
-                        type="radio"
-                        name="submittedBy"
-                        checked={submittedBy === 'attendant'}
-                        onChange={() => setSubmittedBy('attendant')}
-                        className="mt-1 accent-[#bd171c]"
-                      />
-                      <div>
-                        <div className="font-extrabold text-[#172a34] text-sm">Booking by Attendant</div>
-                        <div className="text-[11px] text-slate-500 mt-0.5">Guardian, caretaker or referring doctor</div>
-                      </div>
-                    </label>
+                      <span>🤝</span> Attendant / Doctor
+                    </button>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-black text-[#172a34] mb-2">Nature of Admission</label>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      {[
-                        { id: 'emergency', label: 'Emergency', desc: 'Immediate critical care' },
-                        { id: 'planned', label: 'Planned Stay', desc: 'Scheduled procedure' },
-                        { id: 'transfer', label: 'Hospital Transfer', desc: 'Outside clinic transfer' },
-                      ].map((item) => (
-                        <button
-                          key={item.id}
-                          type="button"
-                          onClick={() => setFormData((p) => ({ ...p, admissionType: item.id as any }))}
-                          className={`p-4 rounded-xl text-left border-2 transition ${
-                            formData.admissionType === item.id
-                              ? 'border-[#172a34] bg-[#172a34] text-white shadow-md font-bold'
-                              : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-white'
-                          }`}
-                        >
-                          <div className="font-extrabold text-xs">{item.label}</div>
-                          <div className={`text-[10px] mt-0.5 ${formData.admissionType === item.id ? 'text-slate-200' : 'text-slate-500'}`}>{item.desc}</div>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* STEP 2: PATIENT DETAILS */}
-              {step === 2 && (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* PATIENT DETAILS FIELDS */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
                     <div>
-                      <label className="block text-xs font-bold text-[#172a34] mb-1">Patient Full Name *</label>
+                      <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
+                        Patient Full Name *
+                      </label>
                       <input
                         type="text"
                         name="patientFullName"
@@ -629,32 +593,36 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                         className={getInputClass('patientFullName')}
                       />
                       {fieldErrors.patientFullName && (
-                        <p className="text-[11px] text-red-600 font-extrabold mt-1">⚠️ {fieldErrors.patientFullName}</p>
+                        <p className="text-[10px] text-red-600 font-bold mt-0.5">⚠️ {fieldErrors.patientFullName}</p>
                       )}
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <label className="block text-xs font-bold text-[#172a34] mb-1">Age *</label>
+                        <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
+                          Age *
+                        </label>
                         <input
                           type="number"
                           name="age"
                           value={formData.age}
                           onChange={handleInputChange}
                           placeholder="58"
-                          className={getInputClass('age', 'px-3')}
+                          className={getInputClass('age')}
                         />
                         {fieldErrors.age && (
-                          <p className="text-[11px] text-red-600 font-extrabold mt-1">⚠️ {fieldErrors.age}</p>
+                          <p className="text-[10px] text-red-600 font-bold mt-0.5">⚠️ {fieldErrors.age}</p>
                         )}
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-[#172a34] mb-1">Gender *</label>
+                        <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
+                          Gender *
+                        </label>
                         <select
                           name="gender"
                           value={formData.gender}
                           onChange={handleInputChange}
-                          className={getInputClass('gender', 'px-2')}
+                          className={getInputClass('gender')}
                         >
                           <option value="male">Male</option>
                           <option value="female">Female</option>
@@ -664,7 +632,9 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-[#172a34] mb-1">Mobile Number *</label>
+                      <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
+                        Mobile Number *
+                      </label>
                       <input
                         type="tel"
                         name="patientMobile"
@@ -675,12 +645,14 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                         className={getInputClass('patientMobile')}
                       />
                       {fieldErrors.patientMobile && (
-                        <p className="text-[11px] text-red-600 font-extrabold mt-1">⚠️ {fieldErrors.patientMobile}</p>
+                        <p className="text-[10px] text-red-600 font-bold mt-0.5">⚠️ {fieldErrors.patientMobile}</p>
                       )}
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-[#172a34] mb-1">Alternate Mobile</label>
+                      <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
+                        Alternate Mobile
+                      </label>
                       <input
                         type="tel"
                         name="patientAltMobile"
@@ -693,32 +665,74 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-3">
+                  {/* ID PROOF CARD */}
+                  <div className="p-3 bg-slate-50/80 rounded-xl border border-slate-200/80 space-y-2">
+                    <div className="text-[11px] font-extrabold text-[#172a34] uppercase tracking-wider flex items-center gap-1.5">
+                      <span>🪪</span> Patient Identity Document *
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      <div>
+                        <label className="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">ID Type *</label>
+                        <select
+                          name="idProofType"
+                          value={formData.idProofType}
+                          onChange={handleInputChange}
+                          className={getInputClass('idProofType')}
+                        >
+                          <option value="aadhaar">Aadhaar Card</option>
+                          <option value="voter_id">Voter ID Card</option>
+                          <option value="pan_card">PAN Card</option>
+                          <option value="driving_license">Driving License</option>
+                          <option value="passport">Passport</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">
+                          {idTypeLabels[formData.idProofType] || 'ID Number'} *
+                        </label>
+                        <input
+                          type="text"
+                          name="idProofNumber"
+                          value={formData.idProofNumber}
+                          onChange={handleInputChange}
+                          placeholder={
+                            formData.idProofType === 'aadhaar'
+                              ? '12-digit number'
+                              : formData.idProofType === 'voter_id'
+                              ? 'e.g. ABC1234567'
+                              : 'Enter ID number'
+                          }
+                          className={getInputClass('idProofNumber')}
+                        />
+                        {fieldErrors.idProofNumber && (
+                          <p className="text-[10px] text-red-600 font-bold mt-0.5">⚠️ {fieldErrors.idProofNumber}</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* LOCATION & ATTENDANT (IF ANY) */}
+                  <div className="grid grid-cols-2 gap-2.5">
                     <div>
-                      <label className="block text-xs font-bold text-[#172a34] mb-1">City *</label>
+                      <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
+                        City *
+                      </label>
                       <input
                         type="text"
                         name="city"
                         value={formData.city}
                         onChange={handleInputChange}
-                        className={getInputClass('city', 'px-3')}
+                        className={getInputClass('city')}
                       />
                       {fieldErrors.city && (
-                        <p className="text-[11px] text-red-600 font-extrabold mt-1">⚠️ {fieldErrors.city}</p>
+                        <p className="text-[10px] text-red-600 font-bold mt-0.5">⚠️ {fieldErrors.city}</p>
                       )}
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-[#172a34] mb-1">State *</label>
-                      <input
-                        type="text"
-                        name="state"
-                        value={formData.state}
-                        onChange={handleInputChange}
-                        className={getInputClass('state', 'px-3')}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-[#172a34] mb-1">PIN Code *</label>
+                      <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
+                        PIN Code *
+                      </label>
                       <input
                         type="text"
                         name="pinCode"
@@ -726,152 +740,179 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                         onChange={handleInputChange}
                         placeholder="302017"
                         maxLength={6}
-                        className={getInputClass('pinCode', 'px-3')}
+                        className={getInputClass('pinCode')}
                       />
                       {fieldErrors.pinCode && (
-                        <p className="text-[11px] text-red-600 font-extrabold mt-1">⚠️ {fieldErrors.pinCode}</p>
+                        <p className="text-[10px] text-red-600 font-bold mt-0.5">⚠️ {fieldErrors.pinCode}</p>
                       )}
                     </div>
                   </div>
+
+                  {submittedBy === 'attendant' && (
+                    <div className="p-3 bg-amber-50/70 border border-amber-200 rounded-xl space-y-2">
+                      <div className="text-[11px] font-bold text-amber-900 flex items-center gap-1.5">
+                        <span>👤</span> Attendant Information (Required)
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <div>
+                          <label className="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">Name *</label>
+                          <input
+                            type="text"
+                            name="attendantFullName"
+                            value={formData.attendantFullName}
+                            onChange={handleInputChange}
+                            placeholder="Amit Sharma"
+                            className={getInputClass('attendantFullName')}
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">Relationship *</label>
+                          <input
+                            type="text"
+                            name="relationship"
+                            value={formData.relationship}
+                            onChange={handleInputChange}
+                            placeholder="Son / Spouse"
+                            className={getInputClass('relationship')}
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">Mobile *</label>
+                          <input
+                            type="tel"
+                            name="attendantMobile"
+                            value={formData.attendantMobile}
+                            onChange={handleInputChange}
+                            placeholder="10-digit mobile"
+                            maxLength={10}
+                            className={getInputClass('attendantMobile')}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 
-              {/* STEP 3: ATTENDANT DETAILS */}
-              {step === 3 && submittedBy === 'attendant' && (
-                <div className="space-y-4">
-                  <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 font-bold">
-                    ⚠️ यह section attendant द्वारा form भरने पर mandatory होगा।
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold text-[#172a34] mb-1">Attendant Full Name *</label>
-                      <input
-                        type="text"
-                        name="attendantFullName"
-                        value={formData.attendantFullName}
-                        onChange={handleInputChange}
-                        placeholder="Amit Sharma"
-                        className={getInputClass('attendantFullName')}
-                      />
-                      {fieldErrors.attendantFullName && (
-                        <p className="text-[11px] text-red-600 font-extrabold mt-1">⚠️ {fieldErrors.attendantFullName}</p>
-                      )}
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-[#172a34] mb-1">Relationship with Patient *</label>
-                      <input
-                        type="text"
-                        name="relationship"
-                        value={formData.relationship}
-                        onChange={handleInputChange}
-                        placeholder="Son / Spouse / Guardian"
-                        className={getInputClass('relationship')}
-                      />
-                      {fieldErrors.relationship && (
-                        <p className="text-[11px] text-red-600 font-extrabold mt-1">⚠️ {fieldErrors.relationship}</p>
-                      )}
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-[#172a34] mb-1">Attendant Mobile *</label>
-                      <input
-                        type="tel"
-                        name="attendantMobile"
-                        value={formData.attendantMobile}
-                        onChange={handleInputChange}
-                        placeholder="10-digit mobile"
-                        maxLength={10}
-                        className={getInputClass('attendantMobile')}
-                      />
-                      {fieldErrors.attendantMobile && (
-                        <p className="text-[11px] text-red-600 font-extrabold mt-1">⚠️ {fieldErrors.attendantMobile}</p>
-                      )}
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-[#172a34] mb-1">Email Address</label>
-                      <input
-                        type="email"
-                        name="attendantEmail"
-                        value={formData.attendantEmail}
-                        onChange={handleInputChange}
-                        placeholder="attendant@gmail.com"
-                        className={getInputClass('attendantEmail')}
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* STEP 4: MEDICAL INFO */}
-              {step === 4 && (
-                <div className="space-y-4">
+              {/* STEP 2: MEDICAL NEEDS & ICU TYPE */}
+              {step === 2 && (
+                <div className="space-y-3">
                   <div>
-                    <label className="block text-xs font-black text-[#172a34] mb-2 uppercase">Required ICU Category *</label>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                      {icuTypeOptions.map((opt) => (
+                    <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                      Admission Urgency
+                    </label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { id: 'emergency', label: 'Emergency', desc: 'Immediate bed' },
+                        { id: 'planned', label: 'Planned Stay', desc: 'Scheduled' },
+                        { id: 'transfer', label: 'Transfer', desc: 'Outside clinic' },
+                      ].map((item) => (
                         <button
-                          key={opt.key}
+                          key={item.id}
                           type="button"
-                          onClick={() => setFormData((p) => ({ ...p, requiredIcuType: opt.key }))}
-                          className={`p-3 rounded-2xl border-2 text-left transition ${
-                            formData.requiredIcuType === opt.key
-                              ? 'border-[#bd171c] bg-red-50 text-[#172a34] font-bold shadow-md'
+                          onClick={() => setFormData((p) => ({ ...p, admissionType: item.id as any }))}
+                          className={`p-2.5 rounded-xl text-left border transition ${
+                            formData.admissionType === item.id
+                              ? 'border-[#172a34] bg-[#172a34] text-white shadow-sm font-semibold'
                               : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-white'
                           }`}
                         >
-                          <div className="text-lg">{opt.icon}</div>
-                          <div className="font-extrabold text-[11px] text-[#172a34]">{opt.title}</div>
+                          <div className="font-bold text-xs">{item.label}</div>
+                          <div className={`text-[10px] ${formData.admissionType === item.id ? 'text-slate-200' : 'text-slate-500'}`}>{item.desc}</div>
                         </button>
                       ))}
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                      Required ICU Category *
+                    </label>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      {icuTypeOptions.map((opt) => (
+                        <button
+                          key={opt.key}
+                          type="button"
+                          onClick={() => setFormData((p) => ({ ...p, requiredIcuType: opt.key }))}
+                          className={`p-2.5 rounded-xl border text-left transition ${
+                            formData.requiredIcuType === opt.key
+                              ? 'border-[#bd171c] bg-red-50 text-[#172a34] font-semibold shadow-sm'
+                              : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-white'
+                          }`}
+                        >
+                          <div className="text-base mb-0.5">{opt.icon}</div>
+                          <div className="font-bold text-[11px] text-[#172a34]">{opt.title}</div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
                     <div>
-                      <label className="block text-xs font-bold text-[#172a34] mb-1">Current Condition *</label>
-                      <textarea
+                      <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
+                        Current Medical Condition *
+                      </label>
+                      <select
                         name="currentMedicalCondition"
                         value={formData.currentMedicalCondition}
                         onChange={handleInputChange}
-                        rows={2}
-                        placeholder="e.g. Breathlessness, chest pain, low SpO2"
-                        className={getInputClass('currentMedicalCondition', 'p-3')}
-                      />
+                        className={getInputClass('currentMedicalCondition')}
+                      >
+                        {conditionOptions.map((opt) => (
+                          <option key={opt} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
+                      </select>
                       {fieldErrors.currentMedicalCondition && (
-                        <p className="text-[11px] text-red-600 font-extrabold mt-1">⚠️ {fieldErrors.currentMedicalCondition}</p>
+                        <p className="text-[10px] text-red-600 font-bold mt-0.5">⚠️ {fieldErrors.currentMedicalCondition}</p>
                       )}
                     </div>
+
                     <div>
-                      <label className="block text-xs font-bold text-[#172a34] mb-1">Medical Diagnosis *</label>
-                      <textarea
+                      <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
+                        Medical Diagnosis *
+                      </label>
+                      <select
                         name="diagnosis"
                         value={formData.diagnosis}
                         onChange={handleInputChange}
-                        rows={2}
-                        placeholder="e.g. Acute Respiratory Distress / Cardiac Trauma"
-                        className={getInputClass('diagnosis', 'p-3')}
-                      />
+                        className={getInputClass('diagnosis')}
+                      >
+                        {diagnosisOptions.map((opt) => (
+                          <option key={opt} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
+                      </select>
                       {fieldErrors.diagnosis && (
-                        <p className="text-[11px] text-red-600 font-extrabold mt-1">⚠️ {fieldErrors.diagnosis}</p>
+                        <p className="text-[10px] text-red-600 font-bold mt-0.5">⚠️ {fieldErrors.diagnosis}</p>
                       )}
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-[#172a34] mb-1">Criticality Notes *</label>
-                    <input
-                      type="text"
+                    <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
+                      Criticality Level *
+                    </label>
+                    <select
                       name="symptomsCriticality"
                       value={formData.symptomsCriticality}
                       onChange={handleInputChange}
-                      placeholder="e.g. SpO2 84%, BP 90/60"
                       className={getInputClass('symptomsCriticality')}
-                    />
+                    >
+                      {criticalityOptions.map((opt) => (
+                        <option key={opt} value={opt}>
+                          {opt}
+                        </option>
+                      ))}
+                    </select>
                     {fieldErrors.symptomsCriticality && (
-                      <p className="text-[11px] text-red-600 font-extrabold mt-1">⚠️ {fieldErrors.symptomsCriticality}</p>
+                      <p className="text-[10px] text-red-600 font-bold mt-0.5">⚠️ {fieldErrors.symptomsCriticality}</p>
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-3 bg-slate-50 rounded-xl border border-slate-200/80">
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input
                         type="checkbox"
@@ -880,7 +921,7 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                         onChange={handleInputChange}
                         className="accent-[#bd171c]"
                       />
-                      <span className="text-xs font-bold text-[#172a34]">Oxygen Needed</span>
+                      <span className="text-xs font-semibold text-slate-800">Oxygen</span>
                     </label>
 
                     <label className="flex items-center gap-2 cursor-pointer">
@@ -891,7 +932,7 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                         onChange={handleInputChange}
                         className="accent-[#bd171c]"
                       />
-                      <span className="text-xs font-bold text-[#172a34]">Ventilator Bed</span>
+                      <span className="text-xs font-semibold text-slate-800">Ventilator</span>
                     </label>
 
                     <label className="flex items-center gap-2 cursor-pointer">
@@ -902,7 +943,7 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                         onChange={handleInputChange}
                         className="accent-[#bd171c]"
                       />
-                      <span className="text-xs font-bold text-[#172a34]">Ambulance</span>
+                      <span className="text-xs font-semibold text-slate-800">Ambulance</span>
                     </label>
 
                     <label className="flex items-center gap-2 cursor-pointer">
@@ -913,146 +954,93 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                         onChange={handleInputChange}
                         className="accent-[#bd171c]"
                       />
-                      <span className="text-xs font-bold text-[#172a34]">Isolation Care</span>
+                      <span className="text-xs font-semibold text-slate-800">Isolation</span>
                     </label>
                   </div>
                 </div>
               )}
 
-              {/* STEP 5: DOCUMENTS */}
-              {step === 5 && (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {[
-                      { id: 'doctor_referral', title: 'Doctor Referral Letter' },
-                      { id: 'medical_report', title: 'Medical Report (CT / Blood Test)' },
-                      { id: 'prescription', title: 'Prescription Summary' },
-                      { id: 'patient_id', title: 'Patient ID Proof' },
-                    ].map((docType) => {
-                      const existing = documents.find((d) => d.type === docType.id);
-                      return (
-                        <div key={docType.id} className="p-4 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-300 flex justify-between items-center">
-                          <div>
-                            <div className="font-extrabold text-xs text-[#172a34]">{docType.title}</div>
-                            {existing ? (
-                              <div className="text-[11px] text-emerald-700 font-bold truncate">✓ {existing.fileName}</div>
-                            ) : (
-                              <div className="text-[10px] text-slate-400">No file chosen</div>
-                            )}
-                          </div>
-                          <label className="text-xs font-black text-[#bd171c] cursor-pointer hover:underline">
-                            <input
-                              type="file"
-                              accept=".pdf,.jpg,.jpeg,.png"
-                              onChange={(e) => handleFileUpload(docType.id, e)}
-                              className="hidden"
-                            />
-                            {existing ? 'Change' : '+ Upload'}
-                          </label>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* STEP 6: DECLARATIONS */}
-              {step === 6 && (
+              {/* STEP 3: UPLOADS & FINAL CONFIRMATION */}
+              {step === 3 && (
                 <div className="space-y-3">
-                  {fieldErrors.consents && (
-                    <div className="p-3 bg-red-100 border-2 border-red-400 text-red-900 rounded-2xl text-xs font-black">
-                      ⚠️ {fieldErrors.consents}
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                      Optional Medical Attachments
+                    </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      {[
+                        { id: 'doctor_referral', title: 'Doctor Referral Letter' },
+                        { id: 'medical_report', title: 'Medical Report / Blood Test' },
+                      ].map((docType) => {
+                        const existing = documents.find((d) => d.type === docType.id);
+                        return (
+                          <div key={docType.id} className="p-3 bg-slate-50 rounded-xl border border-dashed border-slate-300 flex justify-between items-center">
+                            <div>
+                              <div className="font-bold text-xs text-[#172a34]">{docType.title}</div>
+                              {existing ? (
+                                <div className="text-[10px] text-emerald-700 font-bold truncate">✓ {existing.fileName}</div>
+                              ) : (
+                                <div className="text-[10px] text-slate-400">Optional attachment</div>
+                              )}
+                            </div>
+                            <label className="text-xs font-bold text-[#bd171c] cursor-pointer hover:underline">
+                              <input
+                                type="file"
+                                accept=".pdf,.jpg,.jpeg,.png"
+                                onChange={(e) => handleFileUpload(docType.id, e)}
+                                className="hidden"
+                              />
+                              {existing ? 'Change' : '+ Upload'}
+                            </label>
+                          </div>
+                        );
+                      })}
                     </div>
-                  )}
-                  <div className={`space-y-3 p-5 rounded-2xl border text-xs font-bold text-[#172a34] transition ${
-                    fieldErrors.consents ? 'bg-red-50/60 border-2 border-red-500' : 'bg-slate-50 border-slate-200'
+                  </div>
+
+                  {/* SINGLE COMPACT DECLARATION CHECKBOX */}
+                  <div className={`p-3.5 rounded-xl border text-xs transition ${
+                    fieldErrors.consentAccepted ? 'bg-red-50 border-red-500 text-red-950' : 'bg-amber-50/60 border border-amber-200/80 text-slate-800'
                   }`}>
                     <label className="flex items-start gap-2.5 cursor-pointer">
                       <input
                         type="checkbox"
-                        name="consentAccuracy"
-                        checked={formData.consentAccuracy}
+                        name="consentAccepted"
+                        checked={formData.consentAccepted}
                         onChange={handleInputChange}
-                        className="mt-0.5 accent-[#bd171c]"
+                        className="mt-0.5 accent-[#bd171c] w-3.5 h-3.5 shrink-0"
                       />
-                      <span>दी गई जानकारी सही होने की सहमति (Information accuracy consent)</span>
+                      <div>
+                        <div className="font-bold text-slate-900 mb-0.5">Admission Declaration & Consent *</div>
+                        <p className="text-[11px] text-slate-600 leading-relaxed font-medium">
+                          I confirm that all patient details provided above are accurate and I accept NIMS ICU admission policies & emergency medical procedures.
+                        </p>
+                      </div>
                     </label>
-
-                    <label className="flex items-start gap-2.5 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        name="consentVerification"
-                        checked={formData.consentVerification}
-                        onChange={handleInputChange}
-                        className="mt-0.5 accent-[#bd171c]"
-                      />
-                      <span>Hospital verification और doctor audit की सहमति</span>
-                    </label>
-
-                    <label className="flex items-start gap-2.5 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        name="consentBedReservationPolicy"
-                        checked={formData.consentBedReservationPolicy}
-                        onChange={handleInputChange}
-                        className="mt-0.5 accent-[#bd171c]"
-                      />
-                      <span>ICU bed केवल admin/doctor confirmation के बाद reserved होने की स्वीकृति</span>
-                    </label>
-
-                    <label className="flex items-start gap-2.5 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        name="consentPrivacy"
-                        checked={formData.consentPrivacy}
-                        onChange={handleInputChange}
-                        className="mt-0.5 accent-[#bd171c]"
-                      />
-                      <span>Privacy and medical data processing consent</span>
-                    </label>
-
-                    <label className="flex items-start gap-2.5 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        name="consentEmergencyDisclaimer"
-                        checked={formData.consentEmergencyDisclaimer}
-                        onChange={handleInputChange}
-                        className="mt-0.5 accent-[#bd171c]"
-                      />
-                      <span>Emergency disclaimer: Critical cases call NIMS Emergency (0141-2700000)</span>
-                    </label>
-
-                    <label className="flex items-start gap-2.5 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        name="consentTerms"
-                        checked={formData.consentTerms}
-                        onChange={handleInputChange}
-                        className="mt-0.5 accent-[#bd171c]"
-                      />
-                      <span>Terms and conditions acceptance</span>
-                    </label>
+                    {fieldErrors.consentAccepted && (
+                      <p className="text-[10px] text-red-600 font-bold mt-1.5">⚠️ {fieldErrors.consentAccepted}</p>
+                    )}
                   </div>
                 </div>
               )}
 
               {/* FOOTER BUTTONS */}
-              <div className="flex justify-between items-center pt-5 border-t border-slate-200 mt-6">
+              <div className="flex justify-between items-center pt-3 border-t border-slate-200 mt-4">
                 {step > 1 ? (
                   <button
                     type="button"
                     onClick={handlePrevStep}
-                    className="bg-slate-100 hover:bg-slate-200 text-[#172a34] font-extrabold text-xs px-5 py-2.5 rounded-xl transition"
+                    className="bg-slate-100 hover:bg-slate-200 text-[#172a34] font-bold text-xs px-4 py-2.5 rounded-xl transition border border-slate-300/80"
                   >
                     ← Back
                   </button>
                 ) : <div></div>}
 
-                {step < 6 ? (
+                {step < 3 ? (
                   <button
                     type="button"
                     onClick={handleNextStep}
-                    className="bg-[#172a34] hover:bg-[#0e191f] text-white font-black text-xs px-7 py-3 rounded-xl shadow-lg transition"
+                    className="bg-[#172a34] hover:bg-[#0e191f] text-white font-bold text-xs px-6 py-2.5 rounded-xl shadow transition"
                   >
                     Next Step →
                   </button>
@@ -1061,9 +1049,9 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                     type="button"
                     onClick={triggerSendOtp}
                     disabled={otpLoading}
-                    className="bg-[#bd171c] hover:bg-[#791017] text-white font-black text-xs px-7 py-3 rounded-xl shadow-xl transition"
+                    className="bg-[#bd171c] hover:bg-[#791017] text-white font-bold text-xs px-6 py-2.5 rounded-xl shadow transition"
                   >
-                    {otpLoading ? 'Sending OTP...' : 'Verify OTP & Submit ➔'}
+                    {otpLoading ? 'Sending OTP...' : 'Verify OTP & Submit Request ➔'}
                   </button>
                 )}
               </div>

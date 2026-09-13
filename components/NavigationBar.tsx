@@ -42,7 +42,7 @@ export default function NavigationBar() {
               href="/#about"
               className="text-xs sm:text-sm font-bold text-slate-700 hover:text-[#bd171c] transition-colors py-1"
             >
-              About
+              About Us
             </a>
             <a
               href="/#departments"
