@@ -7,8 +7,8 @@ import Footer from '@/components/Footer';
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('admin123');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -82,12 +82,7 @@ export default function AdminLoginPage() {
 
             {error && <div className="text-xs text-red-600 font-bold text-center">{error}</div>}
 
-            <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs text-slate-600 space-y-1.5 font-medium">
-              <div className="font-bold text-[#172a34]">Demo Quick Logins:</div>
-              <div>• Super Admin: <span className="text-[#bd171c] font-mono font-bold">admin</span> / <span className="text-[#bd171c] font-mono font-bold">admin123</span></div>
-              <div>• Doctor Reviewer: <span className="text-[#bd171c] font-mono font-bold">doctor</span> / <span className="text-[#bd171c] font-mono font-bold">doctor123</span></div>
-              <div>• Bed Manager: <span className="text-[#bd171c] font-mono font-bold">bedmanager</span> / <span className="text-[#bd171c] font-mono font-bold">bed123</span></div>
-            </div>
+
 
             <button
               type="submit"

@@ -142,6 +142,34 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
     }
   };
 
+  const allConsentsChecked =
+    formData.consentAccuracy &&
+    formData.consentVerification &&
+    formData.consentBedReservationPolicy &&
+    formData.consentPrivacy &&
+    formData.consentEmergencyDisclaimer &&
+    formData.consentTerms;
+
+  const handleSelectAllConsents = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setFormData((prev) => ({
+      ...prev,
+      consentAccuracy: checked,
+      consentVerification: checked,
+      consentBedReservationPolicy: checked,
+      consentPrivacy: checked,
+      consentEmergencyDisclaimer: checked,
+      consentTerms: checked,
+    }));
+    if (fieldErrors.consents) {
+      setFieldErrors((prev) => {
+        const copy = { ...prev };
+        delete copy.consents;
+        return copy;
+      });
+    }
+  };
+
   const getInputClass = (fieldName: string, extraClasses: string = '') => {
     const hasError = !!fieldErrors[fieldName];
     if (hasError) {
@@ -742,7 +770,7 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                 type="text"
                 value={otpCode}
                 onChange={(e) => setOtpCode(e.target.value)}
-                placeholder="123456"
+                placeholder="------"
                 maxLength={6}
                 className="w-full bg-slate-50 border-2 border-slate-300 rounded-2xl py-3 px-4 text-center font-mono text-3xl font-black tracking-widest text-[#172a34] mb-4 focus:outline-none focus:border-[#bd171c]"
               />
@@ -1523,6 +1551,19 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                   <div className={`space-y-3 p-5 rounded-2xl border text-xs font-bold text-[#172a34] transition ${
                     fieldErrors.consents ? 'bg-red-50/60 border-2 border-red-500' : 'bg-slate-50 border-slate-200'
                   }`}>
+                    {/* Master Accept All Checkbox */}
+                    <div className="p-3 bg-[#bd171c]/10 border border-[#bd171c]/30 rounded-xl mb-3">
+                      <label className="flex items-center gap-2.5 cursor-pointer text-xs font-black text-[#bd171c]">
+                        <input
+                          type="checkbox"
+                          checked={allConsentsChecked}
+                          onChange={handleSelectAllConsents}
+                          className="w-4 h-4 accent-[#bd171c]"
+                        />
+                        <span>✔ Select All / Accept All Terms & Conditions (Sabhi Shartein Ek Sath Sweekar Karein) *</span>
+                      </label>
+                    </div>
+
                     <label className="flex items-start gap-2.5 cursor-pointer">
                       <input
                         type="checkbox"

@@ -15,7 +15,7 @@ export async function POST(request: Request) {
 
     const storedOtp = icuStore.otps[cleanPhone];
 
-    if (storedOtp && (enteredOtp === storedOtp || enteredOtp === '123456')) {
+    if (storedOtp && enteredOtp === storedOtp) {
       return NextResponse.json({
         success: true,
         message: 'Mobile OTP verified successfully',
