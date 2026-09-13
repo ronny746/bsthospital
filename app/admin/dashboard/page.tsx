@@ -451,18 +451,55 @@ export default function AdminDashboardPage() {
               </div>
             </div>
 
-            {/* Medical Details */}
+            {/* Medical & Category Details */}
             <div className="space-y-3">
-              <h4 className="text-xs font-black text-[#172a34] uppercase tracking-wider">Patient Medical Details</h4>
+              <h4 className="text-xs font-black text-[#172a34] uppercase tracking-wider">Patient & Admission Details</h4>
               <div className="grid grid-cols-2 gap-3 text-xs bg-slate-50 p-5 rounded-3xl border border-slate-200">
+                <div><span className="text-slate-500">ID Proof:</span> <span className="text-[#172a34] font-extrabold uppercase">{selectedReq.patient.idProofType || 'Aadhaar'} ({selectedReq.patient.idProofNumber || selectedReq.patient.aadhaarOrId || 'N/A'})</span></div>
+                <div><span className="text-slate-500">Department:</span> <span className="text-[#172a34] font-extrabold uppercase">{selectedReq.medical.department === 'other' ? selectedReq.medical.departmentOther || 'Other' : selectedReq.medical.department || 'Medicine'}</span></div>
+                <div><span className="text-slate-500">Billing Category:</span> <span className="text-[#bd171c] font-black uppercase">{selectedReq.payment?.paymentCategory?.replace('_', ' ') || 'Cash'}</span></div>
+                <div>
+                  <span className="text-slate-500">Payment Status:</span>{' '}
+                  <span className="text-emerald-700 font-black uppercase">
+                    {selectedReq.payment?.paymentStatus === 'paid' ? `₹5,000 Paid (${selectedReq.payment.paymentId || 'Verified'})` : selectedReq.payment?.paymentStatus === 'verified_scheme' ? 'Scheme Covered' : 'Pending'}
+                  </span>
+                </div>
+                {selectedReq.payment?.insuranceCompany && <div><span className="text-slate-500">Insurance Co:</span> <span className="text-[#172a34] font-bold">{selectedReq.payment.insuranceCompany}</span></div>}
+                {selectedReq.payment?.policyNumber && <div><span className="text-slate-500">Policy No:</span> <span className="text-[#172a34] font-mono font-bold">{selectedReq.payment.policyNumber}</span></div>}
+                {selectedReq.payment?.schemeCardNumber && <div><span className="text-slate-500">Scheme Card ID:</span> <span className="text-[#172a34] font-mono font-bold">{selectedReq.payment.schemeCardNumber}</span></div>}
                 <div><span className="text-slate-500">Condition:</span> <span className="text-[#172a34] font-extrabold">{selectedReq.medical.currentMedicalCondition}</span></div>
                 <div><span className="text-slate-500">Diagnosis:</span> <span className="text-[#172a34] font-extrabold">{selectedReq.medical.diagnosis}</span></div>
                 <div><span className="text-slate-500">Symptoms:</span> <span className="text-[#172a34] font-extrabold">{selectedReq.medical.symptomsCriticality}</span></div>
                 <div><span className="text-slate-500">Ventilator Needed:</span> <span className="text-[#bd171c] font-black">{selectedReq.medical.ventilatorRequired ? 'YES' : 'NO'}</span></div>
                 <div><span className="text-slate-500">Oxygen Needed:</span> <span className="text-[#bd171c] font-black">{selectedReq.medical.oxygenRequired ? 'YES' : 'NO'}</span></div>
-                <div><span className="text-slate-500">Doctor:</span> <span className="text-[#172a34] font-bold">{selectedReq.medical.treatingDoctorName || 'N/A'}</span></div>
+                <div><span className="text-slate-500">Treating Doctor:</span> <span className="text-[#172a34] font-bold">{selectedReq.medical.treatingDoctorName || 'N/A'}</span></div>
               </div>
             </div>
+
+            {/* Document Attachments */}
+            {selectedReq.documents && selectedReq.documents.length > 0 && (
+              <div className="space-y-3">
+                <h4 className="text-xs font-black text-[#172a34] uppercase tracking-wider">Uploaded Documents ({selectedReq.documents.length})</h4>
+                <div className="grid grid-cols-2 gap-2">
+                  {selectedReq.documents.map((doc) => (
+                    <a
+                      key={doc.id}
+                      href={doc.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-2xl flex items-center justify-between text-xs text-[#172a34] font-bold transition"
+                    >
+                      <div className="truncate">
+                        <div className="uppercase font-black text-[10px] text-slate-500">{doc.type.replace(/_/g, ' ')}</div>
+                        <div className="truncate text-xs font-bold text-[#bd171c]">{doc.fileName}</div>
+                      </div>
+                      <span className="text-xs">↗</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+
 
             {/* INTERNAL NOTES */}
             <div className="space-y-3">

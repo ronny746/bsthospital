@@ -46,9 +46,14 @@ export default defineConfig(async () => {
 
   return {
     css: { postcss: { plugins: [tailwindcss()] } },
+    ssr: {
+      external: ['mongoose', 'mongodb'],
+    },
     server: isCodexSeatbeltSandbox
       ? { watch: { useFsEvents: false, usePolling: true } }
       : undefined,
+
+
     plugins: [
       vinext(),
       sites(),

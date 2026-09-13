@@ -105,8 +105,9 @@ export async function POST(request: Request) {
 
     const finalRequestId = memoryReq?.requestId || newRequestData.requestId;
 
-    // 2. Try saving to MongoDB Cloud Database (Dynamically imported to avoid Worker bundler CJS errors)
+    // 2. Save to MongoDB Cloud Database (MongoDB Atlas)
     let savedInDb = false;
+    let dbErrorDetails: string | null = null;
     try {
       const { connectToDatabase } = await import('@/lib/db/connect');
       const conn = await connectToDatabase();
@@ -116,12 +117,17 @@ export async function POST(request: Request) {
           ...newRequestData,
           requestId: finalRequestId,
         });
-        console.log('Successfully saved Tatkaal ICU Request to MongoDB Atlas:', mongoDoc._id);
+        console.log('Successfully saved Tatkaal ICU Request to MongoDB Atlas:', mongoDoc._id, finalRequestId);
         savedInDb = true;
+      } else {
+        dbErrorDetails = 'connectToDatabase() returned null connection';
       }
     } catch (dbErr: any) {
-      console.warn('MongoDB save note (falling back to memory store):', dbErr?.message || dbErr);
+      dbErrorDetails = String(dbErr?.stack || dbErr?.message || dbErr);
+      console.error('MongoDB save error in /api/icu-requests:', dbErr);
     }
+
+
 
     return NextResponse.json({
       success: true,
@@ -130,6 +136,7 @@ export async function POST(request: Request) {
       savedInDb,
       request: memoryReq || newRequestData,
     });
+
   } catch (error: any) {
     console.error('API /api/icu-requests error:', error);
     return NextResponse.json({ error: error.message || 'Failed to submit request' }, { status: 500 });

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { addAdminNote } from '@/lib/icu-store';
+import { connectToDatabase } from '@/lib/db/connect';
 
 export async function POST(
   request: Request,
@@ -19,8 +20,23 @@ export async function POST(
       return NextResponse.json({ error: 'Request not found' }, { status: 404 });
     }
 
+    // Persist to MongoDB Cloud Atlas
+    try {
+      const conn = await connectToDatabase();
+      if (conn) {
+        const { IcuRequestModel } = await import('@/lib/db/models/IcuRequest');
+        await IcuRequestModel.findOneAndUpdate(
+          { $or: [{ id }, { requestId: id }] },
+          { $set: { adminNotes: updated.adminNotes, updatedAt: updated.updatedAt } }
+        );
+      }
+    } catch (dbErr) {
+      console.warn('MongoDB note save warning:', dbErr);
+    }
+
     return NextResponse.json({ success: true, message: 'Admin note added successfully', request: updated });
   } catch (error: any) {
     return NextResponse.json({ error: 'Failed to add admin note' }, { status: 500 });
   }
 }
+

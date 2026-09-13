@@ -1,3 +1,14 @@
+import { createRequire } from 'node:module';
+
+if (typeof (globalThis as any).require === 'undefined') {
+  try {
+    const reqFunc = createRequire(import.meta.url);
+    (globalThis as any).require = reqFunc;
+  } catch (e) {
+    // fallback
+  }
+}
+
 const MONGO_URI =
   process.env.MONGO_URI ||
   'mongodb+srv://geniusattechie:tF2Oe1CBjJVdL9xZ@cluster0.oxahl6y.mongodb.net/bsthospital?retryWrites=true&w=majority&appName=Cluster0';
@@ -18,20 +29,24 @@ if (!globalThis.mongooseCache) {
 }
 
 export async function connectToDatabase() {
-  if (cached.conn) {
-    return cached.conn;
+
+  const mongooseModule = await import('mongoose');
+  const mongoose = mongooseModule.default || mongooseModule;
+
+  if (mongoose.connection && mongoose.connection.readyState === 1) {
+    return mongoose.connection;
   }
 
   if (!cached.promise) {
     cached.promise = (async () => {
       try {
-        const mongooseModule = await import('mongoose');
-        const mongoose = mongooseModule.default || mongooseModule;
-        const conn = await mongoose.connect(MONGO_URI, { bufferCommands: false });
-        console.log('Connected to MongoDB cluster0 (bsthospital)');
-        return conn;
+        console.log('Attempting MongoDB connection to Atlas...');
+        await mongoose.connect(MONGO_URI, { bufferCommands: false });
+        console.log('Successfully connected to MongoDB cluster0 (bsthospital)');
+        return mongoose.connection;
       } catch (err: any) {
-        console.warn('MongoDB connection note (Vite/Worker environment):', err?.message || err);
+        console.error('MongoDB connection error in connectToDatabase:', err);
+        cached.promise = null;
         return null;
       }
     })();
@@ -39,10 +54,19 @@ export async function connectToDatabase() {
 
   try {
     cached.conn = await cached.promise;
+    if (!cached.conn || mongoose.connection.readyState !== 1) {
+      cached.promise = null;
+      cached.conn = null;
+    }
   } catch (e) {
+    console.error('MongoDB await promise error:', e);
     cached.promise = null;
+    cached.conn = null;
     return null;
   }
 
-  return cached.conn;
+  return cached.conn || (mongoose.connection.readyState === 1 ? mongoose.connection : null);
 }
+
+
+

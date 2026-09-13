@@ -143,7 +143,7 @@ const IcuRequestSchema = new Schema<IIcuRequestDocument>(
     medical: {
       admissionType: { type: String, required: true },
       requiredIcuType: { type: String, required: true },
-      department: { type: String, enum: ['ortho', 'gyne', 'medicine', 'other'] },
+      department: { type: String, enum: ['ortho', 'gyne', 'medicine', 'cardio', 'neuro', 'other'] },
       departmentOther: String,
       currentMedicalCondition: { type: String, required: true },
       diagnosis: { type: String, required: true },
@@ -172,12 +172,21 @@ const IcuRequestSchema = new Schema<IIcuRequestDocument>(
     status: { type: String, required: true, default: 'submitted', index: true },
     priority: { type: String, required: true, default: 'high' },
     payment: {
+      paymentCategory: {
+        type: String,
+        enum: ['cash', 'tpa_insurance', 'janadhar', 'ayushmann', 'rghs', 'cghs', 'esic'],
+        default: 'cash',
+      },
       orderId: String,
       paymentId: String,
       signature: String,
       amountPaid: { type: Number, default: 5000 },
       paymentStatus: { type: String, default: 'paid' },
       paidAt: String,
+      insuranceCompany: String,
+      policyNumber: String,
+      schemeCardNumber: String,
+      schemeCardPhotoUrl: String,
     },
     assignedTo: {
       id: String,
@@ -223,5 +232,18 @@ const IcuRequestSchema = new Schema<IIcuRequestDocument>(
   { timestamps: true }
 );
 
-export const IcuRequestModel =
-  mongoose.models.IcuRequest || mongoose.model<IIcuRequestDocument>('IcuRequest', IcuRequestSchema);
+export function getIcuRequestModel() {
+  if (mongoose.models && mongoose.models.IcuRequest) {
+    return mongoose.models.IcuRequest;
+  }
+  return mongoose.model<IIcuRequestDocument>('IcuRequest', IcuRequestSchema);
+}
+
+export const IcuRequestModel = new Proxy({} as any, {
+  get(_target, prop) {
+    const model = getIcuRequestModel();
+    const value = (model as any)[prop];
+    return typeof value === 'function' ? value.bind(model) : value;
+  },
+});
+

@@ -32,15 +32,29 @@ export type UserRole =
 
 export type IdProofType = 'aadhaar' | 'bhamashah';
 
-export type DepartmentType = 'ortho' | 'gyne' | 'medicine' | 'other';
+export type DepartmentType = 'ortho' | 'gyne' | 'medicine' | 'cardio' | 'neuro' | 'other';
+
+export type PaymentCategory =
+  | 'cash'
+  | 'tpa_insurance'
+  | 'janadhar'
+  | 'ayushmann'
+  | 'rghs'
+  | 'cghs'
+  | 'esic';
 
 export interface PaymentInfo {
-  orderId: string;
-  paymentId: string;
+  paymentCategory: PaymentCategory;
+  orderId?: string;
+  paymentId?: string;
   signature?: string;
-  amountPaid: number; // in INR (e.g. 5000)
-  paymentStatus: 'paid' | 'pending' | 'failed';
+  amountPaid: number; // in INR (e.g. 5000 for cash / 0 for schemes)
+  paymentStatus: 'paid' | 'pending' | 'verified_scheme' | 'failed';
   paidAt?: string;
+  insuranceCompany?: string;
+  policyNumber?: string;
+  schemeCardNumber?: string;
+  schemeCardPhotoUrl?: string;
 }
 
 export interface PatientDetails {
