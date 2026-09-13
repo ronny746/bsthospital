@@ -141,9 +141,9 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
   const getInputClass = (fieldName: string) => {
     const hasError = !!fieldErrors[fieldName];
     if (hasError) {
-      return 'w-full bg-[#fff5f5] border-2 border-[#bd171c] rounded-lg px-4 py-2.5 text-sm text-[#791017] font-medium focus:outline-none focus:ring-2 focus:ring-[#bd171c]/20 transition shadow-sm';
+      return 'w-full bg-[#fff5f5] border-2 border-[#bd171c] rounded-lg px-3 py-2 text-xs sm:text-sm text-[#791017] font-semibold focus:outline-none focus:ring-2 focus:ring-[#bd171c]/25 transition shadow-xs';
     }
-    return 'w-full bg-white border border-slate-300/90 rounded-lg px-4 py-2.5 text-sm text-[#172a34] font-medium placeholder-slate-400 focus:outline-none focus:border-[#172a34] focus:ring-2 focus:ring-[#172a34]/10 transition shadow-sm';
+    return 'w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs sm:text-sm text-[#172a34] font-medium placeholder:text-slate-400 hover:border-slate-400 focus:outline-none focus:border-[#bd171c] focus:ring-2 focus:ring-[#bd171c]/20 transition shadow-xs';
   };
 
   const validateForm = () => {
@@ -316,18 +316,18 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
 
   return (
     <div className="fixed inset-0 z-[100] bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-fade-in">
-      {/* FORM CARD MATCHING THE APPLICATION FORM REFERENCE SCREENSHOT WITH BST THEME */}
-      <div className="bg-[#f8fafc] rounded-xl shadow-2xl max-w-lg w-full my-auto overflow-hidden relative border border-slate-200/80 max-h-[94vh] flex flex-col">
-        {/* CARD HEADER WITH BRAND THEME (#172a34 and #bd171c border) */}
-        <div className="bg-[#172a34] px-6 py-4 flex items-center justify-between border-b-2 border-[#bd171c] shrink-0 relative">
+      {/* FORM CARD MATCHING BST HOSPITAL MAIN THEME WITH COMPACT HEIGHT */}
+      <div className="bg-white rounded-xl shadow-2xl max-w-md w-full my-auto overflow-hidden relative border border-slate-300 max-h-[82vh] flex flex-col">
+        {/* CARD HEADER WITH BRAND THEME (#172a34 background and #bd171c bottom accent) */}
+        <div className="bg-[#172a34] px-4 py-3 flex items-center justify-between border-b-2 border-[#bd171c] shrink-0 relative">
           <div className="w-full text-center">
-            <h2 className="text-xl font-bold text-white tracking-tight flex items-center justify-center gap-2">
+            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center justify-center gap-2">
               <span className="text-[#e5b64a]">🚨</span> 24/7 ICU Bed Booking
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-sm font-bold transition absolute right-4 top-4"
+            className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xs font-bold transition absolute right-3 top-3 border border-white/20"
             aria-label="Close form"
           >
             ✕
@@ -335,21 +335,21 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
         </div>
 
         {/* MODAL SCROLLABLE FORM BODY */}
-        <div className="p-5 sm:p-6 overflow-y-auto flex-1 bg-white">
+        <div className="p-3.5 sm:p-4 overflow-y-auto flex-1 bg-white">
           {createdRequestId ? (
             /* SUCCESS CONFIRMATION */
-            <div className="text-center py-4">
-              <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 shadow-inner">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="text-center py-3">
+              <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-2 shadow-inner">
+                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-[#172a34] mb-1">Request Generated!</h3>
-              <p className="text-slate-600 text-xs mb-4">Your ICU bed request has been logged successfully.</p>
+              <h3 className="text-lg font-bold text-[#172a34] mb-1">Request Generated!</h3>
+              <p className="text-slate-600 text-xs mb-3">Your ICU bed request has been logged successfully.</p>
 
-              <div className="bg-[#172a34] text-white p-4 rounded-xl max-w-xs mx-auto mb-5 shadow-md border-t-2 border-[#bd171c]">
-                <div className="text-[10px] text-[#e5b64a] font-bold uppercase tracking-wider mb-1">Request ID</div>
-                <div className="text-xl font-mono font-bold tracking-widest text-white flex items-center justify-center gap-2">
+              <div className="bg-[#172a34] text-white p-3.5 rounded-xl max-w-xs mx-auto mb-4 shadow-md border-t-2 border-[#bd171c]">
+                <div className="text-[10px] text-[#e5b64a] font-bold uppercase tracking-wider mb-0.5">Request ID</div>
+                <div className="text-lg font-mono font-bold tracking-widest text-white flex items-center justify-center gap-2">
                   <span>{createdRequestId}</span>
                   <button
                     type="button"
@@ -368,14 +368,14 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
               <div className="flex gap-2 justify-center">
                 <a
                   href={`/icu-status?requestId=${createdRequestId}&mobile=${submittedBy === 'attendant' ? formData.attendantMobile : formData.patientMobile}`}
-                  className="bg-[#172a34] text-white font-bold px-6 py-2.5 rounded-lg text-xs shadow hover:bg-[#0e191f] border border-[#172a34]"
+                  className="bg-[#bd171c] text-white font-bold px-5 py-2 rounded-lg text-xs shadow hover:bg-[#791017]"
                 >
                   Track Status Live ➔
                 </a>
                 <button
                   type="button"
                   onClick={onClose}
-                  className="bg-slate-100 text-slate-700 font-bold px-5 py-2.5 rounded-lg text-xs border border-slate-300 hover:bg-slate-200"
+                  className="bg-slate-100 text-slate-700 font-bold px-4 py-2 rounded-lg text-xs border border-slate-300 hover:bg-slate-200"
                 >
                   Close
                 </button>
@@ -384,12 +384,12 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
           ) : showOtpScreen ? (
             /* OTP SCREEN */
             <div className="max-w-xs mx-auto text-center py-2">
-              <h3 className="text-lg font-bold text-[#172a34] mb-1">OTP Verification</h3>
-              <p className="text-xs text-slate-600 mb-3">
+              <h3 className="text-base font-bold text-[#172a34] mb-1">OTP Verification</h3>
+              <p className="text-xs text-slate-600 mb-2.5">
                 Enter code sent to +91 <span className="font-bold text-[#172a34]">{submittedBy === 'attendant' ? formData.attendantMobile : formData.patientMobile}</span>
               </p>
 
-              <div className="p-2 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-900 font-bold mb-3">
+              <div className="p-2 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-900 font-bold mb-2.5">
                 Demo Code: <span className="font-mono font-bold text-slate-900">123456</span>
               </div>
 
@@ -399,16 +399,16 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                 onChange={(e) => setOtpCode(e.target.value)}
                 placeholder="Enter OTP *"
                 maxLength={6}
-                className="w-full bg-white border border-slate-300 rounded-lg py-3 px-4 text-center font-mono text-2xl font-bold tracking-widest text-slate-800 mb-3 focus:border-[#172a34] focus:outline-none"
+                className="w-full bg-white border border-slate-300 rounded-lg py-2 px-3 text-center font-mono text-xl font-bold tracking-widest text-slate-800 mb-2.5 focus:border-[#bd171c] focus:outline-none"
               />
 
-              {otpError && <div className="text-xs text-[#bd171c] font-bold mb-3 p-2 bg-red-50 border border-red-200 rounded-lg">⚠️ {otpError}</div>}
+              {otpError && <div className="text-xs text-[#bd171c] font-bold mb-2.5 p-1.5 bg-red-50 border border-red-200 rounded-lg">⚠️ {otpError}</div>}
 
               <div className="flex gap-2">
                 <button
                   type="button"
                   onClick={() => setShowOtpScreen(false)}
-                  className="w-1/2 bg-slate-100 text-slate-700 py-2.5 rounded-lg font-bold text-xs border border-slate-300 hover:bg-slate-200"
+                  className="w-1/2 bg-slate-100 text-slate-700 py-2 rounded-lg font-bold text-xs border border-slate-300 hover:bg-slate-200"
                 >
                   Back
                 </button>
@@ -416,29 +416,29 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                   type="button"
                   onClick={handleVerifyAndSubmit}
                   disabled={otpLoading || isSubmitting}
-                  className="w-1/2 bg-[#172a34] hover:bg-[#0e191f] text-white py-2.5 rounded-lg font-bold text-xs shadow"
+                  className="w-1/2 bg-[#bd171c] hover:bg-[#791017] text-white py-2 rounded-lg font-bold text-xs shadow"
                 >
                   {isSubmitting ? 'Submitting...' : 'Verify & Submit'}
                 </button>
               </div>
             </div>
           ) : (
-            /* CLEAN SINGLE-PAGE FORM MATCHING REFERENCE IMAGE WITH BST HOSPITAL THEME */
-            <div className="space-y-3">
+            /* CLEAN SINGLE-PAGE COMPACT FORM WITH BST HOSPITAL MAIN THEME */
+            <div className="space-y-2.5">
               {/* TOP ERROR BANNER */}
               {stepError && (
-                <div className="p-3 bg-red-50 border border-[#bd171c]/40 rounded-lg text-xs font-bold text-[#791017] flex items-center justify-between">
+                <div className="p-2.5 bg-red-50 border border-[#bd171c]/40 rounded-lg text-xs font-bold text-[#791017] flex items-center justify-between">
                   <span>⚠️ {stepError}</span>
                   <button type="button" onClick={() => setStepError(null)} className="text-[#bd171c] font-bold">✕</button>
                 </div>
               )}
 
               {/* BOOKING MODE SEGMENTED CONTROL */}
-              <div className="grid grid-cols-2 gap-1.5 bg-slate-100 p-1 rounded-lg border border-slate-200/80 mb-2">
+              <div className="grid grid-cols-2 gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200 mb-1">
                 <button
                   type="button"
                   onClick={() => setSubmittedBy('patient')}
-                  className={`py-2 px-3 rounded-md text-xs font-bold transition flex items-center justify-center gap-1.5 ${
+                  className={`py-1.5 px-2 rounded-md text-xs font-bold transition flex items-center justify-center gap-1 ${
                     submittedBy === 'patient'
                       ? 'bg-[#172a34] text-white shadow-sm'
                       : 'text-slate-600 hover:text-slate-900'
@@ -449,7 +449,7 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                 <button
                   type="button"
                   onClick={() => setSubmittedBy('attendant')}
-                  className={`py-2 px-3 rounded-md text-xs font-bold transition flex items-center justify-center gap-1.5 ${
+                  className={`py-1.5 px-2 rounded-md text-xs font-bold transition flex items-center justify-center gap-1 ${
                     submittedBy === 'attendant'
                       ? 'bg-[#172a34] text-white shadow-sm'
                       : 'text-slate-600 hover:text-slate-900'
@@ -756,13 +756,13 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
                 )}
               </div>
 
-              {/* 13. PRIMARY SUBMIT BUTTON MATCHING BST HOSPITAL THEME */}
-              <div className="pt-2">
+              {/* 13. PRIMARY SUBMIT BUTTON MATCHING BST HOSPITAL MAIN THEME */}
+              <div className="pt-1.5">
                 <button
                   type="button"
                   onClick={triggerSendOtp}
                   disabled={otpLoading}
-                  className="w-full bg-[#172a34] hover:bg-[#0e191f] text-white font-bold text-sm py-3.5 px-4 rounded-lg shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 cursor-pointer border-b-2 border-[#bd171c]"
+                  className="w-full bg-[#bd171c] hover:bg-[#791017] text-white font-extrabold text-xs sm:text-sm py-2.5 px-4 rounded-lg shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 cursor-pointer border-b-2 border-[#791017]"
                 >
                   {otpLoading ? 'Sending Verification OTP...' : 'Verify OTP & Submit Booking ➔'}
                 </button>
