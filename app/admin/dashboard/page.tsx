@@ -467,6 +467,14 @@ export default function AdminDashboardPage() {
                 {selectedReq.payment?.insuranceCompany && <div><span className="text-slate-500">Insurance Co:</span> <span className="text-[#172a34] font-bold">{selectedReq.payment.insuranceCompany}</span></div>}
                 {selectedReq.payment?.policyNumber && <div><span className="text-slate-500">Policy No:</span> <span className="text-[#172a34] font-mono font-bold">{selectedReq.payment.policyNumber}</span></div>}
                 {selectedReq.payment?.schemeCardNumber && <div><span className="text-slate-500">Scheme Card ID:</span> <span className="text-[#172a34] font-mono font-bold">{selectedReq.payment.schemeCardNumber}</span></div>}
+                {selectedReq.payment?.schemeCardPhotoUrl && (
+                  <div>
+                    <span className="text-slate-500">Card Photo:</span>{' '}
+                    <a href={selectedReq.payment.schemeCardPhotoUrl} target="_blank" rel="noopener noreferrer" className="text-[#bd171c] font-black underline hover:text-red-800">
+                      View Scheme Card ↗
+                    </a>
+                  </div>
+                )}
                 <div><span className="text-slate-500">Condition:</span> <span className="text-[#172a34] font-extrabold">{selectedReq.medical.currentMedicalCondition}</span></div>
                 <div><span className="text-slate-500">Diagnosis:</span> <span className="text-[#172a34] font-extrabold">{selectedReq.medical.diagnosis}</span></div>
                 <div><span className="text-slate-500">Symptoms:</span> <span className="text-[#172a34] font-extrabold">{selectedReq.medical.symptomsCriticality}</span></div>
