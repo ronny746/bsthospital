@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import NavigationBar from '@/components/NavigationBar';
-import Footer from '@/components/Footer';
+import AdminNavbar from '@/components/AdminNavbar';
+import DocumentViewerModal from '@/components/DocumentViewerModal';
+import LiveCountdownTimer from '@/components/LiveCountdownTimer';
+import CustomModal from '@/components/CustomModal';
 import { IcuRequest, RequestStatus, IcuType, IcuBed } from '@/lib/icu-types';
 
 export default function AdminDashboardPage() {
@@ -10,11 +12,31 @@ export default function AdminDashboardPage() {
   const [requests, setRequests] = useState<IcuRequest[]>([]);
   const [beds, setBeds] = useState<IcuBed[]>([]);
 
+  // Custom Modal dialog state
+  const [modalConfig, setModalConfig] = useState<{
+    isOpen: boolean;
+    type?: 'confirm' | 'prompt' | 'alert';
+    title: string;
+    description?: string;
+    icon?: string;
+    confirmText?: string;
+    confirmVariant?: 'danger' | 'emerald' | 'primary';
+    inputLabel?: string;
+    defaultValue?: string;
+    placeholder?: string;
+    onConfirm?: (val?: string) => void;
+  }>({
+    isOpen: false,
+    title: '',
+  });
+
   // Filters
   const [statusFilter, setStatusFilter] = useState('all');
   const [icuTypeFilter, setIcuTypeFilter] = useState('all');
   const [priorityFilter, setPriorityFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [dateFilter, setDateFilter] = useState('all'); // 'all', 'today', 'yesterday', 'this_week', 'this_month', 'custom'
+  const [customDate, setCustomDate] = useState('');
 
   // Drawer & modal
   const [selectedReq, setSelectedReq] = useState<IcuRequest | null>(null);
@@ -25,11 +47,16 @@ export default function AdminDashboardPage() {
   const [selectedBedForReserve, setSelectedBedForReserve] = useState('');
   const [reserveDuration, setReserveDuration] = useState(120);
 
+  // Document Viewer Lightbox State
+  const [previewDoc, setPreviewDoc] = useState<any | null>(null);
+
   const fetchDashboardData = async () => {
     try {
       const [mRes, rRes, bRes] = await Promise.all([
         fetch('/api/admin/dashboard'),
-        fetch(`/api/admin/icu-requests?status=${statusFilter}&icuType=${icuTypeFilter}&priority=${priorityFilter}&search=${searchTerm}`),
+        fetch(
+          `/api/admin/icu-requests?status=${statusFilter}&icuType=${icuTypeFilter}&priority=${priorityFilter}&search=${searchTerm}&dateFilter=${dateFilter}&specificDate=${customDate}`
+        ),
         fetch('/api/admin/icu-beds'),
       ]);
 
@@ -47,7 +74,7 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     void fetchDashboardData();
-  }, [statusFilter, icuTypeFilter, priorityFilter, searchTerm]);
+  }, [statusFilter, icuTypeFilter, priorityFilter, searchTerm, dateFilter, customDate]);
 
   const handleUpdateStatus = async (reqId: string, newStatus: RequestStatus, extra?: any) => {
     try {
@@ -65,10 +92,24 @@ export default function AdminDashboardPage() {
         void fetchDashboardData();
         if (selectedReq?.id === reqId) setSelectedReq(data.request);
       } else {
-        alert(data.error || 'Failed to update status');
+        setModalConfig({
+          isOpen: true,
+          type: 'alert',
+          title: 'Action Failed',
+          description: data.error || 'Failed to update request status.',
+          icon: '⚠️',
+          confirmText: 'OK',
+        });
       }
     } catch (err) {
-      alert('Error updating request status');
+      setModalConfig({
+        isOpen: true,
+        type: 'alert',
+        title: 'Error Occurred',
+        description: 'Error updating request status. Please try again.',
+        icon: '⚠️',
+        confirmText: 'OK',
+      });
     }
   };
 
@@ -91,7 +132,14 @@ export default function AdminDashboardPage() {
         if (selectedReq?.id === reqId) setSelectedReq(data.request);
       }
     } catch (err) {
-      alert('Failed to add note');
+      setModalConfig({
+        isOpen: true,
+        type: 'alert',
+        title: 'Error Adding Note',
+        description: 'Failed to save admin note.',
+        icon: '⚠️',
+        confirmText: 'OK',
+      });
     }
   };
 
@@ -111,13 +159,27 @@ export default function AdminDashboardPage() {
         if (selectedReq?.id === reqId) setSelectedReq(data.request);
       }
     } catch (err) {
-      alert('Failed to assign reviewer');
+      setModalConfig({
+        isOpen: true,
+        type: 'alert',
+        title: 'Error Assigning Doctor',
+        description: 'Failed to assign doctor reviewer.',
+        icon: '⚠️',
+        confirmText: 'OK',
+      });
     }
   };
 
   const handleReserveBedSubmit = async () => {
     if (!selectedReq || !selectedBedForReserve) {
-      alert('Please select an available bed');
+      setModalConfig({
+        isOpen: true,
+        type: 'alert',
+        title: 'Select ICU Bed',
+        description: 'Please select an available ICU bed unit to complete reservation.',
+        icon: '🛏️',
+        confirmText: 'OK',
+      });
       return;
     }
     try {
@@ -136,10 +198,24 @@ export default function AdminDashboardPage() {
         void fetchDashboardData();
         if (selectedReq) setSelectedReq(data.request);
       } else {
-        alert(data.error || 'Failed to reserve bed');
+        setModalConfig({
+          isOpen: true,
+          type: 'alert',
+          title: 'Bed Reservation Failed',
+          description: data.error || 'Failed to reserve bed unit.',
+          icon: '⚠️',
+          confirmText: 'OK',
+        });
       }
     } catch (err) {
-      alert('Error reserving bed');
+      setModalConfig({
+        isOpen: true,
+        type: 'alert',
+        title: 'Error Reserving Bed',
+        description: 'An unexpected error occurred while reserving bed.',
+        icon: '⚠️',
+        confirmText: 'OK',
+      });
     }
   };
 
@@ -149,7 +225,7 @@ export default function AdminDashboardPage() {
 
   return (
     <main className="min-h-screen bg-[#f7f4ed] text-[#172a34] font-sans">
-      <NavigationBar />
+      <AdminNavbar />
 
       {/* HEADER BANNER */}
       <section className="bg-gradient-to-r from-[#172a34] via-[#0f232e] to-[#791017] border-b-8 border-[#bd171c] px-6 py-6 text-white shadow-2xl">
@@ -205,8 +281,59 @@ export default function AdminDashboardPage() {
           </div>
         )}
 
-        {/* SEARCH & FILTERS */}
+        {/* SEARCH & FILTERS WITH DATE FILTERING */}
         <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xl space-y-4">
+          {/* DATE FILTER TOOLBAR */}
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 pb-4 border-b border-slate-200">
+            <div className="flex items-center gap-2">
+              <span className="p-2 bg-red-50 text-[#bd171c] rounded-xl font-black text-sm">📅</span>
+              <div>
+                <h3 className="text-xs font-black text-[#172a34] uppercase tracking-wider">Patient Date Filter</h3>
+                <p className="text-[11px] text-slate-500 font-medium">Filter admissions & requests by specific registration date</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 flex-wrap w-full md:w-auto">
+              {[
+                { key: 'today', label: '📅 Today' },
+                { key: 'yesterday', label: '🗓️ Yesterday' },
+                { key: 'this_week', label: '📆 Last 7 Days' },
+                { key: 'this_month', label: '🗓️ This Month' },
+                { key: 'all', label: '🌐 All Dates' },
+              ].map((preset) => (
+                <button
+                  key={preset.key}
+                  onClick={() => {
+                    setDateFilter(preset.key);
+                    setCustomDate('');
+                  }}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all ${
+                    dateFilter === preset.key && !customDate
+                      ? 'bg-[#bd171c] text-white shadow-md scale-105'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-300'
+                  }`}
+                >
+                  {preset.label}
+                </button>
+              ))}
+
+              {/* Custom Date Input */}
+              <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-300">
+                <span className="text-[10px] font-black uppercase text-slate-500 pl-2">Select Date:</span>
+                <input
+                  type="date"
+                  value={customDate}
+                  onChange={(e) => {
+                    setCustomDate(e.target.value);
+                    setDateFilter('custom');
+                  }}
+                  className="bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs text-[#172a34] font-bold focus:outline-none focus:border-[#bd171c]"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* DROPDOWN FILTERS & SEARCH */}
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
             <input
               type="text"
@@ -262,8 +389,13 @@ export default function AdminDashboardPage() {
 
         {/* MASTER TABLE */}
         <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-2xl">
-          <div className="px-6 py-5 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
-            <h2 className="text-lg font-black text-[#172a34]">ICU Patient Queue ({requests.length})</h2>
+          <div className="px-6 py-5 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+            <div className="flex items-center gap-3">
+              <h2 className="text-lg font-black text-[#172a34]">ICU Patient Queue ({requests.length})</h2>
+              <span className="px-3 py-1 bg-red-100 text-[#bd171c] border border-red-200 text-xs font-mono font-black rounded-full uppercase">
+                Filter: {dateFilter === 'custom' && customDate ? `Date (${customDate})` : dateFilter.replace('_', ' ')}
+              </span>
+            </div>
             <span className="text-xs text-slate-500 font-bold">Click any row to open action drawer</span>
           </div>
 
@@ -325,12 +457,17 @@ export default function AdminDashboardPage() {
                       )}
                     </td>
                     <td className="py-4 px-5">
-                      <span className="capitalize font-black text-[#172a34] text-xs">
+                      <span className="capitalize font-black text-[#172a34] text-xs block">
                         {r.status.replace(/_/g, ' ')}
                       </span>
                       {r.reservation?.bedNumber && (
-                        <div className="text-xs text-emerald-700 font-mono font-black">
+                        <div className="text-xs text-emerald-700 font-mono font-black mt-0.5">
                           Bed: {r.reservation.bedNumber}
+                        </div>
+                      )}
+                      {r.status === 'bed_reserved' && r.reservation?.expiresAt && (
+                        <div className="mt-1">
+                          <LiveCountdownTimer targetDate={r.reservation.expiresAt} label="Hold" />
                         </div>
                       )}
                     </td>
@@ -378,6 +515,19 @@ export default function AdminDashboardPage() {
               </button>
             </div>
 
+            {selectedReq.status === 'bed_reserved' && selectedReq.reservation && (
+              <div className="bg-gradient-to-r from-[#172a34] to-[#791017] text-white p-5 rounded-3xl border-2 border-[#bd171c] flex items-center justify-between shadow-xl">
+                <div>
+                  <div className="text-[10px] uppercase font-black text-amber-400">BED RESERVATION LOCKED</div>
+                  <div className="text-xl font-mono font-black text-white">{selectedReq.reservation.bedNumber}</div>
+                  <div className="text-xs text-slate-200 font-medium">{selectedReq.reservation.unitName}</div>
+                </div>
+                <div className="bg-white/10 px-4 py-2 rounded-2xl border border-white/20">
+                  <LiveCountdownTimer targetDate={selectedReq.reservation.expiresAt} label="Bed Hold Remaining" />
+                </div>
+              </div>
+            )}
+
             {/* Quick Actions */}
             <div className="p-6 bg-slate-50 rounded-3xl border border-slate-200 space-y-3">
               <div className="text-xs font-black text-[#172a34] uppercase tracking-wider">UPDATE STATUS & ACTION</div>
@@ -408,9 +558,16 @@ export default function AdminDashboardPage() {
                 </button>
                 <button
                   onClick={() => {
-                    if (confirm('Mark admission completed and patient moved to bed?')) {
-                      void handleUpdateStatus(selectedReq.id, 'admitted');
-                    }
+                    setModalConfig({
+                      isOpen: true,
+                      type: 'confirm',
+                      title: 'Confirm Admission Completion?',
+                      description: `Mark admission as completed for ${selectedReq.patient.fullName} and transition bed to Occupied?`,
+                      icon: '🏥',
+                      confirmText: 'Complete Admission',
+                      confirmVariant: 'emerald',
+                      onConfirm: () => void handleUpdateStatus(selectedReq.id, 'admitted'),
+                    });
                   }}
                   className="bg-[#172a34] text-white font-black px-4 py-2 rounded-xl text-xs"
                 >
@@ -418,8 +575,20 @@ export default function AdminDashboardPage() {
                 </button>
                 <button
                   onClick={() => {
-                    const reason = prompt('Enter rejection reason:', rejectionReason);
-                    if (reason) void handleUpdateStatus(selectedReq.id, 'rejected', { rejectionReason: reason });
+                    setModalConfig({
+                      isOpen: true,
+                      type: 'prompt',
+                      title: 'Reject ICU Booking Request',
+                      description: `Provide official medical/administrative reason for declining request ${selectedReq.requestId}:`,
+                      inputLabel: 'Rejection Reason',
+                      defaultValue: rejectionReason,
+                      placeholder: 'e.g. ICU bed capacity full / Criteria not met...',
+                      confirmText: 'Confirm Rejection',
+                      confirmVariant: 'danger',
+                      onConfirm: (reason) => {
+                        if (reason) void handleUpdateStatus(selectedReq.id, 'rejected', { rejectionReason: reason });
+                      },
+                    });
                   }}
                   className="bg-red-100 hover:bg-red-200 text-red-900 border border-red-300 px-4 py-2 rounded-xl text-xs font-black"
                 >
@@ -487,23 +656,44 @@ export default function AdminDashboardPage() {
             {/* Document Attachments */}
             {selectedReq.documents && selectedReq.documents.length > 0 && (
               <div className="space-y-3">
-                <h4 className="text-xs font-black text-[#172a34] uppercase tracking-wider">Uploaded Documents ({selectedReq.documents.length})</h4>
-                <div className="grid grid-cols-2 gap-2">
-                  {selectedReq.documents.map((doc) => (
-                    <a
-                      key={doc.id}
-                      href={doc.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-2xl flex items-center justify-between text-xs text-[#172a34] font-bold transition"
-                    >
-                      <div className="truncate">
-                        <div className="uppercase font-black text-[10px] text-slate-500">{doc.type.replace(/_/g, ' ')}</div>
-                        <div className="truncate text-xs font-bold text-[#bd171c]">{doc.fileName}</div>
+                <h4 className="text-xs font-black text-[#172a34] uppercase tracking-wider flex items-center justify-between">
+                  <span>Uploaded Documents & Verification ({selectedReq.documents.length})</span>
+                  <span className="text-[10px] text-slate-400 font-normal">Click any document to view full screen</span>
+                </h4>
+                <div className="grid grid-cols-2 gap-3">
+                  {selectedReq.documents.map((doc: any) => {
+                    const docUrl = doc.url || doc.fileUrl || '';
+                    const isImg =
+                      docUrl.startsWith('data:image/') ||
+                      docUrl.match(/\.(jpg|jpeg|png|webp|gif)$/i) ||
+                      doc.fileType?.startsWith('image/');
+
+                    return (
+                      <div
+                        key={doc.id || Math.random().toString()}
+                        onClick={() => setPreviewDoc(doc)}
+                        className="p-3 bg-slate-50 hover:bg-red-50/60 border border-slate-200 hover:border-[#bd171c] rounded-2xl flex flex-col justify-between text-xs text-[#172a34] font-bold cursor-pointer transition shadow-sm hover:shadow-md group"
+                      >
+                        {isImg ? (
+                          <div className="w-full h-24 bg-slate-200 rounded-xl overflow-hidden mb-2 relative flex items-center justify-center border border-slate-300">
+                            <img src={docUrl} alt={doc.fileName} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
+                            <span className="absolute bottom-1 right-1 bg-black/70 text-white text-[9px] font-black px-2 py-0.5 rounded-md backdrop-blur-sm">
+                              👁️ Click to View
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="w-full h-20 bg-slate-100 rounded-xl mb-2 flex flex-col items-center justify-center border border-slate-200 text-slate-500">
+                            <span className="text-2xl mb-1">📄</span>
+                            <span className="text-[9px] font-black uppercase text-slate-400">PDF Document</span>
+                          </div>
+                        )}
+                        <div className="truncate">
+                          <div className="uppercase font-black text-[9px] text-slate-500 truncate">{doc.type ? doc.type.replace(/_/g, ' ') : 'DOCUMENT'}</div>
+                          <div className="truncate text-xs font-black text-[#bd171c]">{doc.fileName || 'Attachment'}</div>
+                        </div>
                       </div>
-                      <span className="text-xs">↗</span>
-                    </a>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -620,7 +810,27 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
-      <Footer />
+      <DocumentViewerModal
+        isOpen={!!previewDoc}
+        onClose={() => setPreviewDoc(null)}
+        document={previewDoc}
+      />
+
+      {/* REUSABLE CUSTOM MODAL */}
+      <CustomModal
+        isOpen={modalConfig.isOpen}
+        type={modalConfig.type || 'confirm'}
+        title={modalConfig.title}
+        description={modalConfig.description}
+        icon={modalConfig.icon || '⚠️'}
+        confirmText={modalConfig.confirmText || 'Confirm'}
+        confirmVariant={modalConfig.confirmVariant || 'danger'}
+        inputLabel={modalConfig.inputLabel}
+        defaultValue={modalConfig.defaultValue}
+        placeholder={modalConfig.placeholder}
+        onConfirm={modalConfig.onConfirm}
+        onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
+      />
     </main>
   );
 }

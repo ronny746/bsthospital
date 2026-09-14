@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import NavigationBar from '@/components/NavigationBar';
-import Footer from '@/components/Footer';
+import AdminNavbar from '@/components/AdminNavbar';
+import LiveCountdownTimer from '@/components/LiveCountdownTimer';
+import CustomModal from '@/components/CustomModal';
 import { IcuBed, IcuType } from '@/lib/icu-types';
 
 export default function AdminBedsPage() {
@@ -10,6 +11,19 @@ export default function AdminBedsPage() {
   const [selectedUnit, setSelectedUnit] = useState<string>('all');
 
   const [showAddModal, setShowAddModal] = useState(false);
+  const [modalConfig, setModalConfig] = useState<{
+    isOpen: boolean;
+    type?: 'confirm' | 'alert';
+    title: string;
+    description?: string;
+    icon?: string;
+    confirmText?: string;
+    confirmVariant?: 'danger' | 'emerald' | 'primary';
+    onConfirm?: () => void;
+  }>({
+    isOpen: false,
+    title: '',
+  });
   const [newBedData, setNewBedData] = useState({
     bedNumber: '',
     icuType: 'medical_icu' as IcuType,
@@ -33,32 +47,68 @@ export default function AdminBedsPage() {
     void fetchBeds();
   }, []);
 
-  const handleReleaseBed = async (bedId: string) => {
-    if (!confirm('Are you sure you want to release this reserved bed back to available pool?')) return;
-    try {
-      const res = await fetch(`/api/admin/icu-beds/${bedId}/release`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ performedBy: 'Bed Manager', reason: 'Admin manual bed release' }),
-      });
-      if (res.ok) void fetchBeds();
-    } catch (err) {
-      alert('Failed to release bed');
-    }
+  const handleReleaseBed = (bedId: string) => {
+    const bed = beds.find((b) => b.id === bedId);
+    setModalConfig({
+      isOpen: true,
+      type: 'confirm',
+      title: 'Release Bed Reservation?',
+      description: `Are you sure you want to release bed ${bed?.bedNumber || bedId} back to the available ICU pool?`,
+      icon: '🔓',
+      confirmText: 'Yes, Release Bed',
+      confirmVariant: 'danger',
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/admin/icu-beds/${bedId}/release`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ performedBy: 'Bed Manager', reason: 'Admin manual bed release' }),
+          });
+          if (res.ok) void fetchBeds();
+        } catch (err) {
+          setModalConfig({
+            isOpen: true,
+            type: 'alert',
+            title: 'Action Failed',
+            description: 'Failed to release bed. Please try again.',
+            icon: '⚠️',
+            confirmText: 'OK',
+          });
+        }
+      },
+    });
   };
 
-  const handleOccupyBed = async (bedId: string) => {
-    if (!confirm('Mark this bed as occupied (Complete admission)?')) return;
-    try {
-      const res = await fetch(`/api/admin/icu-beds/${bedId}/occupy`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ performedBy: 'Admission Desk' }),
-      });
-      if (res.ok) void fetchBeds();
-    } catch (err) {
-      alert('Failed to mark bed occupied');
-    }
+  const handleOccupyBed = (bedId: string) => {
+    const bed = beds.find((b) => b.id === bedId);
+    setModalConfig({
+      isOpen: true,
+      type: 'confirm',
+      title: 'Confirm Patient Admission?',
+      description: `Mark bed ${bed?.bedNumber || bedId} as Occupied and complete patient admission?`,
+      icon: '🏥',
+      confirmText: 'Admit Patient',
+      confirmVariant: 'emerald',
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/admin/icu-beds/${bedId}/occupy`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ performedBy: 'Admission Desk' }),
+          });
+          if (res.ok) void fetchBeds();
+        } catch (err) {
+          setModalConfig({
+            isOpen: true,
+            type: 'alert',
+            title: 'Action Failed',
+            description: 'Failed to mark bed occupied.',
+            icon: '⚠️',
+            confirmText: 'OK',
+          });
+        }
+      },
+    });
   };
 
   const handleAddBedSubmit = async (e: React.SyntheticEvent) => {
@@ -83,14 +133,33 @@ export default function AdminBedsPage() {
         });
         void fetchBeds();
       } else {
-        alert('Failed to add bed');
+        setModalConfig({
+          isOpen: true,
+          type: 'alert',
+          title: 'Error Creating Bed',
+          description: 'Failed to create new ICU bed unit.',
+          icon: '⚠️',
+          confirmText: 'OK',
+        });
       }
     } catch (err) {
-      alert('Error creating bed');
+      setModalConfig({
+        isOpen: true,
+        type: 'alert',
+        title: 'Error Creating Bed',
+        description: 'An unexpected error occurred while saving bed unit.',
+        icon: '⚠️',
+        confirmText: 'OK',
+      });
     }
   };
 
   const filteredBeds = selectedUnit === 'all' ? beds : beds.filter((b) => b.icuType === selectedUnit);
+
+  const availableCount = beds.filter((b) => b.status === 'available').length;
+  const reservedCount = beds.filter((b) => b.status === 'reserved').length;
+  const occupiedCount = beds.filter((b) => b.status === 'occupied').length;
+  const maintenanceCount = beds.filter((b) => b.status === 'maintenance').length;
 
   const getStatusCardStyle = (status: string) => {
     switch (status) {
@@ -109,7 +178,7 @@ export default function AdminBedsPage() {
 
   return (
     <main className="min-h-screen bg-[#f7f4ed] text-[#172a34] font-sans">
-      <NavigationBar />
+      <AdminNavbar />
 
       {/* HEADER BANNER */}
       <section className="bg-gradient-to-r from-[#172a34] via-[#0f232e] to-[#791017] border-b-8 border-[#bd171c] px-6 py-6 text-white shadow-2xl">
@@ -139,6 +208,30 @@ export default function AdminBedsPage() {
       </section>
 
       <section className="py-8 px-4 md:px-8 max-w-7xl mx-auto space-y-8">
+        {/* LIVE BED COUNTS BAR */}
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+          <div className="bg-white border-2 border-slate-200 p-4 rounded-2xl shadow-sm text-center">
+            <div className="text-[10px] font-black uppercase text-slate-500">Total ICU Inventory</div>
+            <div className="text-2xl font-black font-mono text-[#172a34] mt-0.5">{beds.length} Beds</div>
+          </div>
+          <div className="bg-emerald-50 border-2 border-emerald-300 p-4 rounded-2xl shadow-sm text-center">
+            <div className="text-[10px] font-black uppercase text-emerald-800">Ready & Available</div>
+            <div className="text-2xl font-black font-mono text-emerald-700 mt-0.5">{availableCount} Beds</div>
+          </div>
+          <div className="bg-amber-50 border-2 border-amber-300 p-4 rounded-2xl shadow-sm text-center">
+            <div className="text-[10px] font-black uppercase text-amber-800">Locked / Reserved</div>
+            <div className="text-2xl font-black font-mono text-amber-700 mt-0.5">{reservedCount} Beds</div>
+          </div>
+          <div className="bg-red-50 border-2 border-red-300 p-4 rounded-2xl shadow-sm text-center">
+            <div className="text-[10px] font-black uppercase text-red-800">Occupied Patient</div>
+            <div className="text-2xl font-black font-mono text-red-700 mt-0.5">{occupiedCount} Beds</div>
+          </div>
+          <div className="bg-slate-100 border-2 border-slate-300 p-4 rounded-2xl shadow-sm text-center col-span-2 sm:col-span-1">
+            <div className="text-[10px] font-black uppercase text-slate-600">Maintenance / Clean</div>
+            <div className="text-2xl font-black font-mono text-slate-700 mt-0.5">{maintenanceCount} Beds</div>
+          </div>
+        </div>
+
         {/* TABS */}
         <div className="flex overflow-x-auto gap-3 pb-2">
           {[
@@ -188,6 +281,12 @@ export default function AdminBedsPage() {
                   <div className="mt-3 p-3 bg-white rounded-2xl text-xs border border-slate-200 shadow-md">
                     <div className="text-[10px] text-slate-400 font-black uppercase">CURRENT PATIENT</div>
                     <div className="font-black text-[#172a34] text-sm mt-0.5">{bed.currentPatientName}</div>
+                  </div>
+                )}
+
+                {bed.status === 'reserved' && (
+                  <div className="mt-3 p-3 bg-amber-950 text-amber-300 rounded-2xl text-xs border border-amber-500/40 shadow-md">
+                    <LiveCountdownTimer targetDate={bed.reservedUntil} label="Hold Window Remaining" />
                   </div>
                 )}
               </div>
@@ -330,7 +429,18 @@ export default function AdminBedsPage() {
         </div>
       )}
 
-      <Footer />
+      {/* REUSABLE CUSTOM MODAL */}
+      <CustomModal
+        isOpen={modalConfig.isOpen}
+        type={modalConfig.type || 'confirm'}
+        title={modalConfig.title}
+        description={modalConfig.description}
+        icon={modalConfig.icon || '⚠️'}
+        confirmText={modalConfig.confirmText || 'Confirm'}
+        confirmVariant={modalConfig.confirmVariant || 'danger'}
+        onConfirm={modalConfig.onConfirm}
+        onClose={() => setModalConfig({ ...modalConfig, isOpen: false })}
+      />
     </main>
   );
 }

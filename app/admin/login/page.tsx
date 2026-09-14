@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import NavigationBar from '@/components/NavigationBar';
-import Footer from '@/components/Footer';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -40,62 +38,89 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f7f4ed] text-[#172a34] font-sans flex flex-col justify-between">
-      <NavigationBar />
+    <main className="min-h-screen bg-gradient-to-br from-[#0f232e] via-[#172a34] to-[#791017] text-white font-sans flex flex-col justify-between items-center p-6">
+      {/* Top Header Branding */}
+      <div className="w-full max-w-5xl py-6 flex items-center justify-between border-b border-white/10">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-[#bd171c] text-white font-black flex items-center justify-center text-xl shadow-lg border border-red-400">
+            🏥
+          </div>
+          <div>
+            <div className="text-xs font-black text-amber-400 uppercase tracking-widest">BSTIMS Jaipur</div>
+            <div className="text-base font-black text-white">ICU Operations Admin Console</div>
+          </div>
+        </div>
+        <a
+          href="/"
+          className="text-xs font-black bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-xl transition border border-white/20"
+        >
+          ← Back to Main Website
+        </a>
+      </div>
 
-      <section className="py-16 px-4 flex items-center justify-center">
-        <div className="bg-white p-8 md:p-12 rounded-3xl border border-slate-200 shadow-2xl max-w-md w-full border-t-8 border-t-[#172a34]">
+      {/* Login Card */}
+      <section className="my-auto py-12 px-4 flex items-center justify-center w-full">
+        <div className="bg-white/95 backdrop-blur-xl p-8 md:p-12 rounded-3xl border border-white/20 shadow-2xl max-w-md w-full border-t-8 border-t-[#bd171c] text-[#172a34]">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-red-50 text-[#bd171c] border border-red-100 mb-3 shadow-inner">
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
-            <h1 className="text-2xl font-black text-[#172a34] tracking-tight">ICU Admin Portal</h1>
-            <p className="text-xs text-slate-500 mt-1 font-medium">Authorized Medical & Emergency Personnel</p>
+            <h1 className="text-2xl font-black text-[#172a34] tracking-tight">ICU Admin Authentication</h1>
+            <p className="text-xs text-slate-500 mt-1 font-medium">Authorized Emergency & Bed Operations Personnel</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label className="block text-xs font-bold text-[#172a34] mb-1">Username / Email</label>
+              <label className="block text-xs font-bold text-[#172a34] mb-1">Username / Access Email</label>
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="admin"
-                className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm text-[#172a34] focus:outline-none focus:ring-2 focus:ring-secondary/50 font-medium"
+                className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3.5 text-sm text-[#172a34] focus:outline-none focus:ring-2 focus:ring-[#bd171c]/30 font-bold"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-[#172a34] mb-1">Password</label>
+              <label className="block text-xs font-bold text-[#172a34] mb-1">Security Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm text-[#172a34] focus:outline-none focus:ring-2 focus:ring-secondary/50 font-medium"
+                className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3.5 text-sm text-[#172a34] focus:outline-none focus:ring-2 focus:ring-[#bd171c]/30 font-bold"
                 required
               />
             </div>
 
-            {error && <div className="text-xs text-red-600 font-bold text-center">{error}</div>}
-
-
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 text-xs text-red-700 font-bold text-center rounded-xl">
+                {error}
+              </div>
+            )}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#172a34] hover:bg-[#0e191f] text-white font-extrabold py-3.5 rounded-xl shadow-lg transition text-sm"
+              className="w-full bg-[#bd171c] hover:bg-[#791017] text-white font-black py-4 rounded-xl shadow-xl transition text-sm tracking-wide transform hover:-translate-y-0.5"
             >
-              {loading ? 'Authenticating...' : 'Sign In to ICU Dashboard ➔'}
+              {loading ? 'Authenticating Personnel...' : 'Sign In to ICU Console ➔'}
             </button>
+
+            <div className="text-[11px] text-slate-400 text-center font-medium pt-2">
+              Default Demo Login: <span className="font-mono text-slate-700 font-bold">admin</span> / <span className="font-mono text-slate-700 font-bold">admin123</span>
+            </div>
           </form>
         </div>
       </section>
 
-      <Footer />
+      {/* Footer copyright */}
+      <div className="w-full max-w-5xl py-4 text-center text-xs text-slate-400 font-medium">
+        © 2026 Dr B S Tomar Institute of Medical Sciences & Research • Secured Medical Operations
+      </div>
     </main>
   );
 }

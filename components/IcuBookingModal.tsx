@@ -181,14 +181,22 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
   const handleFileUpload = (type: string, e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      const newDoc = {
-        id: `doc-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
-        type,
-        fileName: file.name,
-        fileSize: file.size,
-        url: URL.createObjectURL(file),
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64Url = event.target?.result as string;
+        if (base64Url) {
+          const newDoc = {
+            id: `doc-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+            type,
+            fileName: file.name,
+            fileSize: file.size,
+            fileType: file.type || 'application/pdf',
+            url: base64Url,
+          };
+          setDocuments((prev) => [...prev.filter((d) => d.type !== type), newDoc]);
+        }
       };
-      setDocuments((prev) => [...prev.filter((d) => d.type !== type), newDoc]);
+      reader.readAsDataURL(file);
     }
   };
 

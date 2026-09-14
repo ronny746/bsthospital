@@ -80,10 +80,10 @@ export default function Home() {
       <a 
         href="/icu-booking" 
         className="fixed bottom-5 right-5 z-40 bg-[#bd171c] hover:bg-[#791017] text-white px-4 py-3 rounded-full shadow-2xl transition-all hover:scale-105 flex items-center gap-2 border-2 border-white/30 text-xs font-black"
-        aria-label="24/7 ICU Bed Booking"
+        aria-label="Nims Tatkaal Seva (ICU Booking)"
       >
         <span className="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span>
-        <span>🚨 24/7 ICU Bed Booking</span>
+        <span>🚨 Nims Tatkaal Seva (ICU Booking)</span>
       </a>
     </main>
   );

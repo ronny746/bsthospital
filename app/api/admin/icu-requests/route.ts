@@ -9,6 +9,8 @@ export async function GET(request: Request) {
     const icuType = searchParams.get('icuType');
     const priority = searchParams.get('priority');
     const search = searchParams.get('search');
+    const dateFilter = searchParams.get('dateFilter') || 'all'; // 'all', 'today', 'yesterday', 'this_week', 'this_month', 'custom'
+    const specificDate = searchParams.get('specificDate'); // e.g. '2026-09-14'
 
     let requests: any[] = [];
 
@@ -34,15 +36,22 @@ export async function GET(request: Request) {
       }
     }
 
+    // Status Filter
     if (status && status !== 'all') {
       requests = requests.filter((r) => r.status === status);
     }
+
+    // ICU Category Filter
     if (icuType && icuType !== 'all') {
       requests = requests.filter((r) => r.medical?.requiredIcuType === icuType);
     }
+
+    // Priority Filter
     if (priority && priority !== 'all') {
       requests = requests.filter((r) => r.priority === priority);
     }
+
+    // Text Search Filter
     if (search) {
       const q = search.toLowerCase();
       requests = requests.filter(
@@ -52,6 +61,30 @@ export async function GET(request: Request) {
           r.patient?.mobile?.includes(q) ||
           r.medical?.diagnosis?.toLowerCase().includes(q)
       );
+    }
+
+    // Date Filter Logic
+    const now = new Date();
+    const todayStr = now.toISOString().slice(0, 10);
+
+    const yesterday = new Date(now);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toISOString().slice(0, 10);
+
+    if (dateFilter === 'today') {
+      requests = requests.filter((r) => r.createdAt && r.createdAt.slice(0, 10) === todayStr);
+    } else if (dateFilter === 'yesterday') {
+      requests = requests.filter((r) => r.createdAt && r.createdAt.slice(0, 10) === yesterdayStr);
+    } else if (dateFilter === 'this_week') {
+      const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      requests = requests.filter((r) => r.createdAt && new Date(r.createdAt) >= sevenDaysAgo);
+    } else if (dateFilter === 'this_month') {
+      const monthPrefix = todayStr.slice(0, 7); // 'YYYY-MM'
+      requests = requests.filter((r) => r.createdAt && r.createdAt.slice(0, 7) === monthPrefix);
+    } else if (dateFilter === 'custom' && specificDate) {
+      requests = requests.filter((r) => r.createdAt && r.createdAt.slice(0, 10) === specificDate);
+    } else if (specificDate && dateFilter !== 'all') {
+      requests = requests.filter((r) => r.createdAt && r.createdAt.slice(0, 10) === specificDate);
     }
 
     return NextResponse.json({ success: true, count: requests.length, requests });

@@ -28,7 +28,7 @@ export async function POST(req: Request) {
         folder = customFolder;
       }
     } else {
-      const body = await req.json();
+      const body: any = await req.json();
       const { file, fileName: name, folder: customFolder, contentType } = body;
 
       if (!file) {
