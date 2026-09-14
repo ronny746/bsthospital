@@ -241,7 +241,9 @@ export default function AdminBedsPage() {
             { key: 'cardiac_icu', label: 'Cardiac ICU (CICU)' },
             { key: 'neuro_icu', label: 'Neuro ICU (NICU)' },
             { key: 'pediatric_icu', label: 'Pediatric ICU (PICU)' },
+            { key: 'neonatal_icu', label: 'Neonatal ICU (Neo-NICU)' },
             { key: 'isolation_icu', label: 'Isolation ICU' },
+            { key: 'ventilator_bed', label: 'Dedicated Ventilator Suite' },
           ].map((tab) => (
             <button
               key={tab.key}

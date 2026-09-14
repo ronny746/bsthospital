@@ -355,21 +355,27 @@ function IcuStatusContent() {
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {request.documents.map((doc: any) => {
-                    const docUrl = doc.url || doc.fileUrl || '';
+                    const docUrl = typeof doc === 'string' ? doc : doc.url || doc.fileUrl || doc.file || '';
                     const isImg =
                       docUrl.startsWith('data:image/') ||
-                      docUrl.match(/\.(jpg|jpeg|png|webp|gif)$/i) ||
-                      doc.fileType?.startsWith('image/');
+                      docUrl.match(/\.(jpg|jpeg|png|webp|gif|svg|avif|bmp)(\?.*)?$/i) ||
+                      doc.fileType?.startsWith('image/') ||
+                      (!docUrl.toLowerCase().includes('.pdf') && !docUrl.startsWith('data:application/pdf'));
+
+                    const docObj =
+                      typeof doc === 'string'
+                        ? { url: doc, type: 'DOCUMENT', fileName: 'Medical Report Attachment' }
+                        : doc;
 
                     return (
                       <div
                         key={doc.id || Math.random().toString()}
-                        onClick={() => setPreviewDoc(doc)}
+                        onClick={() => setPreviewDoc(docObj)}
                         className="p-3 bg-slate-50 hover:bg-red-50/60 border border-slate-200 hover:border-[#bd171c] rounded-2xl cursor-pointer transition shadow-sm hover:shadow-md group flex flex-col justify-between"
                       >
                         {isImg ? (
                           <div className="w-full h-28 bg-slate-200 rounded-xl overflow-hidden mb-2 relative flex items-center justify-center border border-slate-300">
-                            <img src={docUrl} alt={doc.fileName} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
+                            <img src={docUrl} alt={docObj.fileName || 'Attachment'} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
                             <span className="absolute bottom-1 right-1 bg-black/70 text-white text-[9px] font-black px-2 py-0.5 rounded-md backdrop-blur-sm">
                               👁️ View Full
                             </span>
@@ -381,8 +387,8 @@ function IcuStatusContent() {
                           </div>
                         )}
                         <div className="truncate">
-                          <div className="uppercase font-black text-[9px] text-slate-400 truncate">{doc.type ? doc.type.replace(/_/g, ' ') : 'DOCUMENT'}</div>
-                          <div className="truncate text-xs font-black text-[#bd171c]">{doc.fileName || 'Attachment'}</div>
+                          <div className="uppercase font-black text-[9px] text-slate-400 truncate">{docObj.type ? docObj.type.replace(/_/g, ' ') : 'DOCUMENT'}</div>
+                          <div className="truncate text-xs font-black text-[#bd171c]">{docObj.fileName || 'Attachment'}</div>
                         </div>
                       </div>
                     );

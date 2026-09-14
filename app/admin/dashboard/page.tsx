@@ -13,6 +13,7 @@ export default function AdminDashboardPage() {
   const [beds, setBeds] = useState<IcuBed[]>([]);
 
   // Custom Modal dialog state
+  const [actionFeedback, setActionFeedback] = useState('');
   const [modalConfig, setModalConfig] = useState<{
     isOpen: boolean;
     type?: 'confirm' | 'prompt' | 'alert';
@@ -20,7 +21,7 @@ export default function AdminDashboardPage() {
     description?: string;
     icon?: string;
     confirmText?: string;
-    confirmVariant?: 'danger' | 'emerald' | 'primary';
+    confirmVariant?: 'danger' | 'emerald' | 'primary' | 'warning';
     inputLabel?: string;
     defaultValue?: string;
     placeholder?: string;
@@ -91,6 +92,8 @@ export default function AdminDashboardPage() {
       if (res.ok) {
         void fetchDashboardData();
         if (selectedReq?.id === reqId) setSelectedReq(data.request);
+        setActionFeedback(`✓ Request status successfully updated to "${newStatus.replace(/_/g, ' ').toUpperCase()}"`);
+        setTimeout(() => setActionFeedback(''), 6000);
       } else {
         setModalConfig({
           isOpen: true,
@@ -370,7 +373,9 @@ export default function AdminDashboardPage() {
               <option value="cardiac_icu">Cardiac ICU</option>
               <option value="neuro_icu">Neuro ICU</option>
               <option value="pediatric_icu">Pediatric ICU</option>
+              <option value="neonatal_icu">Neonatal ICU</option>
               <option value="isolation_icu">Isolation ICU</option>
+              <option value="ventilator_bed">Ventilator Bed</option>
             </select>
 
             <select
@@ -515,6 +520,13 @@ export default function AdminDashboardPage() {
               </button>
             </div>
 
+            {actionFeedback && (
+              <div className="p-4 bg-emerald-100 text-emerald-950 border-2 border-emerald-400 rounded-2xl text-xs font-black flex items-center justify-between shadow-md animate-fade-in">
+                <span>{actionFeedback}</span>
+                <button onClick={() => setActionFeedback('')} className="text-emerald-800 font-extrabold text-sm ml-2">✕</button>
+              </div>
+            )}
+
             {selectedReq.status === 'bed_reserved' && selectedReq.reservation && (
               <div className="bg-gradient-to-r from-[#172a34] to-[#791017] text-white p-5 rounded-3xl border-2 border-[#bd171c] flex items-center justify-between shadow-xl">
                 <div>
@@ -533,13 +545,35 @@ export default function AdminDashboardPage() {
               <div className="text-xs font-black text-[#172a34] uppercase tracking-wider">UPDATE STATUS & ACTION</div>
               <div className="flex flex-wrap gap-2.5">
                 <button
-                  onClick={() => void handleUpdateStatus(selectedReq.id, 'under_review')}
+                  onClick={() => {
+                    setModalConfig({
+                      isOpen: true,
+                      type: 'confirm',
+                      title: 'Move Status to Under Review?',
+                      description: `Mark request ${selectedReq.requestId} (${selectedReq.patient.fullName}) as Under Review by Medical Team?`,
+                      icon: '🔍',
+                      confirmText: 'Confirm Under Review',
+                      confirmVariant: 'warning',
+                      onConfirm: () => void handleUpdateStatus(selectedReq.id, 'under_review'),
+                    });
+                  }}
                   className="bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 px-4 py-2 rounded-xl text-xs font-black"
                 >
                   Under Review
                 </button>
                 <button
-                  onClick={() => void handleUpdateStatus(selectedReq.id, 'approved')}
+                  onClick={() => {
+                    setModalConfig({
+                      isOpen: true,
+                      type: 'confirm',
+                      title: 'Approve ICU Medical Eligibility?',
+                      description: `Approve ICU medical eligibility for ${selectedReq.patient.fullName} (${selectedReq.requestId})?`,
+                      icon: '✅',
+                      confirmText: 'Approve Request',
+                      confirmVariant: 'emerald',
+                      onConfirm: () => void handleUpdateStatus(selectedReq.id, 'approved'),
+                    });
+                  }}
                   className="bg-teal-100 hover:bg-teal-200 text-teal-900 border border-teal-300 px-4 py-2 rounded-xl text-xs font-black"
                 >
                   Approve Request
@@ -551,7 +585,18 @@ export default function AdminDashboardPage() {
                   Reserve Bed 🛌
                 </button>
                 <button
-                  onClick={() => void handleUpdateStatus(selectedReq.id, 'waiting_list')}
+                  onClick={() => {
+                    setModalConfig({
+                      isOpen: true,
+                      type: 'confirm',
+                      title: 'Add Patient to Waiting List?',
+                      description: `Place ${selectedReq.patient.fullName} (${selectedReq.requestId}) on active ICU Waiting List?`,
+                      icon: '📋',
+                      confirmText: 'Add to Waiting List',
+                      confirmVariant: 'primary',
+                      onConfirm: () => void handleUpdateStatus(selectedReq.id, 'waiting_list'),
+                    });
+                  }}
                   className="bg-orange-100 hover:bg-orange-200 text-orange-900 px-4 py-2 rounded-xl text-xs font-black"
                 >
                   Add to Waiting List
@@ -608,11 +653,22 @@ export default function AdminDashboardPage() {
                   className="flex-1 bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-[#172a34] font-medium"
                 />
                 <button
-                  onClick={() =>
-                    void handleUpdateStatus(selectedReq.id, 'more_info_required', {
-                      requestedInfoDescription: infoReqText,
-                    })
-                  }
+                  onClick={() => {
+                    if (!infoReqText.trim()) return;
+                    setModalConfig({
+                      isOpen: true,
+                      type: 'confirm',
+                      title: 'Send Request for Additional Information?',
+                      description: `Send medical information request "${infoReqText}" to ${selectedReq.patient.fullName}?`,
+                      icon: '📩',
+                      confirmText: 'Send Request',
+                      confirmVariant: 'primary',
+                      onConfirm: () =>
+                        void handleUpdateStatus(selectedReq.id, 'more_info_required', {
+                          requestedInfoDescription: infoReqText,
+                        }),
+                    });
+                  }}
                   className="bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded-xl text-xs font-black"
                 >
                   Send Request
@@ -639,9 +695,19 @@ export default function AdminDashboardPage() {
                 {selectedReq.payment?.schemeCardPhotoUrl && (
                   <div>
                     <span className="text-slate-500">Card Photo:</span>{' '}
-                    <a href={selectedReq.payment.schemeCardPhotoUrl} target="_blank" rel="noopener noreferrer" className="text-[#bd171c] font-black underline hover:text-red-800">
-                      View Scheme Card ↗
-                    </a>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setPreviewDoc({
+                          url: selectedReq.payment?.schemeCardPhotoUrl || '',
+                          type: 'Janadhar / Scheme Card',
+                          fileName: 'Scheme_Card_Photo.png',
+                        })
+                      }
+                      className="text-[#bd171c] font-black underline hover:text-red-800 cursor-pointer bg-transparent border-none p-0 inline"
+                    >
+                      👁️ View Scheme Card ↗
+                    </button>
                   </div>
                 )}
                 <div><span className="text-slate-500">Condition:</span> <span className="text-[#172a34] font-extrabold">{selectedReq.medical.currentMedicalCondition}</span></div>
@@ -662,21 +728,27 @@ export default function AdminDashboardPage() {
                 </h4>
                 <div className="grid grid-cols-2 gap-3">
                   {selectedReq.documents.map((doc: any) => {
-                    const docUrl = doc.url || doc.fileUrl || '';
+                    const docUrl = typeof doc === 'string' ? doc : doc.url || doc.fileUrl || doc.file || '';
                     const isImg =
                       docUrl.startsWith('data:image/') ||
-                      docUrl.match(/\.(jpg|jpeg|png|webp|gif)$/i) ||
-                      doc.fileType?.startsWith('image/');
+                      docUrl.match(/\.(jpg|jpeg|png|webp|gif|svg|avif|bmp)(\?.*)?$/i) ||
+                      doc.fileType?.startsWith('image/') ||
+                      (!docUrl.toLowerCase().includes('.pdf') && !docUrl.startsWith('data:application/pdf'));
+
+                    const docObj =
+                      typeof doc === 'string'
+                        ? { url: doc, type: 'DOCUMENT', fileName: 'Uploaded Attachment' }
+                        : doc;
 
                     return (
                       <div
                         key={doc.id || Math.random().toString()}
-                        onClick={() => setPreviewDoc(doc)}
+                        onClick={() => setPreviewDoc(docObj)}
                         className="p-3 bg-slate-50 hover:bg-red-50/60 border border-slate-200 hover:border-[#bd171c] rounded-2xl flex flex-col justify-between text-xs text-[#172a34] font-bold cursor-pointer transition shadow-sm hover:shadow-md group"
                       >
                         {isImg ? (
                           <div className="w-full h-24 bg-slate-200 rounded-xl overflow-hidden mb-2 relative flex items-center justify-center border border-slate-300">
-                            <img src={docUrl} alt={doc.fileName} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
+                            <img src={docUrl} alt={docObj.fileName || 'Attachment'} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
                             <span className="absolute bottom-1 right-1 bg-black/70 text-white text-[9px] font-black px-2 py-0.5 rounded-md backdrop-blur-sm">
                               👁️ Click to View
                             </span>
@@ -688,8 +760,8 @@ export default function AdminDashboardPage() {
                           </div>
                         )}
                         <div className="truncate">
-                          <div className="uppercase font-black text-[9px] text-slate-500 truncate">{doc.type ? doc.type.replace(/_/g, ' ') : 'DOCUMENT'}</div>
-                          <div className="truncate text-xs font-black text-[#bd171c]">{doc.fileName || 'Attachment'}</div>
+                          <div className="uppercase font-black text-[9px] text-slate-500 truncate">{docObj.type ? docObj.type.replace(/_/g, ' ') : 'DOCUMENT'}</div>
+                          <div className="truncate text-xs font-black text-[#bd171c]">{docObj.fileName || 'Attachment'}</div>
                         </div>
                       </div>
                     );

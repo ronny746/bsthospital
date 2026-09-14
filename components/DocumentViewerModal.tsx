@@ -21,13 +21,22 @@ export default function DocumentViewerModal({ isOpen, onClose, document: doc }: 
 
   if (!isOpen || !doc) return null;
 
-  const documentUrl = doc.url || doc.fileUrl || '';
-  const fileName = doc.fileName || 'Uploaded Medical Document';
-  const docType = doc.type ? doc.type.replace(/_/g, ' ').toUpperCase() : 'DOCUMENT';
+  const documentUrl =
+    typeof doc === 'string'
+      ? doc
+      : doc?.url || doc?.fileUrl || (doc as any)?.file || (doc as any)?.path || '';
+
+  const fileName =
+    typeof doc === 'object' && doc?.fileName ? doc.fileName : 'Uploaded Medical Document';
+
+  const docType =
+    typeof doc === 'object' && doc?.type
+      ? doc.type.replace(/_/g, ' ').toUpperCase()
+      : 'DOCUMENT';
 
   const isPdf =
-    documentUrl.toLowerCase().includes('pdf') ||
-    doc.fileType === 'application/pdf' ||
+    documentUrl.toLowerCase().includes('.pdf') ||
+    (typeof doc === 'object' && doc?.fileType === 'application/pdf') ||
     documentUrl.startsWith('data:application/pdf');
 
   const handleZoomIn = () => setZoom((prev) => Math.min(prev + 0.25, 3));

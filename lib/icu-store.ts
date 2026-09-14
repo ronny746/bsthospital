@@ -10,18 +10,41 @@ import {
   User,
 } from './icu-types';
 
-// Seed Initial Beds
+// Seed Initial Beds across ALL 8 ICU Categories
 const initialBeds: IcuBed[] = [
+  // Medical ICU (MICU)
   { id: 'bed-1', bedNumber: 'MICU-01', icuType: 'medical_icu', unitName: 'Medical ICU - Block A', floor: '3rd Floor', status: 'available', hasVentilator: true, hasOxygen: true, updatedAt: new Date().toISOString() },
   { id: 'bed-2', bedNumber: 'MICU-02', icuType: 'medical_icu', unitName: 'Medical ICU - Block A', floor: '3rd Floor', status: 'occupied', currentRequestId: 'req-101', currentPatientName: 'Rajesh Sharma', hasVentilator: true, hasOxygen: true, updatedAt: new Date().toISOString() },
   { id: 'bed-3', bedNumber: 'MICU-03', icuType: 'medical_icu', unitName: 'Medical ICU - Block A', floor: '3rd Floor', status: 'available', hasVentilator: false, hasOxygen: true, updatedAt: new Date().toISOString() },
+
+  // Surgical ICU (SICU)
   { id: 'bed-4', bedNumber: 'SICU-01', icuType: 'surgical_icu', unitName: 'Surgical ICU - Block B', floor: '4th Floor', status: 'reserved', currentRequestId: 'req-1006', currentPatientName: 'maan ashiwal', reservedUntil: new Date(Date.now() + 7200000).toISOString(), hasVentilator: true, hasOxygen: true, updatedAt: new Date().toISOString() },
   { id: 'bed-5', bedNumber: 'SICU-02', icuType: 'surgical_icu', unitName: 'Surgical ICU - Block B', floor: '4th Floor', status: 'maintenance', hasVentilator: true, hasOxygen: true, updatedAt: new Date().toISOString() },
+  { id: 'bed-5b', bedNumber: 'SICU-03', icuType: 'surgical_icu', unitName: 'Surgical ICU - Block B', floor: '4th Floor', status: 'available', hasVentilator: true, hasOxygen: true, updatedAt: new Date().toISOString() },
+
+  // Cardiac ICU (CICU)
   { id: 'bed-6', bedNumber: 'CICU-01', icuType: 'cardiac_icu', unitName: 'Cardiac ICU - Block C', floor: '2nd Floor', status: 'available', hasVentilator: true, hasOxygen: true, updatedAt: new Date().toISOString() },
   { id: 'bed-7', bedNumber: 'CICU-02', icuType: 'cardiac_icu', unitName: 'Cardiac ICU - Block C', floor: '2nd Floor', status: 'reserved', currentRequestId: 'req-102', currentPatientName: 'Sita Devi', reservedUntil: new Date(Date.now() + 7200000).toISOString(), hasVentilator: true, hasOxygen: true, updatedAt: new Date().toISOString() },
+
+  // Neuro ICU (NICU)
   { id: 'bed-8', bedNumber: 'NICU-01', icuType: 'neuro_icu', unitName: 'Neuro ICU - Block D', floor: '5th Floor', status: 'available', hasVentilator: true, hasOxygen: true, updatedAt: new Date().toISOString() },
+  { id: 'bed-8b', bedNumber: 'NICU-02', icuType: 'neuro_icu', unitName: 'Neuro ICU - Block D', floor: '5th Floor', status: 'available', hasVentilator: true, hasOxygen: true, updatedAt: new Date().toISOString() },
+
+  // Pediatric ICU (PICU)
   { id: 'bed-9', bedNumber: 'PICU-01', icuType: 'pediatric_icu', unitName: 'Pediatric ICU - Block E', floor: '3rd Floor', status: 'available', hasVentilator: true, hasOxygen: true, updatedAt: new Date().toISOString() },
+  { id: 'bed-9b', bedNumber: 'PICU-02', icuType: 'pediatric_icu', unitName: 'Pediatric ICU - Block E', floor: '3rd Floor', status: 'available', hasVentilator: true, hasOxygen: true, updatedAt: new Date().toISOString() },
+
+  // Neonatal ICU
+  { id: 'bed-11', bedNumber: 'NEO-01', icuType: 'neonatal_icu', unitName: 'Neonatal ICU - Block E', floor: '3rd Floor', status: 'available', hasVentilator: true, hasOxygen: true, updatedAt: new Date().toISOString() },
+  { id: 'bed-12', bedNumber: 'NEO-02', icuType: 'neonatal_icu', unitName: 'Neonatal ICU - Block E', floor: '3rd Floor', status: 'available', hasVentilator: true, hasOxygen: true, updatedAt: new Date().toISOString() },
+
+  // Isolation ICU
   { id: 'bed-10', bedNumber: 'ISOU-01', icuType: 'isolation_icu', unitName: 'Isolation ICU - Block F', floor: '1st Floor', status: 'available', hasVentilator: true, hasOxygen: true, updatedAt: new Date().toISOString() },
+  { id: 'bed-10b', bedNumber: 'ISOU-02', icuType: 'isolation_icu', unitName: 'Isolation ICU - Block F', floor: '1st Floor', status: 'available', hasVentilator: true, hasOxygen: true, updatedAt: new Date().toISOString() },
+
+  // Dedicated Ventilator Beds
+  { id: 'bed-13', bedNumber: 'VENT-01', icuType: 'ventilator_bed', unitName: 'Ventilator Suite - Block A', floor: '3rd Floor', status: 'available', hasVentilator: true, hasOxygen: true, updatedAt: new Date().toISOString() },
+  { id: 'bed-14', bedNumber: 'VENT-02', icuType: 'ventilator_bed', unitName: 'Ventilator Suite - Block A', floor: '3rd Floor', status: 'available', hasVentilator: true, hasOxygen: true, updatedAt: new Date().toISOString() },
 ];
 
 // Initial Requests array (Seeded with live MongoDB Atlas records for 100% instant local parity)
