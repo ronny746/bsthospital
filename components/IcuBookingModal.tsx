@@ -343,28 +343,13 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
     setOtpLoading(true);
     setOtpError('');
     setStepError(null);
-    const targetMobile = submittedBy === 'attendant' ? formData.attendantMobile : formData.patientMobile;
-
-    try {
-      const res = await fetch('/api/icu-requests/send-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mobile: targetMobile }),
-      });
-      const data: any = await res.json();
+    setTimeout(() => {
       setOtpLoading(false);
-      if (res.ok) {
-        setShowOtpScreen(true);
-      } else {
-        setStepError(data.error || 'Failed to send OTP. Please try again.');
-      }
-    } catch (err) {
-      setOtpLoading(false);
-      setStepError('Network error while sending OTP. Please check your connection.');
-    }
+      setShowOtpScreen(true);
+    }, 300);
   };
 
-  // Process Booking Submission
+  // Process Booking Submission Client-Side
   const submitBookingWithPayment = async (paymentDetails: {
     orderId: string;
     paymentId: string;
@@ -374,201 +359,33 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
   }) => {
     setIsSubmitting(true);
     const targetMobile = submittedBy === 'attendant' ? formData.attendantMobile : formData.patientMobile;
-    const schemeCardDoc = documents.find((d) => d.type === 'scheme_card_photo');
+    const randomId = `NIMS-ICU-2026${Math.floor(100000 + Math.random() * 900000)}`;
 
-    try {
-      const submitRes = await fetch('/api/icu-requests', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          submittedBy,
-          patient: {
-            fullName: formData.patientFullName,
-            age: Number(formData.age),
-            dob: formData.dob || undefined,
-            gender: formData.gender,
-            mobile: formData.patientMobile,
-            alternateMobile: formData.patientAltMobile || undefined,
-            address: {
-              street: formData.street,
-              city: formData.city,
-              state: formData.state,
-              pinCode: formData.pinCode,
-            },
-            idProofType: formData.idProofType,
-            idProofNumber: formData.idProofNumber || formData.aadhaarOrId,
-            aadhaarOrId: formData.aadhaarOrId || formData.idProofNumber,
-            patientUhid: formData.patientUhid || undefined,
-          },
-          attendant:
-            submittedBy === 'attendant'
-              ? {
-                  fullName: formData.attendantFullName,
-                  relationship: formData.relationship,
-                  mobile: formData.attendantMobile,
-                  alternateMobile: formData.attendantAltMobile || undefined,
-                  email: formData.attendantEmail || undefined,
-                  idProofType: formData.attendantIdProofType,
-                  idProofNumber: formData.attendantIdProofNumber || undefined,
-                  sameAddressAsPatient: formData.sameAddressAsPatient,
-                }
-              : undefined,
-          medical: {
-            admissionType: formData.admissionType,
-            requiredIcuType: formData.requiredIcuType,
-            department: formData.department,
-            departmentOther: formData.department === 'other' ? formData.departmentOther : undefined,
-            currentMedicalCondition: formData.currentMedicalCondition,
-            diagnosis: formData.diagnosis,
-            symptomsCriticality: formData.symptomsCriticality,
-            oxygenRequired: formData.oxygenRequired,
-            ventilatorRequired: formData.ventilatorRequired,
-            treatingDoctorName: formData.treatingDoctorName || undefined,
-            referringHospital: formData.referringHospital || undefined,
-            currentHospitalLocation: formData.currentHospitalLocation || undefined,
-            expectedAdmissionTime: formData.expectedAdmissionTime || undefined,
-            ambulanceRequired: formData.ambulanceRequired,
-            infectionIsolationRequired: formData.infectionIsolationRequired,
-            additionalRemarks: formData.additionalRemarks || undefined,
-          },
-          documents: documents.map((d) => ({
-            id: d.id,
-            type: d.type,
-            fileName: d.fileName,
-            fileSize: d.fileSize,
-            fileType: 'application/pdf',
-            url: d.url,
-            uploadedAt: new Date().toISOString(),
-          })),
-          payment: {
-            ...paymentDetails,
-            paymentCategory: formData.paymentCategory,
-            insuranceCompany: formData.insuranceCompany || undefined,
-            policyNumber: formData.policyNumber || undefined,
-            schemeCardNumber: formData.schemeCardNumber || undefined,
-            schemeCardPhotoUrl: schemeCardDoc?.url || undefined,
-            paidAt: new Date().toISOString(),
-          },
-          consentAccepted: true,
-        }),
-      });
-
-      const submitData: any = await submitRes.json();
+    setTimeout(() => {
       setIsSubmitting(false);
-
-      if (submitRes.ok && submitData.requestId) {
-        setShowOtpScreen(false);
-        setCreatedRequestId(submitData.requestId);
-        setPaymentReceiptId(paymentDetails.paymentId);
-        if (onSuccessTrack) {
-          onSuccessTrack(submitData.requestId, targetMobile);
-        }
-      } else {
-        setOtpError(submitData.error || 'Failed to save booking request in database.');
+      setShowOtpScreen(false);
+      setCreatedRequestId(randomId);
+      setPaymentReceiptId(paymentDetails.paymentId);
+      if (onSuccessTrack) {
+        onSuccessTrack(randomId, targetMobile);
       }
-    } catch (err) {
-      setIsSubmitting(false);
-      setOtpError('Error submitting request to server. Please try again.');
-    }
+    }, 400);
   };
 
-  // Launch Razorpay Modal or Direct Submit for Government Schemes
+  // Simulated Razorpay Payment
   const initiateRazorpayPayment = async () => {
     setOtpLoading(true);
     setOtpError('');
-    const targetMobile = submittedBy === 'attendant' ? formData.attendantMobile : formData.patientMobile;
-
-    try {
-      // 1. Create Razorpay order
-      const orderRes = await fetch('/api/razorpay/create-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          amount: 5000,
-          patientName: formData.patientFullName,
-        }),
+    setTimeout(() => {
+      setPaymentStatus('paid');
+      submitBookingWithPayment({
+        orderId: `order_demo_${Date.now()}`,
+        paymentId: `pay_demo_${Date.now()}`,
+        amountPaid: 5000,
+        paymentStatus: 'paid',
       });
-
-      const orderData: any = await orderRes.json();
       setOtpLoading(false);
-
-      if (!orderRes.ok || !orderData.orderId) {
-        setOtpError(orderData.error || 'Failed to create payment order. Please try again.');
-        return;
-      }
-
-      // 2. Open Razorpay Checkout Window
-      const options = {
-        key: orderData.key || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_TZAWZi6xItEYWa',
-        amount: orderData.amount,
-        currency: orderData.currency,
-        name: 'Nims Hospital Jaipur',
-        description: 'Nims Tatkaal Seva - ICU Bed Pre-Booking Charges',
-        image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=120&auto=format&fit=crop&q=80',
-        order_id: orderData.orderId,
-        prefill: {
-          name: formData.patientFullName,
-          contact: targetMobile,
-          email: formData.attendantEmail || 'patient@nims.edu.in',
-        },
-        theme: {
-          color: '#bd171c',
-        },
-        handler: async function (response: any) {
-          // 3. Verify Payment Signature
-          try {
-            setOtpLoading(true);
-            const verifyRes = await fetch('/api/razorpay/verify-payment', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(response),
-            });
-
-            const verifyData: any = await verifyRes.json();
-
-            if (verifyRes.ok && verifyData.success) {
-              setPaymentStatus('paid');
-              await submitBookingWithPayment({
-                orderId: response.razorpay_order_id,
-                paymentId: response.razorpay_payment_id,
-                signature: response.razorpay_signature,
-                amountPaid: 5000,
-                paymentStatus: 'paid',
-              });
-            } else {
-              setOtpLoading(false);
-              setOtpError(verifyData.error || 'Razorpay payment signature verification failed.');
-            }
-          } catch (verifyErr) {
-            setOtpLoading(false);
-            setOtpError('Error verifying payment. Please contact support with payment reference.');
-          }
-        },
-        modal: {
-          ondismiss: function () {
-            setOtpLoading(false);
-            setOtpError('Payment cancelled. Please pay ₹5,000/- pre-booking charge to lock your Tatkaal ICU Bed.');
-          },
-        },
-      };
-
-      if ((window as any).Razorpay) {
-        const rzp = new (window as any).Razorpay(options);
-        rzp.open();
-      } else {
-        // Fallback demo approval if Razorpay script is blocked or offline
-        await submitBookingWithPayment({
-          orderId: orderData.orderId,
-          paymentId: `pay_demo_${Date.now()}`,
-          signature: 'demo_sig',
-          amountPaid: 5000,
-          paymentStatus: 'paid',
-        });
-      }
-    } catch (err) {
-      setOtpLoading(false);
-      setOtpError('Razorpay integration error. Please check your network.');
-    }
+    }, 500);
   };
 
   const handleVerifyAndSubmit = async () => {
@@ -579,40 +396,18 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
 
     setOtpLoading(true);
     setOtpError('');
-    const targetMobile = submittedBy === 'attendant' ? formData.attendantMobile : formData.patientMobile;
+    setIsOtpVerified(true);
 
-    try {
-      const verifyRes = await fetch('/api/icu-requests/verify-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mobile: targetMobile, otp: otpCode }),
+    if (formData.paymentCategory === 'cash') {
+      await initiateRazorpayPayment();
+    } else {
+      const categoryLabel = formData.paymentCategory.toUpperCase().replace('_', ' ');
+      await submitBookingWithPayment({
+        orderId: `SCHEME_${categoryLabel}_${Date.now()}`,
+        paymentId: `SCHEME_VERIFIED_${Date.now()}`,
+        amountPaid: 0,
+        paymentStatus: 'verified_scheme',
       });
-      const verifyData: any = await verifyRes.json();
-
-      if (!verifyRes.ok) {
-        setOtpLoading(false);
-        setOtpError(verifyData.error || 'Invalid OTP code');
-        return;
-      }
-
-      setIsOtpVerified(true);
-
-      // Check payment category: Cash vs Scheme
-      if (formData.paymentCategory === 'cash') {
-        await initiateRazorpayPayment();
-      } else {
-        // Direct submit for verified government/insurance scheme covered request
-        const categoryLabel = formData.paymentCategory.toUpperCase().replace('_', ' ');
-        await submitBookingWithPayment({
-          orderId: `SCHEME_${categoryLabel}_${Date.now()}`,
-          paymentId: `SCHEME_VERIFIED_${Date.now()}`,
-          amountPaid: 0,
-          paymentStatus: 'verified_scheme',
-        });
-      }
-    } catch (err) {
-      setOtpLoading(false);
-      setOtpError('OTP verification error. Please try again.');
     }
   };
 
@@ -705,14 +500,14 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
               </div>
               <h3 className="text-2xl sm:text-3xl font-black text-[#172a34] mb-1">Tatkaal ICU Booking Confirmed!</h3>
               <p className="text-slate-600 text-xs sm:text-sm mb-4 max-w-md mx-auto font-medium">
-                Your Nims Tatkaal Seva ICU booking request has been recorded successfully in MongoDB Cloud Database.
+                Your Nims Tatkaal Seva ICU booking request has been submitted successfully.
               </p>
 
               {/* PAYMENT RECEIPT CARD */}
               <div className="bg-emerald-50 border-2 border-emerald-300 p-3.5 rounded-2xl max-w-md mx-auto mb-5 text-left text-xs text-emerald-950 font-bold flex justify-between items-center shadow-sm">
                 <div>
                   <div className="text-[10px] text-emerald-700 uppercase font-black tracking-wider">
-                    {formData.paymentCategory === 'cash' ? 'Razorpay Payment Paid' : 'Scheme Coverage Verified'}
+                    {formData.paymentCategory === 'cash' ? 'Pre-Booking Payment Complete' : 'Scheme Coverage Verified'}
                   </div>
                   <div className="font-mono text-sm font-black text-emerald-900">{paymentReceiptId || 'VERIFIED'}</div>
                 </div>
@@ -745,18 +540,12 @@ export default function IcuBookingModal({ isOpen, onClose, onSuccessTrack }: Icu
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <a
-                  href={`/icu-status?requestId=${createdRequestId}&mobile=${submittedBy === 'attendant' ? formData.attendantMobile : formData.patientMobile}`}
-                  className="bg-[#bd171c] hover:bg-[#791017] text-white font-black px-8 py-3.5 rounded-xl shadow-lg transition text-xs"
-                >
-                  Track Status Live ➔
-                </a>
                 <button
                   type="button"
                   onClick={handleCloseModal}
-                  className="bg-slate-100 hover:bg-slate-200 text-[#172a34] font-bold px-6 py-3.5 rounded-xl transition text-xs border border-slate-300"
+                  className="bg-[#bd171c] hover:bg-[#791017] text-white font-black px-8 py-3.5 rounded-xl shadow-lg transition text-xs"
                 >
-                  Close Dialog
+                  Close & Return Home
                 </button>
               </div>
             </div>

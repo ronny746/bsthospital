@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import TopBar from '../components/TopBar';
 import NavigationBar from '../components/NavigationBar';
 import NewsTicker from '../components/NewsTicker';
@@ -15,8 +18,11 @@ import FacilitiesGallery from '../components/FacilitiesGallery';
 import Testimonials from '../components/Testimonials';
 import NewsMedia from '../components/NewsMedia';
 import Footer from '../components/Footer';
+import IcuBookingModal from '../components/IcuBookingModal';
 
 export default function Home() {
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+
   return (
     <main className="min-h-screen bg-cream font-sans overflow-x-hidden">
       {/* Header Layer */}
@@ -30,7 +36,7 @@ export default function Home() {
       </FadeIn>
       
       <FadeIn delay={0.2}>
-        <EmergencyTrauma />
+        <EmergencyTrauma onOpenBookingModal={() => setIsBookingModalOpen(true)} />
       </FadeIn>
       
       <FadeIn direction="left">
@@ -77,14 +83,16 @@ export default function Home() {
       <Footer />
       
       {/* Clean Single Floating ICU Booking Action Button */}
-      <a 
-        href="/icu-booking" 
-        className="fixed bottom-5 right-5 z-40 bg-[#bd171c] hover:bg-[#791017] text-white px-4 py-3 rounded-full shadow-2xl transition-all hover:scale-105 flex items-center gap-2 border-2 border-white/30 text-xs font-black"
+      <button 
+        onClick={() => setIsBookingModalOpen(true)} 
+        className="fixed bottom-5 right-5 z-40 bg-[#bd171c] hover:bg-[#791017] text-white px-4 py-3 rounded-full shadow-2xl transition-all hover:scale-105 flex items-center gap-2 border-2 border-white/30 text-xs font-black cursor-pointer"
         aria-label="Nims Tatkaal Seva (ICU Booking)"
       >
         <span className="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span>
         <span>🚨 Nims Tatkaal Seva (ICU Booking)</span>
-      </a>
+      </button>
+
+      <IcuBookingModal isOpen={isBookingModalOpen} onClose={() => setIsBookingModalOpen(false)} />
     </main>
   );
 }

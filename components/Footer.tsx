@@ -22,21 +22,20 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-bold mb-6 text-lg">Quick Links</h4>
             <ul className="space-y-3 text-sm">
-              <li><a href="#home" className="hover:text-secondary transition-colors">Home</a></li>
-              <li><a href="#about" className="hover:text-secondary transition-colors">About Us</a></li>
-              <li><a href="#departments" className="hover:text-secondary transition-colors">Departments</a></li>
-              <li><a href="#doctors" className="hover:text-secondary transition-colors">Find a Doctor</a></li>
-              <li><a href="#facilities" className="hover:text-secondary transition-colors">Facilities</a></li>
+              <li><a href="/" className="hover:text-secondary transition-colors">Home</a></li>
+              <li><a href="/about" className="hover:text-secondary transition-colors">About Us</a></li>
+              <li><a href="/doctors" className="hover:text-secondary transition-colors">Find a Doctor</a></li>
+              <li><a href="/careers" className="hover:text-secondary transition-colors">Careers & Jobs</a></li>
+              <li><a href="/#facilities" className="hover:text-secondary transition-colors">Facilities</a></li>
             </ul>
           </div>
           
           <div>
             <h4 className="text-white font-bold mb-6 text-lg">Patient Support</h4>
             <ul className="space-y-3 text-sm">
-              <li><a href="/icu-booking" className="text-emerald-400 font-bold hover:underline">🚨 24/7 ICU Bed Booking</a></li>
-              <li><a href="/icu-status" className="hover:text-secondary transition-colors">Track ICU Request Status</a></li>
-              <li><a href="/admin/login" className="hover:text-secondary transition-colors">ICU Staff & Admin Portal</a></li>
-              <li><a href="#appointment" className="hover:text-secondary transition-colors">Book an Appointment</a></li>
+              <li><a href="#home" className="text-emerald-400 font-bold hover:underline">🚨 24/7 ICU Bed Booking</a></li>
+              <li><a href="#departments" className="hover:text-secondary transition-colors">ICU & Emergency Services</a></li>
+              <li><a href="#doctors" className="hover:text-secondary transition-colors">Consult Our Specialists</a></li>
               <li><a href="#contact" className="hover:text-secondary transition-colors">Emergency Contacts</a></li>
             </ul>
           </div>

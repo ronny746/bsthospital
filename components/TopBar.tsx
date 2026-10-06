@@ -13,17 +13,17 @@ export default function TopBar() {
       </div>
 
       <div className="flex items-center gap-2 sm:gap-4 shrink-0">
-        <a href="#careers" className="hidden sm:inline text-slate-300 hover:text-white transition text-[11px] font-semibold">
+        <a href="/careers" className="hidden sm:inline text-slate-300 hover:text-white transition text-[11px] font-semibold">
           Careers
         </a>
 
         {/* LUXURY PATIENT PORTAL PILL BUTTON */}
         <a 
-          href="/icu-status" 
+          href="#contact" 
           className="bg-white/15 hover:bg-white/25 text-[#e5b64a] hover:text-white border border-[#e5b64a]/50 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-[11px] font-black transition flex items-center gap-1 shadow-sm whitespace-nowrap"
         >
           <span>👤</span>
-          <span>Patient Portal</span>
+          <span>Contact Us</span>
         </a>
       </div>
     </div>

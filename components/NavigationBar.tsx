@@ -39,31 +39,25 @@ export default function NavigationBar() {
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#bd171c] transition-all group-hover:w-full"></span>
             </a>
             <a
-              href="/#about"
+              href="/about"
               className="text-xs sm:text-sm font-bold text-slate-700 hover:text-[#bd171c] transition-colors py-1"
             >
               About Us
             </a>
             <a
-              href="/#departments"
-              className="text-xs sm:text-sm font-bold text-slate-700 hover:text-[#bd171c] transition-colors py-1"
-            >
-              Departments
-            </a>
-            <a
-              href="/#doctors"
+              href="/doctors"
               className="text-xs sm:text-sm font-bold text-slate-700 hover:text-[#bd171c] transition-colors py-1"
             >
               Doctors
             </a>
-
             <a
-              href="/icu-status"
-              className="text-xs sm:text-sm font-bold text-slate-700 hover:text-[#bd171c] transition-colors py-1 flex items-center gap-1.5"
+              href="/careers"
+              className="text-xs sm:text-sm font-bold text-slate-700 hover:text-[#bd171c] transition-colors py-1"
             >
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              Track Request
+              Careers
             </a>
+
+
 
             {/* LUXURY 24/7 ICU BED BOOKING BUTTON */}
             <button
