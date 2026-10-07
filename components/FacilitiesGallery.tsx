@@ -1,10 +1,10 @@
 export default function FacilitiesGallery() {
   const facilities = [
-    { image: 'reception.webp', title: 'Reception & Waiting', span: 'col-span-1 md:col-span-2 row-span-2' },
-    { image: 'general ward.webp', title: 'General Ward', span: 'col-span-1' },
-    { image: 'skill lab.webp', title: 'Advanced Skill Lab', span: 'col-span-1' },
-    { image: 'library.webp', title: 'Central Library', span: 'col-span-1' },
-    { image: 'dissection hall.webp', title: 'Dissection Hall', span: 'col-span-1' },
+    { image: 'bst-reception.jpg', title: 'Reception & Patient Care', span: 'col-span-1 md:col-span-2 row-span-2' },
+    { image: 'bst-icu-ward.jpg', title: 'Advanced ICU & Critical Care', span: 'col-span-1' },
+    { image: 'bst-operation-theatre.jpg', title: 'Modular Operation Theatre', span: 'col-span-1' },
+    { image: 'bst-diagnostic-lab.jpg', title: 'Automated Pathology & Diagnostic Lab', span: 'col-span-1' },
+    { image: 'bst-blood-bank.jpg', title: 'Blood Bank & Apheresis Center', span: 'col-span-1' },
   ];
 
   return (

@@ -57,7 +57,7 @@ export default function AboutPage() {
       <section 
         className="relative text-white py-8 sm:py-10 md:py-12 border-b-4 border-[#c83220] bg-cover bg-center flex items-center overflow-hidden"
         style={{
-          backgroundImage: "linear-gradient(90deg, rgba(23, 42, 52, 0.94) 0%, rgba(15, 35, 46, 0.88) 45%, rgba(158, 36, 23, 0.78) 100%), url('/images/bst-hero-building.png')",
+          backgroundImage: "linear-gradient(90deg, rgba(23, 42, 52, 0.94) 0%, rgba(15, 35, 46, 0.88) 45%, rgba(158, 36, 23, 0.78) 100%), url('/images/bst-hospital-exterior.jpg')",
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 text-center md:text-left w-full">
@@ -188,8 +188,8 @@ export default function AboutPage() {
             <div className="lg:col-span-5 space-y-4">
               <div className="rounded-2xl overflow-hidden shadow-xl border-4 border-white bg-slate-100">
                 <img
-                  src="/images/bst-hero-building.png"
-                  alt="Dr. BST Hospital Building, Jagatpura Jaipur"
+                  src="/images/bst-hospital-exterior.jpg"
+                  alt="Dr. BST Hospital Building Exterior, Jagatpura Jaipur"
                   className="w-full h-64 sm:h-72 object-cover"
                 />
               </div>
@@ -197,15 +197,15 @@ export default function AboutPage() {
               <div className="grid grid-cols-2 gap-3.5">
                 <div className="rounded-xl overflow-hidden shadow-md border-2 border-white bg-slate-100">
                   <img
-                    src="/images/gallery/gallery27.png"
-                    alt="Hospital Hallway & Modern Facilities"
+                    src="/images/bst-reception.jpg"
+                    alt="Hospital Reception & Registration Desk"
                     className="w-full h-36 object-cover"
                   />
                 </div>
                 <div className="rounded-xl overflow-hidden shadow-md border-2 border-white bg-slate-100">
                   <img
-                    src="/images/gallery/gallery21.png"
-                    alt="Specialist Consultation & Clinical Care"
+                    src="/images/bst-icu-ward.jpg"
+                    alt="Modern Inpatient & ICU Critical Care Ward"
                     className="w-full h-36 object-cover"
                   />
                 </div>
@@ -225,8 +225,8 @@ export default function AboutPage() {
             <div className="lg:col-span-5">
               <div className="rounded-2xl overflow-hidden shadow-xl border-4 border-white bg-slate-100">
                 <img
-                  src="/images/gallery/gallery04.png"
-                  alt="Dr. BST Hospital Campus Infrastructure"
+                  src="/images/bst-operation-theatre.jpg"
+                  alt="State-of-the-Art Modular Operation Theatre"
                   className="w-full h-80 sm:h-96 object-cover"
                 />
               </div>

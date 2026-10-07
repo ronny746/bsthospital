@@ -6,8 +6,8 @@ export default function AcademicsHighlight() {
           
           <div className="order-2 lg:order-1 relative">
             <div className="grid grid-cols-2 gap-3 sm:gap-4">
-              <img src="/images/anatomy museum.webp" alt="Anatomy Museum" className="w-full h-44 sm:h-64 object-cover rounded-xl shadow-md" />
-              <img src="/images/library.webp" alt="Central Library" className="w-full h-44 sm:h-64 object-cover rounded-xl shadow-md mt-4 sm:mt-8" />
+              <img src="/images/bst-medical-research.jpg" alt="Medical College Research & Microscopy Lab" className="w-full h-44 sm:h-64 object-cover rounded-xl shadow-md" />
+              <img src="/images/bst-diagnostic-lab.jpg" alt="Advanced Pathology & Clinical Lab" className="w-full h-44 sm:h-64 object-cover rounded-xl shadow-md mt-4 sm:mt-8" />
             </div>
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-3.5 sm:p-6 rounded-xl sm:rounded-2xl shadow-2xl z-10 text-center border border-slate-100">
               <span className="text-2xl sm:text-4xl font-bold text-primary block">150</span>
@@ -41,7 +41,7 @@ export default function AcademicsHighlight() {
               </li>
             </ul>
 
-            <a href="#contact" className="inline-block border-2 border-primary text-primary font-bold px-5 sm:px-8 py-2 sm:py-3 rounded-md hover:bg-primary hover:text-white transition-colors text-xs sm:text-base">
+            <a href="/contact" className="inline-block border-2 border-primary text-primary font-bold px-5 sm:px-8 py-2 sm:py-3 rounded-md hover:bg-primary hover:text-white transition-colors text-xs sm:text-base">
               Explore Academic Programs
             </a>
           </div>

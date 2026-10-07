@@ -15,7 +15,7 @@ export default function DepartmentsPage() {
       category: 'Clinical',
       badge: 'Level-1 Emergency ICU',
       desc: 'Comprehensive adult internal medicine, multi-organ critical illness management, and infectious disease care.',
-      image: '/images/general ward.webp',
+      image: '/images/bst-icu-ward.jpg',
       facilities: ['24/7 ICU & HDU Beds', 'Ventilator & Dialysis Support', 'Dedicated Resident Physicians'],
     },
     {
@@ -55,7 +55,7 @@ export default function DepartmentsPage() {
       category: 'Diagnostics',
       badge: 'Automated 24/7 Labs',
       desc: 'Automated diagnostic pathology, hematology, clinical microbiology, histopathology, and comprehensive health panels.',
-      image: '/images/pathology.webp',
+      image: '/images/bst-diagnostic-lab.jpg',
       facilities: ['Fully Automated Analyzers', 'Blood Component Storage', 'Biochemical Profiling'],
     },
     {
@@ -87,7 +87,7 @@ export default function DepartmentsPage() {
       category: 'Academic',
       badge: 'Academic Pedagogy',
       desc: 'Hands-on clinical training facility for medical students, emergency simulation mannequins, and life-support drills.',
-      image: '/images/skill lab.webp',
+      image: '/images/bst-medical-research.jpg',
       facilities: ['High-Fidelity Mannequins', 'BLS & ACLS Certified Training', 'Surgical Skills Workstations'],
     },
     {
@@ -103,7 +103,7 @@ export default function DepartmentsPage() {
       category: 'Support',
       badge: 'Immediate Triage',
       desc: '24/7 centralized triage desk facilitating instant admission, ambulance reception, and emergency casualty beds.',
-      image: '/images/reception.webp',
+      image: '/images/bst-reception.jpg',
       facilities: ['Immediate Triage Assessment', 'Dedicated Ambulance Bay', 'Direct ICU Stretcher Access'],
     },
   ];
@@ -124,7 +124,7 @@ export default function DepartmentsPage() {
       <section 
         className="relative text-white py-8 sm:py-10 md:py-12 border-b-4 border-[#c83220] bg-cover bg-center flex items-center overflow-hidden"
         style={{
-          backgroundImage: "linear-gradient(90deg, rgba(23, 42, 52, 0.94) 0%, rgba(15, 35, 46, 0.88) 45%, rgba(158, 36, 23, 0.78) 100%), url('/images/bst-hero-building.png')",
+          backgroundImage: "linear-gradient(90deg, rgba(23, 42, 52, 0.94) 0%, rgba(15, 35, 46, 0.88) 45%, rgba(158, 36, 23, 0.78) 100%), url('/images/bst-hospital-exterior.jpg')",
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 text-center md:text-left w-full">

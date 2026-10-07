@@ -1,11 +1,11 @@
 export default function CentersOfExcellence() {
   const departments = [
-    ['General Medicine', 'Clinical Care', 'Diagnosis, comprehensive inpatient/outpatient treatment and preventive care for adults.', '/images/general ward.webp'],
+    ['General Medicine', 'Clinical Care', 'Diagnosis, comprehensive inpatient/outpatient treatment and preventive care for adults.', '/images/bst-icu-ward.jpg'],
     ['Orthopaedics', 'Bone & Joint', 'Joint replacement, trauma fracture management, arthroscopy and spine care.', '/images/ortho.webp'],
     ['Paediatrics & Neonatology', 'Child Health', 'Advanced pediatric ICU, neonatal care, vaccinations and childhood health management.', '/images/paeditrics.webp'],
     ['Radio-Diagnosis & Imaging', 'Diagnostics', 'High-resolution CT, MRI, digital X-Ray and ultrasound imaging.', '/images/Radio diagonosis.webp'],
     ['Otorhinolaryngology (ENT)', 'ENT Care', 'Microsurgery of ear, endoscopic sinus surgery, throat and voice clinical care.', '/images/Otorhinolaryngology.webp'],
-    ['Pathology & Biochemistry', 'Diagnostic Labs', 'High-tech automated pathology, clinical microbiology and biochemistry analysis.', '/images/pathology.webp'],
+    ['Pathology & Biochemistry', 'Diagnostic Labs', 'High-tech automated pathology, clinical microbiology and biochemistry analysis.', '/images/bst-diagnostic-lab.jpg'],
     ['Psychiatry & Behavioral Health', 'Mental Health', 'Specialist consultation, counseling, stress management and neuropsychiatric care.', '/images/psychiatry.webp'],
     ['Pharmacology & Clinical Pharmacy', '24/7 Pharmacy', 'Certified medical dispensary and clinical pharmacology support.', '/images/Pharmacy.webp'],
   ];

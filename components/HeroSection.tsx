@@ -11,7 +11,7 @@ export default function HeroSection() {
           muted
           playsInline
           preload="auto"
-          poster="/images/bst-hero-building.png"
+          poster="/images/bst-hospital-exterior.jpg"
           className="w-full h-full object-cover object-center"
         >
           <source src="/videos/hero-video.mp4" type="video/mp4" />

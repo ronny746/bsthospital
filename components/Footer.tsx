@@ -32,6 +32,7 @@ export default function Footer() {
               <li><a href="/doctors" className="hover:text-[#c83220] transition-colors">Find a Doctor</a></li>
               <li><a href="/careers" className="hover:text-[#c83220] transition-colors">Careers & Jobs</a></li>
               <li><a href="/#facilities" className="hover:text-[#c83220] transition-colors">Facilities</a></li>
+              <li><a href="/contact" className="hover:text-[#c83220] transition-colors font-bold text-white">Contact Us</a></li>
             </ul>
           </div>
           
@@ -49,7 +50,7 @@ export default function Footer() {
               </li>
               <li><a href="/#departments" className="hover:text-[#c83220] transition-colors">Emergency & Trauma Care</a></li>
               <li><a href="/doctors" className="hover:text-[#c83220] transition-colors">Consult Our Specialists</a></li>
-              <li><a href="#contact" className="hover:text-[#c83220] transition-colors">Location & Contact</a></li>
+              <li><a href="/contact" className="hover:text-[#c83220] transition-colors">Location & Contact</a></li>
             </ul>
           </div>
           
