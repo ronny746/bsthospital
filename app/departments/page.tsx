@@ -15,7 +15,7 @@ export default function DepartmentsPage() {
       category: 'Surgical',
       badge: 'Pain Management & OT Support',
       desc: 'General, regional, and local anesthesia for complex surgical interventions and acute/chronic pain management.',
-      image: '/images/bst-operation-theatre.jpg',
+      image: '/images/anesthesia.jpg',
       facilities: ['Modular OT Anesthesia Workstations', 'Post-Anesthesia Care Unit (PACU)', '24/7 Pain Clinic'],
     },
     {
@@ -39,7 +39,7 @@ export default function DepartmentsPage() {
       category: 'Surgical',
       badge: 'Laparoscopic & Minimal Access',
       desc: 'Advanced laparoscopic surgeries, hernia repair, gallbladder, gastrointestinal, thyroid, and emergency trauma surgery.',
-      image: '/images/bst-operation-theatre.jpg',
+      image: '/images/general_surgery.jpg',
       facilities: ['HD Laparoscopy Towers', 'Surgical ICU Recovery', 'Emergency Surgery OT'],
     },
     {
@@ -47,7 +47,7 @@ export default function DepartmentsPage() {
       category: 'Surgical',
       badge: 'Joint Replacement & Trauma',
       desc: 'Total knee and hip replacement, complex accident trauma reconstructions, arthroscopic knee/shoulder surgery, and spine care.',
-      image: '/images/ortho.webp',
+      image: '/images/orthopedics.jpg',
       facilities: ['Modular Ortho OT with C-Arm', 'Arthroscope Suite', 'Physiotherapy & Rehab Unit'],
     },
     {
@@ -55,7 +55,7 @@ export default function DepartmentsPage() {
       category: 'Surgical',
       badge: 'Microscopic & Endoscopic',
       desc: 'Microscopic ear surgeries, endoscopic sinus surgery, throat and voice clinical care, and head-neck surgery.',
-      image: '/images/Otorhinolaryngology.webp',
+      image: '/images/ent.jpg',
       facilities: ['ENT Operating Microscope', 'Diagnostic Endoscopy Chamber', 'Pure Tone Audiometry'],
     },
     {
@@ -63,7 +63,7 @@ export default function DepartmentsPage() {
       category: 'Clinical',
       badge: 'Skin, Hair & Aesthetics',
       desc: 'Clinical dermatology, acne, psoriasis, eczema, pediatric skin disorders, and aesthetic skin procedures.',
-      image: '/images/bst-reception.jpg',
+      image: '/images/dermatology.jpg',
       facilities: ['Dermatosurgery Suite', 'Phototherapy Unit', 'Laser Skin Care Clinic'],
     },
     {
@@ -71,15 +71,15 @@ export default function DepartmentsPage() {
       category: 'Clinical',
       badge: 'Eye Care & Vision',
       desc: 'Comprehensive eye examinations, micro-incision cataract surgery (Phaco), glaucoma screening, and refractive eye care.',
-      image: '/images/bst-doctor-consultation.jpg',
+      image: '/images/ophthalmology.jpg',
       facilities: ['Slit-Lamp Examination Unit', 'Autorefractometer', 'Ophthalmic OT'],
     },
     {
-      name: 'Obs & Gynaecology',
+      name: 'Obs and Gynaecology',
       category: 'Clinical',
       badge: 'Maternal & Women Health',
       desc: 'Maternal health, high-risk pregnancy care, painless labor & delivery, laparoscopic gynecology, and infertility support.',
-      image: '/images/bst-reception.jpg',
+      image: '/images/gynaecology.jpg',
       facilities: ['Labor & Delivery Suites', 'Fetal Heart Monitoring (NST)', 'Advanced Laparoscopic Gynae OT'],
     },
     {
@@ -87,7 +87,7 @@ export default function DepartmentsPage() {
       category: 'Clinical',
       badge: 'Child Care & NICU',
       desc: 'Pioneering pediatric care, Level-3 Neonatal Intensive Care (NICU), Pediatric Intensive Care (PICU), and vaccinations.',
-      image: '/images/paeditrics.webp',
+      image: '/images/paediatrics.jpg',
       facilities: ['Level-3 NICU Incubators', 'Pediatric ICU Beds', 'Child Immunization Desk'],
     },
     {
@@ -95,7 +95,7 @@ export default function DepartmentsPage() {
       category: 'Clinical',
       badge: 'Mental Health & Wellness',
       desc: 'Behavioral health, stress management, counseling, adult neuropsychiatry, and addiction de-addiction consultation.',
-      image: '/images/psychiatry.webp',
+      image: '/images/psychiatry.jpg',
       facilities: ['Private Counseling Chambers', 'Cognitive Behavioral Support', 'Neuropsychiatric OPD'],
     },
     {
@@ -103,7 +103,7 @@ export default function DepartmentsPage() {
       category: 'Support',
       badge: 'Rehab & Mobility',
       desc: 'Post-operative rehabilitation, sports injury recovery, stroke & neurological rehabilitation, and joint mobility restoration.',
-      image: '/images/bst-icu-ward.jpg',
+      image: '/images/physiotherapy.jpg',
       facilities: ['Electrotherapy & Ultrasound', 'Exercise & Gym Therapy Unit', 'Neuro-Rehab Parallel Bars'],
     },
     {
@@ -143,7 +143,7 @@ export default function DepartmentsPage() {
       category: 'Support',
       badge: 'Clinical Nutrition',
       desc: 'Therapeutic diet planning for ICU, diabetic, cardiac, renal, and post-surgical patients to accelerate healing.',
-      image: '/images/bst-reception.jpg',
+      image: '/images/dietetics.jpg',
       facilities: ['Inpatient Bedside Nutrition Audit', 'Customized Therapeutic Diets', 'OPD Nutrition Counseling'],
     },
     {
@@ -151,7 +151,7 @@ export default function DepartmentsPage() {
       category: 'Clinical',
       badge: 'Oral & Maxillofacial Care',
       desc: 'Comprehensive general dentistry, root canal treatment (RCT), dental implants, crown & bridge, and oral surgery.',
-      image: '/images/bst-doctor-consultation.jpg',
+      image: '/images/dental.jpg',
       facilities: ['Modern Motorized Dental Chairs', 'Dental Digital X-Ray (RVG)', 'Sterilization Autoclave Suite'],
     },
   ];
