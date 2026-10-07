@@ -401,46 +401,6 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* ========================================================
-          EMBEDDED GOOGLE MAP SECTION
-          ======================================================== */}
-      <section className="py-12 bg-white border-t border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6">
-            <div>
-              <span className="text-[#c83220] font-black text-xs uppercase tracking-widest block">
-                LOCATION &amp; DIRECTIONS
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#172a34]">
-                Reach Dr. BST Hospital in Jagatpura
-              </h2>
-            </div>
-            <a
-              href="https://maps.google.com/?q=Jagatpura,+Jaipur,+Rajasthan"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#172a34] hover:bg-[#c83220] text-white text-xs font-bold py-2 px-4 rounded-xl transition shadow-sm"
-            >
-              <span>Get Driving Directions</span>
-              <span>➔</span>
-            </a>
-          </div>
-
-          <div className="w-full h-80 sm:h-96 rounded-3xl overflow-hidden border border-slate-200 shadow-xl bg-slate-100">
-            <iframe
-              title="Dr. BST Hospital Jagatpura Jaipur Location Map"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d113940.94165565147!2d75.80786963442382!3d26.820257000000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396dc9d846988899%3A0xe54e26ee824c9e47!2sJagatpura%2C%20Jaipur%2C%20Rajasthan!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen={false}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </div>
-        </div>
-      </section>
-
       <Footer />
     </main>
   );
