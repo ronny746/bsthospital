@@ -7,14 +7,14 @@ export default function DoctorDirectory() {
   ];
 
   return (
-    <section className="py-16 sm:py-20 bg-slate-50" id="doctors">
-      <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 border-b border-slate-200 pb-6 gap-4">
+    <section className="py-8 sm:py-16 md:py-20 bg-slate-50" id="doctors">
+      <div className="container mx-auto px-3 sm:px-6 max-w-7xl">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-5 sm:mb-10 border-b border-slate-200 pb-3 sm:pb-6 gap-3 sm:gap-4">
           <div className="max-w-2xl">
-            <span className="text-[#c83220] font-black tracking-widest text-xs uppercase mb-2 block">
+            <span className="text-[#c83220] font-black tracking-widest text-[11px] sm:text-xs uppercase mb-1 sm:mb-2 block">
               OUR MEDICAL SPECIALISTS
             </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#172a34] leading-tight">
+            <h2 className="text-lg sm:text-2xl md:text-4xl font-black text-[#172a34] leading-tight">
               Expert guidance & compassionate medical care.
             </h2>
           </div>
@@ -27,7 +27,7 @@ export default function DoctorDirectory() {
           </a>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
           {doctors.map((doc, idx) => {
             const message = `Hello BST Hospital, I would like to book a consultation with ${doc.name} (${doc.specialty} - ${doc.department}). Please share OPD timings.`;
             const whatsappUrl = `https://wa.me/917412077125?text=${encodeURIComponent(message)}`;
@@ -35,7 +35,7 @@ export default function DoctorDirectory() {
             return (
               <div key={idx} className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-slate-200/90 flex flex-col justify-between">
                 <div>
-                  <div className="relative h-60 bg-slate-100 overflow-hidden">
+                  <div className="relative h-48 sm:h-60 bg-slate-100 overflow-hidden">
                     <img 
                       src={doc.image} 
                       alt={doc.name} 
@@ -45,17 +45,17 @@ export default function DoctorDirectory() {
                       {doc.exp}
                     </div>
                   </div>
-                  <div className="p-4 text-center">
-                    <span className="text-[#c83220] text-[11px] font-black uppercase tracking-wider mb-1 block">
+                  <div className="p-3 sm:p-4 text-center">
+                    <span className="text-[#c83220] text-[10px] sm:text-[11px] font-black uppercase tracking-wider mb-0.5 sm:mb-1 block">
                       {doc.specialty}
                     </span>
-                    <h3 className="text-base font-black text-[#172a34] mb-0.5">{doc.name}</h3>
+                    <h3 className="text-sm sm:text-base font-black text-[#172a34] mb-0.5">{doc.name}</h3>
                     <p className="text-slate-500 text-xs font-semibold">{doc.department}</p>
                   </div>
                 </div>
 
                 {/* Compact Red Consultation Button - Direct WhatsApp */}
-                <div className="p-4 pt-0">
+                <div className="p-3 pt-0 sm:p-4 sm:pt-0">
                   <a 
                     href={whatsappUrl} 
                     target="_blank" 

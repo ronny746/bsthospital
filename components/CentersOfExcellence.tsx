@@ -11,14 +11,14 @@ export default function CentersOfExcellence() {
   ];
 
   return (
-    <section className="py-16 sm:py-20 bg-cream" id="departments">
-      <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 border-b border-slate-200 pb-6 gap-4">
+    <section className="py-8 sm:py-16 md:py-20 bg-cream" id="departments">
+      <div className="container mx-auto px-3 sm:px-6 max-w-7xl">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 sm:mb-10 border-b border-slate-200 pb-3 sm:pb-6 gap-3 sm:gap-4">
           <div className="max-w-2xl">
-            <span className="text-[#c83220] font-black tracking-widest text-xs uppercase mb-2 block">
+            <span className="text-[#c83220] font-black tracking-widest text-[11px] sm:text-xs uppercase mb-1 sm:mb-2 block">
               CENTERS OF CLINICAL EXCELLENCE
             </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#172a34] leading-tight">
+            <h2 className="text-lg sm:text-2xl md:text-4xl font-black text-[#172a34] leading-tight">
               Comprehensive super-specialty departments.
             </h2>
           </div>
@@ -27,7 +27,7 @@ export default function CentersOfExcellence() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
           {departments.map(([name, kind, description, image], idx) => {
             const whatsappUrl = `https://wa.me/917412077125?text=${encodeURIComponent(`Hello BST Hospital, I would like to consult with the ${name} department.`)}`;
 
@@ -49,11 +49,11 @@ export default function CentersOfExcellence() {
                 </div>
                 
                 {/* Content */}
-                <div className="p-5 flex flex-col flex-grow">
-                  <h3 className="text-base font-black text-[#172a34] mb-2 group-hover:text-[#c83220] transition-colors">
+                <div className="p-3.5 sm:p-5 flex flex-col flex-grow">
+                  <h3 className="text-sm sm:text-base font-black text-[#172a34] mb-1 sm:mb-2 group-hover:text-[#c83220] transition-colors">
                     {name}
                   </h3>
-                  <p className="text-slate-600 text-xs mb-4 flex-grow leading-relaxed">
+                  <p className="text-slate-600 text-xs mb-3 sm:mb-4 flex-grow leading-relaxed">
                     {description}
                   </p>
                   
@@ -73,10 +73,10 @@ export default function CentersOfExcellence() {
           })}
         </div>
 
-        <div className="mt-12 text-center">
+        <div className="mt-6 sm:mt-12 text-center">
           <a 
             href="/departments" 
-            className="inline-block bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-xs sm:text-sm px-6 py-2.5 rounded-full transition-all shadow-md hover:scale-105"
+            className="inline-block bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-xs sm:text-sm px-5 sm:px-6 py-2 sm:py-2.5 rounded-full transition-all shadow-md hover:scale-105"
           >
             Explore All 20+ Departments ➔
           </a>
