@@ -317,64 +317,66 @@ export default function AboutPage() {
       {/* ========================================================
           SECTION 3: FOUNDER & CHAIRMAN DETAILS (AS ON NIMS)
           ======================================================== */}
-      <section id="founder-section" className="py-16 sm:py-20 bg-white">
+      <section id="founder-section" className="py-12 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-12">
           {/* Header Story */}
-          <div className="grid lg:grid-cols-12 gap-8 md:gap-12 items-start">
-            {/* Photo Column */}
-            <div className="lg:col-span-4 text-center">
-              <div className="relative inline-block max-w-[280px] sm:max-w-xs mx-auto">
-                <div className="absolute -inset-2 bg-gradient-to-tr from-[#172a34] via-[#c83220] to-[#e5b64a] rounded-3xl opacity-90"></div>
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+            {/* Left Column: Portrait Photo with Signature Namecard Badge */}
+            <div className="lg:col-span-5 relative">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-slate-50 border border-slate-200/80 group">
                 <img
                   src="/images/resource/Balvir.webp"
-                  alt="Prof. (Dr.) Balvir S. Tomar - Founder & Chairman"
-                  className="relative rounded-2xl shadow-2xl object-cover w-full z-10 border-4 border-white bg-slate-100"
+                  alt="Prof. (Dr.) Balvir S. Tomar - Founder & Hon'ble Chancellor"
+                  className="w-full h-[400px] sm:h-[480px] md:h-[520px] object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
                   onError={(e) => {
                     e.currentTarget.src = '/images/BST-Chairman.png';
                   }}
                 />
-                <div className="absolute -bottom-3.5 left-1/2 -translate-x-1/2 z-20 bg-[#172a34] text-[#e5b64a] border-2 border-[#e5b64a] text-[10px] font-black uppercase px-4 py-1 rounded-full whitespace-nowrap shadow-lg">
-                  👑 FOUNDER & CHAIRMAN
-                </div>
-              </div>
 
-              <div className="pt-5 text-center">
-                <h3 className="text-xl sm:text-2xl font-black text-[#172a34]">
-                  Prof. (Dr.) Balvir S. Tomar
-                </h3>
-                <p className="text-xs font-black text-[#c83220] uppercase tracking-wider mt-1">
-                  Founder & Hon&apos;ble Chairman
-                </p>
-                <p className="text-xs text-slate-600 font-semibold mt-0.5">
-                  Dr. BST Hospital & NIMS University
-                </p>
+                {/* Signature NIMS Style Floating Namecard Badge */}
+                <div className="absolute bottom-4 right-4 left-4 sm:left-auto sm:-right-2 sm:bottom-6 bg-white/98 backdrop-blur-md rounded-2xl p-4 sm:p-5 border-l-5 border-[#c83220] shadow-2xl sm:max-w-[320px] z-20 border border-slate-100">
+                  <h3 className="text-sm sm:text-base font-black text-[#c83220] leading-snug">
+                    Prof. (Dr.) Balvir S. Tomar
+                  </h3>
+                  <p className="text-xs sm:text-sm font-bold text-[#172a34] mt-0.5">
+                    Founder &amp; Hon&apos;ble Chancellor
+                  </p>
+                  <p className="text-[11px] sm:text-xs text-slate-500 font-semibold mt-0.5 leading-snug">
+                    Nims University Rajasthan, Jaipur &amp; Dr. BST Hospital
+                  </p>
+                </div>
               </div>
             </div>
 
-            {/* Biography Column */}
-            <div className="lg:col-span-8 space-y-4">
-              <span className="text-[#c83220] text-xs font-black uppercase tracking-widest block">
-                VISIONARY LEADERSHIP
-              </span>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#172a34] leading-tight">
-                The Leading Voice in Unlocking Potential, and Changing Lives.
-              </h2>
-              <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed">
-                A rare precedent of exceptional talent, hard work and acute insight with an immense zeal to serve society, Dr. Tomar was born to a noble family of educationists and doctors in Varanasi. A bright student all through his academic career, he followed the wishes of his parents and decided to become a doctor early on for which he took admission in the Gajra Raja Medical College in Gwalior. A true achiever he passed his MBBS with a Gold Medal and claimed the top spot in his University.
+            {/* Right Column: Editorial Text & Visionary Story */}
+            <div className="lg:col-span-7 flex flex-col justify-center space-y-4 sm:space-y-5">
+              <div>
+                <span className="text-[#c83220] text-xs font-black uppercase tracking-widest block mb-2">
+                  VISIONARY LEADERSHIP
+                </span>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-black text-[#172a34] leading-tight">
+                  The <span className="text-[#c83220]">Leading Voice</span> in Unlocking Potential, and Changing Lives.
+                </h2>
+              </div>
+
+              <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed text-justify">
+                A rare precedent of exceptional talent, hard work and acute insight with an immense zeal to serve society, Dr. Tomar was born to a noble family of educationists and doctors in Varanasi. A bright student all through his academic career, he followed the wishes of his parents and decided to become a doctor early on for which he took admission in the Gojra Raja Medical College in Gwalior. A true achiever he passed his MBBS with a Gold Medal and claimed the top spot in his University.
               </p>
-              <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed">
+
+              <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed text-justify">
                 With a steadfast vision to elevate healthcare to global standards in India, he established NIMS Hospital and University, and has now founded <strong className="text-slate-800">Dr. BST Hospital in Jagatpura, Jaipur</strong>—combining world-class quaternary clinical infrastructure, affordable community healthcare, and groundbreaking pedagogical research.
               </p>
 
-              {/* Red Contact Button */}
-              <div className="pt-2">
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3 pt-2">
                 <a
                   href="https://wa.me/917412077125?text=Hello%20Dr.%20BST%20Hospital%20Jagatpura%2C%20I%20would%20like%20to%20connect%20with%20the%20hospital."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-xs px-5 py-2.5 rounded-full shadow-md transition-all hover:scale-105"
+                  className="inline-flex items-center gap-2 bg-[#0e191f] hover:bg-[#c83220] text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl transition-all shadow-md hover:scale-105"
                 >
-                  <span>💬 Connect With Dr. BST Hospital</span>
+                  <span>Connect With Dr. BST Hospital</span>
+                  <span>➔</span>
                 </a>
               </div>
             </div>
