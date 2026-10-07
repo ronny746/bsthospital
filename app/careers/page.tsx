@@ -6,10 +6,8 @@ import TopBar from '@/components/TopBar';
 import NavigationBar from '@/components/NavigationBar';
 import Footer from '@/components/Footer';
 import FadeIn from '@/components/FadeIn';
-import IcuBookingModal from '@/components/IcuBookingModal';
 
 export default function CareersPage() {
-  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
   const [applySuccess, setApplySuccess] = useState(false);
 
@@ -31,7 +29,7 @@ export default function CareersPage() {
       location: 'Jaipur, Rajasthan',
       experience: '5+ Years Post MD/DNB',
       type: 'Full-time',
-      description: 'Lead patient management across 2,500+ beds ICU facility. Handle complex ARDS, trauma, and multi-organ emergency cases.',
+      description: 'Lead patient management across 1000+ beds ICU facility. Handle complex ARDS, trauma, and multi-organ emergency cases.',
     },
     {
       id: 'job-2',
@@ -313,17 +311,6 @@ export default function CareersPage() {
       )}
 
       <Footer />
-
-      {/* Floating Action Button */}
-      <button
-        onClick={() => setIsBookingModalOpen(true)}
-        className="fixed bottom-5 right-5 z-40 bg-[#bd171c] hover:bg-[#791017] text-white px-4 py-3 rounded-full shadow-2xl transition-all hover:scale-105 flex items-center gap-2 border-2 border-white/30 text-xs font-black cursor-pointer"
-      >
-        <span className="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span>
-        <span>🚨 Nims Tatkaal Seva (ICU Booking)</span>
-      </button>
-
-      <IcuBookingModal isOpen={isBookingModalOpen} onClose={() => setIsBookingModalOpen(false)} />
     </main>
   );
 }

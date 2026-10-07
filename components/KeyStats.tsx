@@ -1,6 +1,6 @@
 export default function KeyStats() {
   const stats = [
-    { value: '2500+', label: 'Beds Facility', icon: '🛏️' },
+    { value: '1000+', label: 'Beds Facility', icon: '🛏️' },
     { value: '20', label: 'Specialized Departments', icon: '⚕️' },
     { value: '150', label: 'MBBS Seats / Year', icon: '🎓' },
     { value: '250+', label: 'Expert Faculties', icon: '👨‍⚕️' },

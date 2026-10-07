@@ -1,8 +1,4 @@
-interface EmergencyTraumaProps {
-  onOpenBookingModal?: () => void;
-}
-
-export default function EmergencyTrauma({ onOpenBookingModal }: EmergencyTraumaProps) {
+export default function EmergencyTrauma() {
   return (
     <section className="bg-secondary text-white py-12 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none">
@@ -22,13 +18,14 @@ export default function EmergencyTrauma({ onOpenBookingModal }: EmergencyTraumaP
           </p>
         </div>
         <div className="flex-shrink-0 flex flex-col sm:flex-row gap-3">
-          <button 
-            type="button"
-            onClick={onOpenBookingModal}
-            className="inline-block bg-[#172a34] text-white font-black text-base px-8 py-4 rounded-full shadow-2xl hover:scale-105 transition-transform text-center border-2 border-[#e5b64a] cursor-pointer"
+          <a 
+            href="https://wa.me/917412077125?text=Hello%20BST%20Hospital%2C%20I%20need%20emergency%20trauma%20assistance."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-emerald-600 hover:bg-emerald-700 text-white font-black text-base px-8 py-4 rounded-full shadow-2xl hover:scale-105 transition-transform text-center border-2 border-emerald-300"
           >
-            🚨 24/7 ICU Bed Booking ➔
-          </button>
+            🚨 Emergency Care ➔
+          </a>
           <a 
             href="tel:+917412077125" 
             className="inline-block bg-white text-secondary font-bold text-base px-8 py-4 rounded-full shadow-2xl hover:scale-105 transition-transform text-center"

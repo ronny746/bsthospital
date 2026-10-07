@@ -18,7 +18,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="relative w-full h-[500px] overflow-hidden bg-slate-100" id="home">
+    <section className="relative w-full h-[450px] md:h-[500px] overflow-hidden bg-slate-100" id="home">
       {/* Background Slider */}
       <div className="relative w-full h-full bg-slate-900">
         {heroSlides.map((slide, index) => (
@@ -45,25 +45,6 @@ export default function HeroSection() {
             </div>
           </div>
         ))}
-
-        {/* Content - Floating Appointment Form on the LEFT side */}
-        <div className="absolute inset-0 z-20 flex items-center container mx-auto px-6 pointer-events-none">
-          <div className="w-full max-w-xs md:max-w-sm glass-card p-4 md:p-6 rounded-2xl bg-white/95 backdrop-blur-xl shadow-2xl border-t-4 border-secondary hidden sm:block pointer-events-auto mt-12 md:mt-0">
-            <h3 className="text-lg md:text-xl font-bold text-primary mb-2">Book a Consultation</h3>
-            <p className="text-slate-500 mb-4 text-xs md:text-sm">Need help? Our team will get back to you.</p>
-            <form className="space-y-3">
-              <div>
-                <input type="text" placeholder="Full Name" className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary/50 text-sm" />
-              </div>
-              <div>
-                <input type="tel" placeholder="Phone Number" className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary/50 text-sm" />
-              </div>
-              <button className="w-full bg-secondary text-white font-bold py-2 rounded-lg shadow-md hover:bg-secondary-dark transition-colors text-sm">
-                Request Call-back
-              </button>
-            </form>
-          </div>
-        </div>
 
         {/* Slide Controls (Arrows) */}
         <button 

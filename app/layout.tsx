@@ -5,8 +5,13 @@ import './globals.css';
 const openSans = Open_Sans({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'BST Hospital',
-  description: 'Premium healthcare in Jaipur',
+  title: 'Dr. B. S. Tomar Institute of Medical Sciences & Hospital | Jaipur',
+  description: 'Premium healthcare, 24/7 Tatkaal ICU, and super-specialty medical care in Jaipur, Rajasthan.',
+  icons: {
+    icon: '/bstims-logo.png',
+    shortcut: '/bstims-logo.png',
+    apple: '/bstims-logo.png',
+  },
 };
 
 export const viewport: Viewport = {

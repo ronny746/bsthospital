@@ -6,11 +6,8 @@ import TopBar from '@/components/TopBar';
 import NavigationBar from '@/components/NavigationBar';
 import Footer from '@/components/Footer';
 import FadeIn from '@/components/FadeIn';
-import IcuBookingModal from '@/components/IcuBookingModal';
 
 export default function AboutPage() {
-  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
-
   return (
     <main className="min-h-screen bg-cream font-sans overflow-x-hidden text-slate-800">
       <NewsTicker />
@@ -53,12 +50,12 @@ export default function AboutPage() {
                   Dr. B. S. Tomar Institute of Medical Sciences & Research and Hospital (BST Hospital) stands as one of Northern India’s premier healthcare and medical education centers. Situated in Jaipur, Rajasthan, our state-of-the-art facility integrates advanced medical technologies with compassionate patient care.
                 </p>
                 <p className="text-slate-600 text-base leading-relaxed mb-6">
-                  With over 2,500+ beds, 24/7 Tatkaal ICU Seva, multi-disciplinary trauma units, and ultra-modern operation theaters, BST Hospital is dedicated to serving patients with clinical accuracy, dignity, and care.
+                  With over 1000+ beds, 24/7 Tatkaal ICU Seva, multi-disciplinary trauma units, and ultra-modern operation theaters, BST Hospital is dedicated to serving patients with clinical accuracy, dignity, and care.
                 </p>
 
                 <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-100">
                   <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                    <div className="text-3xl font-black text-[#bd171c] mb-1">2,500+</div>
+                    <div className="text-3xl font-black text-[#bd171c] mb-1">1000+</div>
                     <div className="text-xs font-bold text-slate-700">Hospital Beds</div>
                   </div>
                   <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
@@ -160,7 +157,7 @@ export default function AboutPage() {
                   Prof. (Dr.) Balvir S. Tomar
                 </h3>
                 <p className="text-slate-300 text-sm md:text-base leading-relaxed mb-6 font-medium italic">
-                  "At BST Hospital, our commitment is simple: no patient in need of emergency critical care or medical assistance should ever be turned away. We have built 2,500+ beds and a dedicated 24/7 Tatkaal ICU infrastructure to ensure immediate life-saving care when every minute counts."
+                  "At BST Hospital, our commitment is simple: no patient in need of emergency critical care or medical assistance should ever be turned away. We have built 1000+ beds and a dedicated 24/7 Tatkaal ICU infrastructure to ensure immediate life-saving care when every minute counts."
                 </p>
                 <div className="text-xs text-[#e5b64a] font-bold uppercase tracking-wider">
                   Founder & Chairman, Nims University & BST Hospital
@@ -172,17 +169,6 @@ export default function AboutPage() {
       </section>
 
       <Footer />
-
-      {/* Single Floating ICU Booking Button */}
-      <button
-        onClick={() => setIsBookingModalOpen(true)}
-        className="fixed bottom-5 right-5 z-40 bg-[#bd171c] hover:bg-[#791017] text-white px-4 py-3 rounded-full shadow-2xl transition-all hover:scale-105 flex items-center gap-2 border-2 border-white/30 text-xs font-black cursor-pointer"
-      >
-        <span className="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span>
-        <span>🚨 Nims Tatkaal Seva (ICU Booking)</span>
-      </button>
-
-      <IcuBookingModal isOpen={isBookingModalOpen} onClose={() => setIsBookingModalOpen(false)} />
     </main>
   );
 }

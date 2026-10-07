@@ -5,7 +5,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           
           <div className="lg:col-span-1">
-            <img src="/bst-logo.png" alt="BST Hospital Logo" className="h-16 w-auto mb-6 bg-white/90 p-2 rounded-lg" />
+            <img src="/bstims-logo.png" alt="BST Hospital Logo" className="h-14 w-auto mb-6 bg-white p-2.5 rounded-xl shadow-sm" />
             <p className="text-sm leading-relaxed mb-6">
               Dr. B. S. Tomar Institute of Medical Sciences & Research and Hospital. Delivering compassionate, patient-first healthcare in Jaipur.
             </p>
@@ -33,7 +33,7 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-bold mb-6 text-lg">Patient Support</h4>
             <ul className="space-y-3 text-sm">
-              <li><a href="#home" className="text-emerald-400 font-bold hover:underline">🚨 24/7 ICU Bed Booking</a></li>
+              <li><a href="https://wa.me/917412077125?text=Hello%20BST%20Hospital%2C%20I%20need%20emergency%20medical%20assistance." target="_blank" rel="noopener noreferrer" className="text-emerald-400 font-bold hover:underline">🚨 24/7 Emergency Assistance</a></li>
               <li><a href="#departments" className="hover:text-secondary transition-colors">ICU & Emergency Services</a></li>
               <li><a href="#doctors" className="hover:text-secondary transition-colors">Consult Our Specialists</a></li>
               <li><a href="#contact" className="hover:text-secondary transition-colors">Emergency Contacts</a></li>
