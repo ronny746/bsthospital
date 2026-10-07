@@ -18,7 +18,7 @@ export default function TopBar() {
         </a>
 
         <a 
-          href="#contact" 
+          href="/contact" 
           className="bg-white/15 hover:bg-white/25 text-[#e5b64a] hover:text-white border border-[#e5b64a]/50 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-[11px] font-black transition flex items-center gap-1 shadow-sm whitespace-nowrap"
         >
           <span>👤</span>

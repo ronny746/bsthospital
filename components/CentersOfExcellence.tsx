@@ -1,13 +1,23 @@
 export default function CentersOfExcellence() {
   const departments = [
-    ['General Medicine', 'Clinical Care', 'Diagnosis, comprehensive inpatient/outpatient treatment and preventive care for adults.', '/images/bst-icu-ward.jpg'],
-    ['Orthopaedics', 'Bone & Joint', 'Joint replacement, trauma fracture management, arthroscopy and spine care.', '/images/ortho.webp'],
-    ['Paediatrics & Neonatology', 'Child Health', 'Advanced pediatric ICU, neonatal care, vaccinations and childhood health management.', '/images/paeditrics.webp'],
-    ['Radio-Diagnosis & Imaging', 'Diagnostics', 'High-resolution CT, MRI, digital X-Ray and ultrasound imaging.', '/images/Radio diagonosis.webp'],
-    ['Otorhinolaryngology (ENT)', 'ENT Care', 'Microsurgery of ear, endoscopic sinus surgery, throat and voice clinical care.', '/images/Otorhinolaryngology.webp'],
-    ['Pathology & Biochemistry', 'Diagnostic Labs', 'High-tech automated pathology, clinical microbiology and biochemistry analysis.', '/images/bst-diagnostic-lab.jpg'],
-    ['Psychiatry & Behavioral Health', 'Mental Health', 'Specialist consultation, counseling, stress management and neuropsychiatric care.', '/images/psychiatry.webp'],
-    ['Pharmacology & Clinical Pharmacy', '24/7 Pharmacy', 'Certified medical dispensary and clinical pharmacology support.', '/images/Pharmacy.webp'],
+    ['Anesthesia', 'Surgical Care', 'General, regional & local anesthesia for complex surgical interventions & pain management.', '/images/bst-operation-theatre.jpg'],
+    ['Critical Care', '24/7 ICU & HDU', '24/7 Level-1 ICU, HDU, multi-organ failure support & advanced mechanical ventilation.', '/images/bst-icu-ward.jpg'],
+    ['General Medicine', 'Clinical Care', 'Adult internal medicine, metabolic disorders, multi-system illness & preventive care.', '/images/bst-doctor-consultation.jpg'],
+    ['General Surgery', 'Surgical Care', 'Advanced laparoscopic surgery, trauma surgery, hernia, abdominal & GI procedures.', '/images/bst-operation-theatre.jpg'],
+    ['Orthopedic', 'Bone & Joint', 'Total knee & hip replacement, complex trauma fracture care, arthroscopy & spine surgery.', '/images/ortho.webp'],
+    ['ENT', 'Ear, Nose & Throat', 'Microscopic ear surgery, endoscopic sinus surgery, throat & voice clinical care.', '/images/Otorhinolaryngology.webp'],
+    ['Dermatology', 'Skin & Hair Care', 'Clinical dermatology, skin disorders, laser therapies & pediatric dermatological care.', '/images/bst-reception.jpg'],
+    ['Ophthalmology', 'Eye Care & Vision', 'Comprehensive eye care, cataract microsurgery, glaucoma & refractive screening.', '/images/bst-doctor-consultation.jpg'],
+    ['Obs & Gynaecology', 'Maternal Health', 'High-risk pregnancy care, painless delivery, laparoscopy & women health.', '/images/bst-reception.jpg'],
+    ['Paediatric', 'Child & NICU', 'Child health, newborn intensive care NICU/PICU, vaccinations & pediatric nutrition.', '/images/paeditrics.webp'],
+    ['Psychiatry', 'Mental Wellness', 'Behavioral health, stress management, counseling, neuropsychiatry & wellness.', '/images/psychiatry.webp'],
+    ['Physiotherapy', 'Rehab & Mobility', 'Post-operative rehabilitation, sports injury recovery, neuro-rehab & mobility.', '/images/bst-icu-ward.jpg'],
+    ['Radiology', '24/7 Diagnostics', 'Multi-slice CT scan, digital X-Ray, high-resolution color Doppler ultrasound.', '/images/Radio diagonosis.webp'],
+    ['Pathology', 'Automated Lab', 'Automated diagnostic pathology, hematology, histopathology & cytology testing.', '/images/bst-diagnostic-lab.jpg'],
+    ['Biochemistry', 'Diagnostic Labs', 'Automated biochemistry analyzers, hormonal assays, cardiac & metabolic profiles.', '/images/bst-clinical-diagnostics.jpg'],
+    ['Microbiology', 'Infectious Disease', 'Infectious disease diagnostics, blood cultures, antimicrobial sensitivity & serology.', '/images/bst-medical-research.jpg'],
+    ['Dietetics', 'Clinical Nutrition', 'Therapeutic diet planning for ICU, diabetics, surgical patients & wellness.', '/images/bst-reception.jpg'],
+    ['Dental', 'Oral & Maxillofacial', 'Comprehensive dentistry, oral maxillofacial surgery, dental implants & orthodontics.', '/images/bst-doctor-consultation.jpg'],
   ];
 
   return (

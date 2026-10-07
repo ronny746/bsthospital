@@ -246,16 +246,24 @@ export default function ContactPage() {
                       onChange={(e) => setFormData({ ...formData, department: e.target.value })}
                       className="w-full px-4 py-3 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:border-[#c83220] transition bg-slate-50/50"
                     >
-                      <option value="Emergency & Trauma Care">🚨 24/7 Emergency &amp; Trauma</option>
-                      <option value="General & Internal Medicine">General &amp; Internal Medicine</option>
-                      <option value="Orthopaedics & Joint Replacement">Orthopaedics &amp; Joint Replacement</option>
-                      <option value="Paediatrics & Neonatology">Paediatrics &amp; Neonatology</option>
-                      <option value="Obstetrics & Gynaecology">Obstetrics &amp; Gynaecology</option>
-                      <option value="ENT (Otorhinolaryngology)">ENT (Otorhinolaryngology)</option>
-                      <option value="Radio-Diagnosis & Imaging">Radio-Diagnosis &amp; Imaging (CT/MRI/X-Ray)</option>
-                      <option value="Pathology & Laboratory">Pathology &amp; Laboratory</option>
-                      <option value="Psychiatry & Behavioral Health">Psychiatry &amp; Behavioral Health</option>
-                      <option value="General Consultation">General Consultation / Other</option>
+                      <option value="Anesthesia">Anesthesia</option>
+                      <option value="Critical Care">Critical Care (ICU/HDU)</option>
+                      <option value="General Medicine">General Medicine</option>
+                      <option value="General Surgery">General Surgery</option>
+                      <option value="Orthopedic">Orthopedic</option>
+                      <option value="ENT">ENT (Otorhinolaryngology)</option>
+                      <option value="Dermatology">Dermatology</option>
+                      <option value="Ophthalmology">Ophthalmology</option>
+                      <option value="Obs and Gynaecology">Obs and Gynaecology</option>
+                      <option value="Paediatric">Paediatric</option>
+                      <option value="Psychiatry">Psychiatry</option>
+                      <option value="Physiotherapy">Physiotherapy</option>
+                      <option value="Radiology">Radiology (CT Scan/USG/X-Ray)</option>
+                      <option value="Pathology">Pathology</option>
+                      <option value="Biochemistry">Biochemistry</option>
+                      <option value="Microbiology">Microbiology</option>
+                      <option value="Dietetics">Dietetics & Clinical Nutrition</option>
+                      <option value="Dental">Dental</option>
                     </select>
                   </div>
                 </div>

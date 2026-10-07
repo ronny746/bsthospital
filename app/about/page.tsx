@@ -321,30 +321,45 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-12">
           {/* Header Story */}
           <div className="grid lg:grid-cols-12 gap-8 lg:gap-14 items-center">
-            {/* Left Column: Portrait Photo with Signature Namecard Badge */}
-            <div className="lg:col-span-5 relative">
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-slate-50 border border-slate-200/80 group">
-                <img
-                  src="/images/resource/Balvir.webp"
-                  alt="Prof. (Dr.) Balvir S. Tomar - Founder & Hon'ble Chancellor"
-                  className="w-full h-[400px] sm:h-[480px] md:h-[520px] object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
-                  onError={(e) => {
-                    e.currentTarget.src = '/images/BST-Chairman.png';
-                  }}
-                />
-
-                {/* Signature NIMS Style Floating Namecard Badge */}
-                <div className="absolute bottom-4 right-4 left-4 sm:left-auto sm:-right-2 sm:bottom-6 bg-white/98 backdrop-blur-md rounded-2xl p-4 sm:p-5 border-l-5 border-[#c83220] shadow-2xl sm:max-w-[320px] z-20 border border-slate-100">
-                  <h3 className="text-sm sm:text-base font-black text-[#c83220] leading-snug">
-                    Prof. (Dr.) Balvir S. Tomar
-                  </h3>
-                  <p className="text-xs sm:text-sm font-bold text-[#172a34] mt-0.5">
-                    Founder &amp; Hon&apos;ble Chancellor
-                  </p>
-                  <p className="text-[11px] sm:text-xs text-slate-500 font-semibold mt-0.5 leading-snug">
-                    Nims University Rajasthan, Jaipur &amp; Dr. BST Hospital
-                  </p>
+            {/* Left Column: Portrait Photo with Border Frame & Namecard Underneath */}
+            <div className="lg:col-span-5 flex flex-col justify-start">
+              <div className="relative group mx-auto lg:mx-0 w-full max-w-[360px] sm:max-w-[420px]">
+                {/* Decorative Frame / Border Behind the Image */}
+                <div className="absolute -inset-2 sm:-inset-3 bg-gradient-to-tr from-[#172a34] via-[#c83220] to-[#e5b64a] rounded-3xl sm:rounded-[32px] transform -rotate-1 group-hover:rotate-0 transition-transform duration-300 opacity-90 shadow-xl"></div>
+                
+                {/* Photo Frame */}
+                <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border-4 sm:border-6 border-white bg-slate-100 z-10">
+                  <img
+                    src="/images/resource/Balvir.webp"
+                    alt="Prof. (Dr.) Balvir S. Tomar - Founder & Hon'ble Chancellor"
+                    className="w-full h-[360px] sm:h-[440px] md:h-[460px] object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+                    onError={(e) => {
+                      e.currentTarget.src = '/images/BST-Chairman.png';
+                    }}
+                  />
+                  <div className="absolute top-3 left-3 bg-[#172a34]/90 backdrop-blur-md text-[#e5b64a] border border-[#e5b64a]/50 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-lg">
+                    👑 Founder &amp; Chancellor
+                  </div>
                 </div>
+              </div>
+
+              {/* Namecard Badge Placed Directly Underneath Photo */}
+              <div className="mt-4 sm:mt-5 bg-white rounded-2xl p-4 sm:p-5 border-l-6 border-[#c83220] shadow-xl border border-slate-200 z-10 w-full max-w-[360px] sm:max-w-[420px] mx-auto lg:mx-0">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-[#c83220] bg-red-50 px-2 py-0.5 rounded">
+                    Founder &amp; Chancellor
+                  </span>
+                  <span className="text-[11px] text-amber-600 font-bold">🏛️ NIMS &amp; BST Hospital</span>
+                </div>
+                <h3 className="text-base sm:text-xl font-black text-[#172a34] leading-snug">
+                  Prof. (Dr.) Balvir S. Tomar
+                </h3>
+                <p className="text-xs sm:text-sm font-bold text-[#c83220] mt-0.5">
+                  Founder &amp; Hon&apos;ble Chancellor
+                </p>
+                <p className="text-xs text-slate-600 font-medium mt-1 leading-snug">
+                  Nims University Rajasthan, Jaipur &amp; Dr. BST Hospital
+                </p>
               </div>
             </div>
 

@@ -7,6 +7,7 @@ import EmergencyTrauma from '../components/EmergencyTrauma';
 import ChairmanMessage from '../components/ChairmanMessage';
 import PatientServices from '../components/PatientServices';
 import CentersOfExcellence from '../components/CentersOfExcellence';
+import HealthPackages from '../components/HealthPackages';
 import Technology from '../components/Technology';
 import DoctorDirectory from '../components/DoctorDirectory';
 import AcademicsHighlight from '../components/AcademicsHighlight';
@@ -41,6 +42,10 @@ export default function Home() {
       
       <FadeIn direction="up">
         <CentersOfExcellence />
+      </FadeIn>
+
+      <FadeIn direction="up">
+        <HealthPackages />
       </FadeIn>
       
       <FadeIn direction="right">
