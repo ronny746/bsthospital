@@ -3,134 +3,202 @@
 import React from 'react';
 
 export default function ChairmanMessage() {
-  return (
-    <section className="py-20 bg-[#f7f4ed] relative overflow-hidden" id="about">
-      {/* Background Subtle Gradient Overlay */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-red-100/40 to-transparent pointer-events-none"></div>
+  const globalGalleries = [
+    {
+      src: '/images/resource/image1.webp',
+      title: 'Global Health Summit 2025',
+      desc: 'Prof. (Dr.) Balvir S. Tomar addressing international medical delegations & bilateral health leaders.',
+    },
+    {
+      src: '/images/resource/image2.webp',
+      title: 'With Union Minister Shri Nitin Gadkari',
+      desc: 'Presentation of Clinical Healthcare Initiatives & Research Monograph on rural health accessibility.',
+    },
+    {
+      src: '/images/resource/image3.webp',
+      title: 'European Academic Collaboration',
+      desc: 'MoU signing fostering international medical exchange, surgical pedagogy and global clinical training.',
+    },
+    {
+      src: '/images/resource/image4.webp',
+      title: 'National Healthcare Excellence Award',
+      desc: 'Honoring pioneering contributions in pediatric gastroenterology, organ transplant and healthcare leadership.',
+    },
+  ];
 
-      <div className="container mx-auto px-6 relative z-10 max-w-7xl space-y-16">
-        {/* About Institute Banner */}
-        <div className="bg-gradient-to-r from-[#172a34] via-[#0f232e] to-[#791017] rounded-3xl p-8 md:p-12 text-white shadow-2xl border-b-8 border-[#bd171c] relative overflow-hidden">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#bd171c] text-white rounded-full text-xs font-black uppercase tracking-widest mb-4">
-            🏛️ Flagship Initiative of Indian Medical Trust
+  return (
+    <section className="py-16 sm:py-20 bg-[#fdfbf7] relative overflow-hidden" id="about">
+      {/* Background Subtle Gradient Overlay */}
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-red-100/30 to-transparent pointer-events-none" />
+
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 max-w-7xl space-y-12">
+        {/* ========================================================
+            PART 1: VISION & MISSION OF BST HOSPITAL IN JAGATPURA JAIPUR
+            ======================================================== */}
+        <div className="bg-gradient-to-r from-[#172a34] via-[#0f232e] to-[#791017] rounded-3xl p-6 sm:p-10 md:p-12 text-white shadow-2xl border-b-8 border-[#c83220] relative overflow-hidden">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#c83220] text-white rounded-full text-[11px] font-black uppercase tracking-wider mb-4 shadow-sm">
+            <span>🏛️ Dr. BST Hospital • Jagatpura, Jaipur</span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-black mb-6 leading-tight">
-            A New Beginning in Excellence and Compassionate Care
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-black mb-4 leading-tight">
+            Our Vision Behind Establishing BST Hospital in Jagatpura, Jaipur
           </h2>
-          <p className="text-slate-200 text-sm md:text-base leading-relaxed max-w-4xl font-medium">
-            Dr B S Tomar Institute of Medical Sciences & Research is a state-of-the-art medical education and healthcare facility established in Jaipur, Rajasthan. Spread across 100 acres, the institute is a flagship initiative of the Indian Medical Trust, envisioned by Prof. (Dr.) Balvir S. Tomar—a globally renowned pediatric gastroenterologist and the visionary founder of NIMS University and NIMS Hospital.
+          <p className="text-slate-200 text-xs sm:text-sm md:text-base leading-relaxed max-w-4xl font-normal">
+            Jagatpura and the greater southern corridor of Jaipur are experiencing unprecedented residential, educational, and industrial growth. Prof. (Dr.) Balvir S. Tomar recognized that this vital region urgently required a fully integrated <strong className="text-white">1000+ bed tertiary medical college and Level-1 trauma critical care center</strong> so that residents of Jagatpura, Sitapura, Malviya Nagar, and connecting highways wouldn't have to navigate city-center traffic during medical emergencies.
           </p>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 pt-8 border-t border-white/10 text-center">
-            <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 shadow-inner">
-              <div className="text-3xl md:text-4xl font-black text-amber-400 font-mono">1000+</div>
-              <div className="text-xs font-bold text-slate-200 mt-1 uppercase">Beds Capacity</div>
+          {/* Vision & Mission Cards Grid */}
+          <div className="grid md:grid-cols-2 gap-6 mt-8">
+            <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/15 shadow-inner">
+              <div className="flex items-center gap-2.5 mb-3 text-amber-300 font-black text-sm uppercase tracking-wider">
+                <span className="text-xl">🎯</span>
+                <span>Our Mission in Jagatpura</span>
+              </div>
+              <p className="text-slate-200 text-xs sm:text-sm leading-relaxed">
+                To enhance community health by delivering compassionate, round-the-clock emergency and super-specialty healthcare. We are committed to ethical treatment, modern diagnostics, accessible patient beds, and training 150+ dedicated MBBS medical professionals each year under the Indian Medical Trust.
+              </p>
             </div>
-            <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 shadow-inner">
-              <div className="text-3xl md:text-4xl font-black text-emerald-400 font-mono">20</div>
-              <div className="text-xs font-bold text-slate-200 mt-1 uppercase">Departments</div>
+
+            <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/15 shadow-inner">
+              <div className="flex items-center gap-2.5 mb-3 text-emerald-300 font-black text-sm uppercase tracking-wider">
+                <span className="text-xl">👁️</span>
+                <span>Our Vision</span>
+              </div>
+              <p className="text-slate-200 text-xs sm:text-sm leading-relaxed">
+                To be recognized as Rajasthan&apos;s apex institution for quaternary healthcare excellence, world-class medical pedagogy, and clinical research—setting modern benchmarks in patient outcomes, compassionate healing, and surgical innovation.
+              </p>
             </div>
-            <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 shadow-inner">
-              <div className="text-3xl md:text-4xl font-black text-blue-400 font-mono">150</div>
-              <div className="text-xs font-bold text-slate-200 mt-1 uppercase">MBBS Seats / Year</div>
+          </div>
+
+          {/* Key Numbers Bar */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-8 pt-8 border-t border-white/10 text-center">
+            <div className="bg-white/5 p-3 sm:p-4 rounded-xl border border-white/10">
+              <div className="text-2xl sm:text-4xl font-black text-amber-400 font-mono">1000+</div>
+              <div className="text-[11px] font-bold text-slate-300 mt-1 uppercase">Beds Capacity</div>
             </div>
-            <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 shadow-inner">
-              <div className="text-3xl md:text-4xl font-black text-red-400 font-mono">250+</div>
-              <div className="text-xs font-bold text-slate-200 mt-1 uppercase">Faculties</div>
+            <div className="bg-white/5 p-3 sm:p-4 rounded-xl border border-white/10">
+              <div className="text-2xl sm:text-4xl font-black text-emerald-400 font-mono">20+</div>
+              <div className="text-[11px] font-bold text-slate-300 mt-1 uppercase">Specialties</div>
+            </div>
+            <div className="bg-white/5 p-3 sm:p-4 rounded-xl border border-white/10">
+              <div className="text-2xl sm:text-4xl font-black text-blue-400 font-mono">150</div>
+              <div className="text-[11px] font-bold text-slate-300 mt-1 uppercase">MBBS Seats / Year</div>
+            </div>
+            <div className="bg-white/5 p-3 sm:p-4 rounded-xl border border-white/10">
+              <div className="text-2xl sm:text-4xl font-black text-red-400 font-mono">250+</div>
+              <div className="text-[11px] font-bold text-slate-300 mt-1 uppercase">Medical Faculties</div>
             </div>
           </div>
         </div>
 
-        {/* Chairman Detailed Profile Card */}
-        <div className="bg-white p-8 md:p-12 rounded-3xl border-2 border-slate-200/80 shadow-2xl relative overflow-hidden">
-          {/* Decorative Corner Ribbon */}
-          <div className="absolute top-0 right-0 bg-[#bd171c] text-white text-[11px] font-black uppercase px-6 py-1.5 rounded-bl-2xl tracking-widest shadow-md hidden sm:block">
-            Leadership & Distinction
+        {/* ========================================================
+            PART 2: CHAIRMAN PROFILE (MATCHING 4th REFERENCE IMAGE)
+            ======================================================== */}
+        <div className="bg-white p-6 sm:p-10 md:p-12 rounded-3xl border-2 border-slate-200/90 shadow-xl relative overflow-hidden">
+          {/* Header Distinction Banner */}
+          <div className="absolute top-0 right-0 bg-[#c83220] text-white text-[11px] font-black uppercase px-6 py-1.5 rounded-bl-2xl tracking-widest shadow-md hidden sm:block">
+            LEADERSHIP & DISTINCTION
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-10 items-start">
-            {/* Left Side: Photo & Badge Header */}
-            <div className="lg:col-span-4 space-y-6 text-center lg:text-left">
-              <div className="relative inline-block mx-auto lg:mx-0 group">
-                <div className="absolute -inset-3 bg-gradient-to-tr from-[#172a34] via-[#bd171c] to-[#e5b64a] rounded-3xl transform rotate-2 group-hover:rotate-0 transition-transform duration-500 opacity-90 blur-[1px]"></div>
+          <div className="grid lg:grid-cols-12 gap-8 md:gap-10 items-start">
+            {/* Left Side: Photo & Identity */}
+            <div className="lg:col-span-4 space-y-4 text-center lg:text-left">
+              <div className="relative inline-block mx-auto lg:mx-0 group max-w-[280px] sm:max-w-xs">
+                <div className="absolute -inset-2 bg-gradient-to-tr from-[#172a34] via-[#c83220] to-[#e5b64a] rounded-3xl transform rotate-1 group-hover:rotate-0 transition-transform duration-300 opacity-90"></div>
                 <img
-                  src="/images/BST-Chairman.png"
-                  alt="Prof. (Dr.) Balvir S. Tomar"
-                  className="relative rounded-2xl shadow-2xl object-cover w-full max-w-sm mx-auto z-10 border-4 border-white"
+                  src="/images/resource/Balvir.webp"
+                  alt="Prof. (Dr.) Balvir S. Tomar - Founder & Chairman"
+                  className="relative rounded-2xl shadow-xl object-cover w-full z-10 border-4 border-white bg-slate-100"
+                  onError={(e) => {
+                    // Fallback to local image
+                    e.currentTarget.src = '/images/BST-Chairman.png';
+                  }}
                 />
-                <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 z-20 bg-[#172a34] text-[#e5b64a] border-2 border-[#e5b64a] text-[10px] font-black uppercase px-4 py-1.5 rounded-full whitespace-nowrap shadow-lg">
-                  👑 Founder & Chairman
+                <div className="absolute -bottom-3.5 left-1/2 -translate-x-1/2 z-20 bg-[#172a34] text-[#e5b64a] border-2 border-[#e5b64a] text-[10px] font-black uppercase px-4 py-1 rounded-full whitespace-nowrap shadow-lg">
+                  👑 FOUNDER & CHAIRMAN
                 </div>
               </div>
 
-              <div className="pt-2">
-                <h3 className="text-2xl md:text-3xl font-black text-[#172a34]">
+              <div className="pt-3">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-[#172a34]">
                   Prof. (Dr.) Balvir S. Tomar
                 </h3>
-                <p className="text-xs font-extrabold text-[#bd171c] uppercase tracking-wider mt-1.5">
-                  Founder, Dr B S Tomar Institute of Medical Sciences & Research
+                <p className="text-xs font-black text-[#c83220] uppercase tracking-wider mt-1">
+                  FOUNDER, DR B S TOMAR INSTITUTE OF MEDICAL SCIENCES & RESEARCH
                 </p>
-                <p className="text-xs text-slate-600 font-semibold mt-1 leading-relaxed">
+                <p className="text-xs text-slate-600 font-medium mt-1 leading-relaxed">
                   Founder, NIMS University & NIMS Hospital • Globally Renowned Pediatric Gastroenterologist
                 </p>
               </div>
+
+              {/* Red Contact / Book Button */}
+              <div className="pt-2">
+                <a
+                  href="https://wa.me/917412077125?text=Hello%20BST%20Hospital%2C%20I%20would%20like%20to%20connect%20regarding%20Dr.%20BST%20Hospital%20Jagatpura."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-xs shadow-md transition-all"
+                >
+                  <span>💬</span>
+                  <span>Connect With BST Hospital</span>
+                </a>
+              </div>
             </div>
 
-            {/* Right Side: Detailed Credentials & Academic Cards */}
-            <div className="lg:col-span-8 space-y-6 text-[#172a34]">
-              {/* Header Title Tag */}
-              <div className="border-b border-slate-200 pb-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-100/80 text-[#bd171c] rounded-lg text-xs font-black uppercase tracking-widest mb-2">
-                  <span className="w-2 h-2 rounded-full bg-[#bd171c] animate-pulse"></span>
-                  Founder & Chairman Profile
+            {/* Right Side: Credentials & Roles Layout */}
+            <div className="lg:col-span-8 space-y-5 text-[#172a34]">
+              {/* Header Title */}
+              <div className="border-b border-slate-200 pb-3">
+                <div className="inline-flex items-center gap-1.5 text-[#c83220] text-xs font-black uppercase tracking-wider mb-1">
+                  <span className="w-2 h-2 rounded-full bg-[#c83220] animate-pulse"></span>
+                  FOUNDER & CHAIRMAN PROFILE
                 </div>
-                <h4 className="text-2xl md:text-3xl font-black leading-tight text-[#172a34]">
+                <h4 className="text-xl sm:text-2xl md:text-3xl font-black leading-tight text-[#172a34]">
                   Pioneering Medical Education, Research & Patient Compassion
                 </h4>
               </div>
 
-              {/* 🎓 Academic Affiliations & Fellowships Card */}
-              <div className="p-6 bg-gradient-to-r from-amber-500/10 via-amber-100/40 to-slate-50 rounded-2xl border-2 border-amber-400/40 shadow-sm relative">
+              {/* 🎓 Box 1: Academic Affiliations & Fellowships */}
+              <div className="p-4 sm:p-5 bg-gradient-to-r from-amber-500/10 via-amber-100/40 to-slate-50 rounded-2xl border border-amber-300/60 shadow-sm">
                 <div className="flex items-center gap-2 text-xs font-black uppercase text-amber-950 tracking-wider mb-2">
-                  <span className="text-lg">🎓</span>
-                  <span>Academic Affiliations & Fellowships</span>
+                  <span className="text-base">🎓</span>
+                  <span>ACADEMIC AFFILIATIONS & FELLOWSHIPS</span>
                 </div>
-                <div className="space-y-1.5 font-mono text-xs md:text-sm font-black text-slate-900 leading-relaxed bg-white/80 p-4 rounded-xl border border-amber-200 shadow-inner">
+                <div className="space-y-1 font-mono text-xs sm:text-sm font-black text-slate-900 leading-relaxed bg-white/90 p-3 sm:p-3.5 rounded-xl border border-amber-200">
                   <div>M.B.B.S., M.D., M.C.H. (USA) — M.I.A.P., M.A.H.T. (ENGLAND)</div>
                   <div>F.I.A.P., F.A.A.P. (USA) – F.I.C.A. (USA) — F.A.C.U. (LONDON)</div>
                 </div>
               </div>
 
-              {/* 🩺 Clinical Expertise & Internships Card */}
-              <div className="p-6 bg-gradient-to-r from-red-500/10 via-red-100/40 to-slate-50 rounded-2xl border-2 border-red-200 shadow-sm">
-                <div className="flex items-center gap-2 text-xs font-black uppercase text-[#bd171c] tracking-wider mb-3">
-                  <span className="text-lg">🩺</span>
-                  <span>Clinical Expertise & Internships</span>
+              {/* 🩺 Box 2: Clinical Expertise & Internships */}
+              <div className="p-4 sm:p-5 bg-gradient-to-r from-red-500/10 via-red-100/40 to-slate-50 rounded-2xl border border-red-200 shadow-sm">
+                <div className="flex items-center gap-2 text-xs font-black uppercase text-[#c83220] tracking-wider mb-3">
+                  <span className="text-base">🩺</span>
+                  <span>CLINICAL EXPERTISE & INTERNSHIPS</span>
                 </div>
-                <div className="grid sm:grid-cols-2 gap-3 text-xs">
-                  <div className="bg-white p-3.5 rounded-xl border border-red-200 flex items-start gap-2 shadow-sm">
-                    <span className="text-[#bd171c] font-black text-sm">▸</span>
+                <div className="grid sm:grid-cols-2 gap-2.5 text-xs">
+                  <div className="bg-white p-3 rounded-xl border border-red-200 flex items-start gap-2 shadow-sm">
+                    <span className="text-[#c83220] font-black text-xs">▸</span>
                     <div>
                       <span className="font-bold text-slate-900">Pediatric Hepatology</span>
                       <div className="text-[11px] text-slate-500 font-medium">Kings College Hospital, London (U.K.)</div>
                     </div>
                   </div>
-                  <div className="bg-white p-3.5 rounded-xl border border-red-200 flex items-start gap-2 shadow-sm">
-                    <span className="text-[#bd171c] font-black text-sm">▸</span>
+                  <div className="bg-white p-3 rounded-xl border border-red-200 flex items-start gap-2 shadow-sm">
+                    <span className="text-[#c83220] font-black text-xs">▸</span>
                     <div>
                       <span className="font-bold text-slate-900">Pediatric Gastroenterology</span>
                       <div className="text-[11px] text-slate-500 font-medium">Harvard University (USA)</div>
                     </div>
                   </div>
-                  <div className="bg-white p-3.5 rounded-xl border border-red-200 flex items-start gap-2 shadow-sm">
-                    <span className="text-[#bd171c] font-black text-sm">▸</span>
+                  <div className="bg-white p-3 rounded-xl border border-red-200 flex items-start gap-2 shadow-sm">
+                    <span className="text-[#c83220] font-black text-xs">▸</span>
                     <div>
                       <span className="font-bold text-slate-900">Fellow Child Health (USA)</span>
                       <div className="text-[11px] text-slate-500 font-medium">Kings College Hospital, London (U.K.)</div>
                     </div>
                   </div>
-                  <div className="bg-white p-3.5 rounded-xl border border-red-200 flex items-start gap-2 shadow-sm">
-                    <span className="text-[#bd171c] font-black text-sm">▸</span>
+                  <div className="bg-white p-3 rounded-xl border border-red-200 flex items-start gap-2 shadow-sm">
+                    <span className="text-[#c83220] font-black text-xs">▸</span>
                     <div>
                       <span className="font-bold text-slate-900">Medical Fellow in London</span>
                       <div className="text-[11px] text-slate-500 font-medium">Commonwealth Medical Fellow (UK)</div>
@@ -139,12 +207,11 @@ export default function ChairmanMessage() {
                 </div>
               </div>
 
-              {/* Grid of Global Leadership & Achievements */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                {/* Global Leadership */}
-                <div className="p-5 bg-blue-50/70 rounded-2xl border border-blue-200 space-y-2">
-                  <h5 className="font-black text-blue-950 uppercase tracking-wider flex items-center gap-2">
-                    🌐 Global Leadership Roles
+              {/* Two Column Grid: Global Leadership & Academic Leadership */}
+              <div className="grid sm:grid-cols-2 gap-3.5 text-xs">
+                <div className="p-4 bg-blue-50/80 rounded-2xl border border-blue-200 space-y-2">
+                  <h5 className="font-black text-blue-950 uppercase tracking-wider flex items-center gap-1.5">
+                    <span>🌐</span> GLOBAL LEADERSHIP ROLES
                   </h5>
                   <ul className="space-y-1.5 text-slate-700 font-semibold text-[11px]">
                     <li className="flex items-start gap-1.5">
@@ -162,10 +229,9 @@ export default function ChairmanMessage() {
                   </ul>
                 </div>
 
-                {/* Academic Leadership */}
-                <div className="p-5 bg-emerald-50/70 rounded-2xl border border-emerald-200 space-y-2">
-                  <h5 className="font-black text-emerald-950 uppercase tracking-wider flex items-center gap-2">
-                    🔬 Academic Leadership
+                <div className="p-4 bg-emerald-50/80 rounded-2xl border border-emerald-200 space-y-2">
+                  <h5 className="font-black text-emerald-950 uppercase tracking-wider flex items-center gap-1.5">
+                    <span>🎓</span> ACADEMIC LEADERSHIP
                   </h5>
                   <ul className="space-y-1.5 text-slate-700 font-semibold text-[11px]">
                     <li className="flex items-start gap-1.5">
@@ -183,8 +249,57 @@ export default function ChairmanMessage() {
                   </ul>
                 </div>
               </div>
-
             </div>
+          </div>
+        </div>
+
+        {/* ========================================================
+            PART 3: GLOBAL ENGAGEMENT PHOTO GALLERY (AS ON NIMS)
+            "usme aur bhi phots lagi huyi hai"
+            ======================================================== */}
+        <div className="space-y-6 pt-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2 border-b border-slate-200 pb-3">
+            <div>
+              <span className="text-[#c83220] font-black text-xs uppercase tracking-wider block">
+                GLOBAL ENGAGEMENTS & DISTINCTIONS
+              </span>
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-[#172a34]">
+                Moments of Clinical Leadership & International Honors
+              </h3>
+            </div>
+            <span className="text-xs text-slate-500 font-medium">
+              Prof. (Dr.) Balvir S. Tomar with national & international leaders
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {globalGalleries.map((item, idx) => (
+              <div
+                key={idx}
+                className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 transition-all duration-300 flex flex-col group"
+              >
+                <div className="h-44 overflow-hidden bg-slate-100 relative">
+                  <img
+                    src={item.src}
+                    alt={item.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute bottom-2 left-2 right-2 text-white text-[11px] font-bold line-clamp-1 drop-shadow">
+                    {item.title}
+                  </div>
+                </div>
+                <div className="p-3.5 flex flex-col flex-grow bg-white">
+                  <h4 className="font-black text-xs text-[#172a34] mb-1">
+                    {item.title}
+                  </h4>
+                  <p className="text-[11px] text-slate-600 leading-relaxed font-normal flex-grow">
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

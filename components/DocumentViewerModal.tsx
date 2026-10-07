@@ -102,7 +102,7 @@ export default function DocumentViewerModal({ isOpen, onClose, document: doc }: 
               download={fileName}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-black transition shadow flex items-center gap-1"
+              className="bg-[#c83220] hover:bg-[#a82415] text-white px-3.5 py-1.5 rounded-xl text-xs font-black transition shadow flex items-center gap-1"
             >
               📥 Download / Open
             </a>

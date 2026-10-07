@@ -3,8 +3,9 @@
 @theme {
   --color-primary: #172a34; /* Original ink color */
   --color-primary-dark: #0e191f;
-  --color-secondary: #bd171c; /* Original red */
-  --color-secondary-dark: #791017; /* Original dark red */
+  --color-secondary: #c83220; /* Logo vermillion orange-red */
+  --color-secondary-dark: #9e2417; /* Dark vermillion */
+  --color-brand-orange: #d33b28;
   --color-accent: #e5b64a;
   
   --color-cream: #f7f4ed;

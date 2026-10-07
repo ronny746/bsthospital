@@ -15,15 +15,15 @@ export default function DoctorsPage() {
       name: 'Dr. Sunita Verma',
       specialty: 'Critical Care & ICU Specialist',
       category: 'Critical Care / ICU',
-      department: 'Critical Care Medicine',
-      qualification: 'MBBS, MD (Anaesthesia), Fellowship Critical Care',
+      department: 'Critical Care & Emergency Medicine',
+      qualification: 'MBBS, MD (Anaesthesia), Fellowship in Critical Care',
       experience: '14+ Years',
       opdTimings: 'Mon - Sat: 9:00 AM - 4:00 PM',
       image: '/doctors/doctor-womens-health.png',
     },
     {
       name: 'Dr. Anita Sharma',
-      specialty: 'Women’s Health & Gynaecology',
+      specialty: 'Senior Obstetrician & Gynaecologist',
       category: 'Gynaecology',
       department: 'Obstetrics & Gynaecology',
       qualification: 'MBBS, MS (Obs & Gynae), DNB',
@@ -33,7 +33,7 @@ export default function DoctorsPage() {
     },
     {
       name: 'Dr. Rajiv Mathur',
-      specialty: 'Bone & Joint Specialist',
+      specialty: 'Senior Joint Replacement & Spine Surgeon',
       category: 'Orthopedics',
       department: 'Orthopaedics & Joint Replacement',
       qualification: 'MBBS, MS (Orthopaedics), M.Ch (UK)',
@@ -43,17 +43,17 @@ export default function DoctorsPage() {
     },
     {
       name: 'Dr. S. K. Gupta',
-      specialty: 'Senior Pediatrician',
+      specialty: 'Senior Pediatrician & Neonatologist',
       category: 'Pediatrics',
-      department: 'Paediatrics & Neonatology',
-      qualification: 'MBBS, MD (Pediatrics)',
-      experience: '12+ Years',
+      department: 'Paediatrics & Neonatology (PICU/NICU)',
+      qualification: 'MBBS, MD (Pediatrics), FIAP',
+      experience: '15+ Years',
       opdTimings: 'Mon - Sat: 9:00 AM - 1:00 PM',
       image: '/doctors/doctor-paediatrics.png',
     },
     {
       name: 'Dr. Neha Singh',
-      specialty: 'Internal Medicine Specialist',
+      specialty: 'Internal Medicine & Diabetology Specialist',
       category: 'Internal Medicine',
       department: 'General & Internal Medicine',
       qualification: 'MBBS, MD (Medicine)',
@@ -73,9 +73,9 @@ export default function DoctorsPage() {
     },
     {
       name: 'Dr. Meenakshi Sundaram',
-      specialty: 'Senior Neurosurgeon',
+      specialty: 'Senior Neurosurgeon & Spine Specialist',
       category: 'Neurology',
-      department: 'Neurosurgery & Spine',
+      department: 'Neurosurgery & Spine Center',
       qualification: 'MBBS, MS, M.Ch (Neurosurgery)',
       experience: '15+ Years',
       opdTimings: 'Mon - Sat: 12:00 PM - 5:00 PM',
@@ -83,7 +83,7 @@ export default function DoctorsPage() {
     },
     {
       name: 'Dr. Arvind Chawla',
-      specialty: 'Pulmonologist & Respiratory Care',
+      specialty: 'Pulmonologist & Sleep Medicine Specialist',
       category: 'Critical Care / ICU',
       department: 'Pulmonology & Respiratory Medicine',
       qualification: 'MBBS, MD (Chest & Respiratory)',
@@ -106,51 +106,61 @@ export default function DoctorsPage() {
   });
 
   return (
-    <main className="min-h-screen bg-cream font-sans overflow-x-hidden text-slate-800">
+    <main className="min-h-screen bg-[#fdfbf7] font-sans overflow-x-hidden text-slate-800">
       <NewsTicker />
       <TopBar />
       <NavigationBar />
 
-      {/* HERO BANNER */}
-      <section className="relative bg-gradient-to-r from-[#172a34] via-[#0f232e] to-[#791017] text-white py-20 md:py-28">
-        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center md:text-left">
-          <div className="inline-flex items-center gap-2 bg-[#e5b64a]/20 text-[#e5b64a] border border-[#e5b64a]/40 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-6">
+      {/* COMPACT NIMS-STYLE PAGE BANNER WITH BUILDING BACKGROUND */}
+      <section 
+        className="relative text-white py-8 sm:py-10 md:py-12 border-b-4 border-[#c83220] bg-cover bg-center flex items-center overflow-hidden"
+        style={{
+          backgroundImage: "linear-gradient(90deg, rgba(23, 42, 52, 0.94) 0%, rgba(15, 35, 46, 0.88) 45%, rgba(158, 36, 23, 0.78) 100%), url('/images/bst-hero-building.png')",
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 text-center md:text-left w-full">
+          <nav aria-label="breadcrumb" className="flex items-center justify-center md:justify-start gap-2 text-xs font-bold text-slate-300 uppercase tracking-widest mb-2">
+            <a href="/" className="hover:text-white transition">HOME</a>
+            <span className="text-[#c83220]">/</span>
+            <span className="text-amber-400">DOCTORS</span>
+          </nav>
+          <div className="inline-flex items-center gap-2 bg-[#c83220] text-white px-3 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider mb-2 shadow-sm">
             <span>👨‍⚕️ Medical Leadership & Clinical Experts</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-6 leading-tight max-w-4xl">
-            Meet Our Specialist Doctors
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-2 leading-tight max-w-4xl text-white">
+            Specialist Doctors at Dr. BST Hospital
           </h1>
-          <p className="text-slate-300 text-lg md:text-xl max-w-3xl font-medium leading-relaxed">
-            Consult with top super-specialist doctors, surgeons, and critical care experts at BST Hospital.
+          <p className="text-slate-200 text-xs sm:text-sm max-w-2xl font-medium leading-relaxed">
+            Consult with distinguished professors, surgeons, and super-specialist doctors in Jagatpura, Jaipur.
           </p>
         </div>
       </section>
 
-      {/* FILTER & SEARCH CONTROLS */}
-      <section className="py-12 bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
+      {/* SEARCH & FILTER CONTROLS */}
+      <section className="py-8 bg-white border-b border-slate-200 sticky top-16 z-30 shadow-sm backdrop-blur-md bg-white/95">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Search Input */}
-            <div className="w-full md:w-96 relative">
+            <div className="w-full md:w-80 relative">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search doctor by name, specialty, or department..."
-                className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-[#bd171c] font-medium"
+                placeholder="Search by doctor, specialty, department..."
+                className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#c83220] font-medium"
               />
-              <span className="absolute left-3.5 top-3.5 text-slate-400 text-sm">🔍</span>
+              <span className="absolute left-3 top-2.5 text-slate-400 text-xs">🔍</span>
             </div>
 
             {/* Category Pills */}
-            <div className="flex gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">
+            <div className="flex gap-2 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 scrollbar-none">
               {categories.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`px-5 py-2.5 rounded-full text-xs font-black whitespace-nowrap transition-all cursor-pointer ${
+                  className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                     activeCategory === cat
-                      ? 'bg-[#172a34] text-white shadow-md'
+                      ? 'bg-[#c83220] text-white shadow-md'
                       : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   }`}
                 >
@@ -163,61 +173,71 @@ export default function DoctorsPage() {
       </section>
 
       {/* DOCTORS GRID */}
-      <section className="py-16 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-12 sm:py-16 bg-[#fdfbf7]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           {filteredDoctors.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-3xl border border-slate-200">
-              <div className="text-4xl mb-3">🔍</div>
-              <h3 className="text-xl font-bold text-[#172a34] mb-2">No Doctors Found</h3>
-              <p className="text-xs text-slate-500">Try adjusting your search filter or selecting 'All' category.</p>
+            <div className="text-center py-16 bg-white rounded-2xl border border-slate-200 max-w-lg mx-auto p-6 shadow-sm">
+              <div className="text-4xl mb-2">🔍</div>
+              <h3 className="text-base font-bold text-[#172a34] mb-1">No Doctors Match Your Search</h3>
+              <p className="text-xs text-slate-500">Try adjusting your keyword or switch category to &apos;All&apos;.</p>
+              <button
+                onClick={() => { setSearchQuery(''); setActiveCategory('All'); }}
+                className="mt-4 px-4 py-1.5 bg-[#c83220] text-white rounded-lg text-xs font-bold"
+              >
+                Clear Search
+              </button>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {filteredDoctors.map((doc, idx) => {
-                const message = `Hello BST Hospital, I would like to book an appointment with ${doc.name} (${doc.specialty} - ${doc.department}). Please share available OPD consultation slots.`;
+                const message = `Hello Dr. BST Hospital Jagatpura, I would like to book a consultation with ${doc.name} (${doc.specialty} - ${doc.department}). Please share OPD slot details.`;
                 const whatsappUrl = `https://wa.me/917412077125?text=${encodeURIComponent(message)}`;
 
                 return (
                   <div
                     key={idx}
-                    className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all border border-slate-200 flex flex-col justify-between group"
+                    className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-slate-200/90 flex flex-col justify-between group"
                   >
                     <div>
-                      <div className="relative h-64 bg-slate-100 overflow-hidden">
-                        <div className="absolute inset-0 flex items-center justify-center text-slate-300">
-                          <svg className="w-24 h-24" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                          </svg>
-                        </div>
+                      {/* Doctor Photo */}
+                      <div className="relative h-60 bg-slate-100 overflow-hidden">
                         <img
                           src={doc.image}
                           alt={doc.name}
-                          className="absolute inset-0 w-full h-full object-cover object-top z-10 opacity-95 group-hover:scale-105 transition-transform duration-500"
+                          className="w-full h-full object-cover object-top opacity-95 group-hover:scale-105 transition-transform duration-500"
                         />
-                        <div className="absolute top-3 right-3 z-20 bg-[#172a34] text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase">
-                          {doc.experience} Exp.
+                        <div className="absolute top-2.5 right-2.5 bg-[#172a34]/90 text-amber-300 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider backdrop-blur-sm">
+                          {doc.experience}
                         </div>
                       </div>
 
-                      <div className="p-6">
-                        <span className="text-[#bd171c] text-[11px] font-black uppercase tracking-wider mb-1 block">
+                      {/* Doctor Info */}
+                      <div className="p-5">
+                        <span className="text-[#c83220] text-[11px] font-black uppercase tracking-wider mb-1 block">
                           {doc.specialty}
                         </span>
-                        <h3 className="text-lg font-black text-[#172a34] mb-1">{doc.name}</h3>
-                        <p className="text-slate-600 text-xs font-semibold mb-2">{doc.qualification}</p>
-                        <p className="text-slate-500 text-[11px] mb-4">{doc.department}</p>
-                        <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-[11px] text-slate-700 font-medium mb-4">
+                        <h3 className="text-base font-black text-[#172a34] mb-1 leading-snug">
+                          {doc.name}
+                        </h3>
+                        <p className="text-slate-600 text-[11px] font-bold mb-1 leading-snug">
+                          {doc.qualification}
+                        </p>
+                        <p className="text-slate-500 text-[11px] mb-3">
+                          {doc.department}
+                        </p>
+                        <div className="bg-slate-50 p-2 rounded-lg border border-slate-200 text-[11px] text-slate-700 font-medium">
                           🕒 {doc.opdTimings}
                         </div>
                       </div>
                     </div>
 
-                    <div className="p-6 pt-0">
+                    {/* RED BUTTON - COMPACT PADDING - DIRECT WHATSAPP */}
+                    <div className="p-5 pt-0">
                       <a
                         href={whatsappUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs transition-colors shadow-md"
+                        className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 px-3 rounded-xl bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-xs transition-all shadow-sm hover:shadow-md"
                       >
                         <span>💬</span>
                         <span>Book Consultation</span>

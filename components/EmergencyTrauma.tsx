@@ -1,36 +1,37 @@
 export default function EmergencyTrauma() {
   return (
-    <section className="bg-secondary text-white py-12 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full transform scale-150 -translate-y-10">
-          <path fill="#ffffff" d="M44.7,-76.4C58.8,-69.2,71.8,-59.1,81.1,-46.3C90.4,-33.5,96,-18.1,95.5,-2.9C95,12.3,88.4,27.3,79.1,40.1C69.8,52.9,57.8,63.4,44.2,71.4C30.6,79.4,15.3,84.8,0.3,84.3C-14.7,83.8,-29.4,77.3,-42.6,69.1C-55.8,60.9,-67.5,51,-76.1,38.8C-84.7,26.6,-90.2,12.1,-90.8,-2.6C-91.4,-17.3,-87.1,-32.2,-78.5,-44.6C-69.9,-57,-57,-66.9,-43.3,-74.3C-29.6,-81.7,-14.8,-86.6,0.6,-87.7C16,-88.8,30.6,-83.6,44.7,-76.4Z" transform="translate(100 100)" />
-        </svg>
-      </div>
-
-      <div className="container mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-        <div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 flex items-center gap-3">
-            <span className="text-white text-5xl">🚑</span>
-            24/7 Advanced Emergency & Trauma Care
-          </h2>
-          <p className="text-white/90 text-lg max-w-2xl">
-            Our specialized trauma team and state-of-the-art ICU are always prepared to handle critical medical and surgical emergencies with immediate response.
-          </p>
+    <section className="bg-gradient-to-r from-[#172a34] via-[#0f232e] to-[#791017] text-white py-5 sm:py-6 relative overflow-hidden border-y-2 border-[#c83220]">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8 max-w-7xl">
+        <div className="flex items-center gap-3 text-center md:text-left">
+          <span className="text-3xl sm:text-4xl shrink-0">🚑</span>
+          <div>
+            <h2 className="text-lg sm:text-xl md:text-2xl font-black text-white leading-snug flex flex-wrap items-center justify-center md:justify-start gap-2">
+              <span>24/7 Advanced Emergency & Trauma Care</span>
+              <span className="text-xs bg-[#c83220] text-white font-black px-2 py-0.5 rounded uppercase tracking-wider animate-pulse">
+                Always Ready
+              </span>
+            </h2>
+            <p className="text-slate-300 text-xs sm:text-sm font-medium mt-0.5">
+              Dr. BST Hospital, Jagatpura Jaipur • Trauma team & ICU ready for immediate life-saving response.
+            </p>
+          </div>
         </div>
-        <div className="flex-shrink-0 flex flex-col sm:flex-row gap-3">
+
+        <div className="flex-shrink-0 flex items-center gap-2.5 w-full sm:w-auto justify-center">
           <a 
-            href="https://wa.me/917412077125?text=Hello%20BST%20Hospital%2C%20I%20need%20emergency%20trauma%20assistance."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-emerald-600 hover:bg-emerald-700 text-white font-black text-base px-8 py-4 rounded-full shadow-2xl hover:scale-105 transition-transform text-center border-2 border-emerald-300"
+            href="tel:+917412077125"
+            className="inline-flex items-center justify-center gap-2 bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-md hover:scale-105 transition-transform text-center border border-red-400 whitespace-nowrap"
           >
-            🚨 Emergency Care ➔
+            <span className="w-2 h-2 rounded-full bg-amber-300 animate-ping"></span>
+            <span>🚨 24×7 Emergency Care</span>
           </a>
           <a 
-            href="tel:+917412077125" 
-            className="inline-block bg-white text-secondary font-bold text-base px-8 py-4 rounded-full shadow-2xl hover:scale-105 transition-transform text-center"
+            href="https://wa.me/917412077125?text=Hello%20Dr.%20BST%20Hospital%20Jagatpura%2C%20I%20would%20like%20to%20book%20a%20consultation."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-1.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-full border border-white/20 transition-all whitespace-nowrap"
           >
-            Call +91 74120 77125
+            <span>💬 Book Consultation</span>
           </a>
         </div>
       </div>
