@@ -2,127 +2,207 @@
 
 import React, { useState } from 'react';
 
-export default function HealthPackages() {
-  const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
+interface HealthPackage {
+  id: string;
+  name: string;
+  subtitle: string;
+  price: string;
+  originalPrice: string;
+  tag: string;
+  badgeColor: string;
+  icon: string;
+  category: 'general' | 'organ';
+  features: string[];
+}
 
-  const packages = [
+export default function HealthPackages() {
+  const [activeTab, setActiveTab] = useState<'all' | 'general' | 'organ'>('all');
+
+  const packages: HealthPackage[] = [
     {
       id: 'basic',
-      name: 'Basic Health Checkup',
+      name: 'Basic Health Package',
       subtitle: 'Essential Health Screening for Adults',
-      price: '₹999',
-      originalPrice: '₹2,500',
+      price: '₹499',
+      originalPrice: '₹1,200',
       tag: 'POPULAR',
       badgeColor: 'bg-blue-600',
       icon: '🩺',
+      category: 'general',
       features: [
-        'Complete Blood Count (CBC - 24 Parameters)',
+        'Complete Blood Count (CBC) & ESR',
         'Fasting Blood Sugar (FBS)',
-        'Lipid Profile (Cholesterol, Triglycerides, HDL/LDL)',
-        'Kidney Function (Serum Creatinine & Blood Urea)',
-        'Urine Routine & Microscopic Examination',
-        'Physical Examination & Physician Consultation',
+        'Lipid Profile (Cholesterol Test)',
+        'Liver Function Test (LFT)',
+        'Serum Creatinine & Blood Urea',
+        'Serum Uric Acid',
+        'Urine Routine Examination',
+        'Consultation with General Medicine Physician',
+        'Consultation with Dietician',
       ],
     },
     {
       id: 'executive',
-      name: 'Executive Comprehensive Package',
+      name: 'Executive Health Package',
       subtitle: 'Complete Master Health Screening',
-      price: '₹2,499',
-      originalPrice: '₹5,500',
+      price: '₹1,999',
+      originalPrice: '₹5,000',
       tag: 'MOST RECOMMENDED',
       badgeColor: 'bg-[#c83220]',
       icon: '🏆',
+      category: 'general',
       features: [
-        'Comprehensive Blood Profile (65+ Parameters)',
-        'Liver Function Test (LFT - 11 Parameters)',
-        'Kidney Function Test (KFT - Renal Profile)',
-        'Thyroid Profile (T3, T4, TSH)',
-        '12-Lead Digital ECG & Chest X-Ray (PA View)',
-        'Full Body Abdominal Ultrasound (USG)',
-        'Senior Consultant Physician & Diet Review',
+        'Complete Blood Count (CBC) & Blood Group (ABO & Rh)',
+        'Thyroid Profile (T3, T4, TSH) & Diabetes Profile',
+        'Lipid Profile (Coronary Risk Profile)',
+        'Liver Profile & Kidney Profile (LFT & KFT)',
+        'Digital Chest X-Ray & 12-Lead Digital ECG',
+        'USG Whole Abdomen (Ultrasound Screening)',
+        'Pap Smear Screening (for Females)',
+        'Urine Routine Examination',
+        'Consultation with Gen Medicine, Eye Specialist & Dentist',
+        'Consultation with Dietician',
       ],
     },
     {
       id: 'cardiac',
-      name: 'Cardiac Wellness Care',
+      name: 'Cardiac Care Package',
       subtitle: 'Advanced Heart Health & Vascular Audit',
-      price: '₹3,199',
-      originalPrice: '₹7,000',
+      price: '₹1,099',
+      originalPrice: '₹2,800',
       tag: 'HEART CARE',
-      badgeColor: 'bg-[#0e191f]',
+      badgeColor: 'bg-rose-600',
       icon: '❤️',
+      category: 'organ',
       features: [
-        'Complete Lipid & Cardiac Risk Markers',
-        '12-Lead Digital ECG',
-        '2D Echocardiography & Color Doppler',
-        'Treadmill Test (TMT / Stress Test)',
-        'Blood Sugar & Glycated Hemoglobin (HbA1c)',
-        'Senior Cardiologist Consultation & Risk Audit',
+        'Complete Blood Count (CBC) & ESR',
+        'Fasting Blood Sugar & HbA1c (Average Sugar)',
+        'Lipid Profile (Cholesterol & Coronary Markers)',
+        '2D Echocardiography (ECHO) & TMT (Stress Test)',
+        '12-Lead Electrocardiogram (ECG)',
+        'Serum Creatinine, Blood Urea (BUN) & Uric Acid',
+        'Consultation with General Medicine Physician',
+        'Consultation with Dietician',
       ],
     },
     {
       id: 'senior',
-      name: 'Senior Citizen Care Package',
-      subtitle: 'Tailored Geriatric & Mobility Screening',
-      price: '₹3,499',
-      originalPrice: '₹7,500',
+      name: 'Comprehensive / Senior Citizen Package',
+      subtitle: 'Tailored Geriatric & Full-Body Care',
+      price: '₹1,999',
+      originalPrice: '₹4,500',
       tag: 'SENIOR CARE',
-      badgeColor: 'bg-amber-600',
+      badgeColor: 'bg-purple-600',
       icon: '👴',
+      category: 'general',
       features: [
-        'Full Body Blood & Metabolic Panel (70+ Tests)',
-        'HbA1c (3-Month Average Sugar)',
-        'Bone Density / Vitamin D3 & Vitamin B12',
-        'Kidney, Liver & Prostate (PSA for Men) / Gynec',
-        'Joint Mobility & Orthopedic Screening',
-        'Senior Physician & Joint Specialist Consultation',
+        'CBC & ESR, Fasting Blood Sugar & HbA1c',
+        'Lipid Profile, Liver (LFT) & Kidney (RFT) Function',
+        'Thyroid Profile (TSH Screening)',
+        'Vitamin D3 & Vitamin B12 Levels',
+        '12-Lead Digital ECG & USG Whole Abdomen',
+        'PSA (Prostate for Men) / Pap Smear (for Females)',
+        'Serum Creatinine, Blood Urea, Uric Acid & Urine R/M',
+        'Consultation with Gen Medicine, Eye Specialist & Gynaecologist',
+        'Consultation with Dietician',
       ],
     },
     {
-      id: 'women',
-      name: "Women's Wellness Package",
-      subtitle: 'Comprehensive Health & Hormonal Checkup',
-      price: '₹2,799',
-      originalPrice: '₹6,000',
-      tag: 'WOMEN HEALTH',
-      badgeColor: 'bg-pink-600',
-      icon: '👩',
+      id: 'diabetes',
+      name: 'Diabetes Care Package',
+      subtitle: 'Glycemic Control & Vital Organ Protection',
+      price: '₹699',
+      originalPrice: '₹1,800',
+      tag: 'DIABETES CARE',
+      badgeColor: 'bg-teal-600',
+      icon: '🩸',
+      category: 'organ',
       features: [
-        'Complete Hemogram & Anemia Screening',
-        'Thyroid Hormone Profile (T3, T4, TSH)',
-        'Pelvic Ultrasound (USG) & Mammography screening',
-        'Pap Smear Screening',
-        'Blood Sugar & Renal Profile',
-        'Senior Gynecologist & Women Health Specialist',
+        'Fasting Blood Sugar (FBS)',
+        'HbA1c (3-Month Glycated Hemoglobin)',
+        'Lipid Profile (Cholesterol Test)',
+        'Liver Function Test (LFT)',
+        'Renal Profile Test (RFT) & Blood Urea',
+        'Urine Routine Examination',
+        'Urine Microalbumin (Early Kidney Risk Screening)',
+        'Consultation with Gen Medicine & Ophthalmologist (Eye Check)',
+        'Consultation with Dietician',
       ],
     },
     {
-      id: 'master',
-      name: 'Apex Whole Body Master Checkup',
-      subtitle: 'Total Quaternary Health & Cancer Markers',
-      price: '₹5,999',
-      originalPrice: '₹12,000',
-      tag: 'ALL INCLUSIVE',
-      badgeColor: 'bg-[#172a34]',
-      icon: '💎',
+      id: 'kidney',
+      name: 'Kidney Health Package',
+      subtitle: 'Advanced Renal Profile & Microalbumin Screening',
+      price: '₹999',
+      originalPrice: '₹2,200',
+      tag: 'KIDNEY CARE',
+      badgeColor: 'bg-cyan-700',
+      icon: '💧',
+      category: 'organ',
       features: [
-        '85+ Advanced Clinical Laboratory Parameters',
-        'Full Body USG + Digital Chest X-Ray',
-        '2D Echo + ECG + TMT Cardiac Evaluation',
-        'Cancer Screening Markers (PSA/CA-125/CEA)',
-        'Complete Thyroid, Liver, Renal & Vitamin Audit',
-        'Multi-Specialist Consultation (Cardio, Phys, Gynec/Ortho)',
+        'CBC & ESR (Blood Count & Inflammation)',
+        'Fasting Blood Sugar (FBS) & HbA1c',
+        'Serum Creatinine & Blood Urea',
+        'Serum Uric Acid',
+        'Urine Routine & Microscopic Examination',
+        'Urine Microalbumin (Early Kidney Risk Screening)',
+        'Consultation with General Medicine Physician',
+        'Consultation with Dietician',
+      ],
+    },
+    {
+      id: 'liver',
+      name: 'Liver Health Package',
+      subtitle: 'Hepatic Function & Viral Marker Screening',
+      price: '₹699',
+      originalPrice: '₹1,800',
+      tag: 'LIVER CARE',
+      badgeColor: 'bg-amber-600',
+      icon: '🧪',
+      category: 'organ',
+      features: [
+        'CBC & ESR (Blood Count & Inflammation)',
+        'Liver Function Test (LFT - Complete Profile)',
+        'Lipid Profile (Cholesterol Test)',
+        'Serum Creatinine',
+        'HBsAg (Hepatitis B Screening)',
+        'Anti-HCV (Hepatitis C Screening)',
+        'Consultation with General Medicine Physician',
+        'Consultation with Dietician',
+      ],
+    },
+    {
+      id: 'thyroid',
+      name: 'Thyroid Care Package',
+      subtitle: 'Complete Thyroid Hormone Assessment',
+      price: '₹499',
+      originalPrice: '₹1,200',
+      tag: 'THYROID CARE',
+      badgeColor: 'bg-indigo-600',
+      icon: '🦋',
+      category: 'organ',
+      features: [
+        'TSH (Thyroid-Stimulating Hormone)',
+        'FT3 (Free Triiodothyronine)',
+        'FT4 (Free Thyroxine)',
+        'Metabolic Health Screening',
+        'Consultation with General Medicine Physician',
+        'Consultation with Dietician',
       ],
     },
   ];
+
+  const filteredPackages =
+    activeTab === 'all'
+      ? packages
+      : packages.filter((pkg) => pkg.category === activeTab);
 
   return (
     <section className="py-12 sm:py-20 bg-slate-50 border-t border-slate-200" id="packages">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         
         {/* Header Title */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
           <span className="text-[#c83220] font-black tracking-widest text-xs uppercase mb-2 block">
             PREVENTIVE HEALTHCARE &amp; DIAGNOSTICS
           </span>
@@ -130,14 +210,50 @@ export default function HealthPackages() {
             Preventive Health Checkup Packages
           </h2>
           <p className="text-slate-600 text-xs sm:text-base leading-relaxed">
-            Early detection saves lives. Dr. BST Hospital offers comprehensive, physician-curated health checkup packages with same-day reports and expert doctor consultations.
+            Early detection saves lives. Dr. BST Hospital offers comprehensive, physician-curated health checkup packages with accurate diagnostics, same-day reports, and expert doctor consultations.
           </p>
+
+          {/* Filter Tabs */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
+            <button
+              onClick={() => setActiveTab('all')}
+              className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
+                activeTab === 'all'
+                  ? 'bg-[#172a34] text-white shadow-md'
+                  : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+              }`}
+            >
+              All Packages (8)
+            </button>
+            <button
+              onClick={() => setActiveTab('general')}
+              className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
+                activeTab === 'general'
+                  ? 'bg-[#172a34] text-white shadow-md'
+                  : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+              }`}
+            >
+              Master &amp; Comprehensive (3)
+            </button>
+            <button
+              onClick={() => setActiveTab('organ')}
+              className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
+                activeTab === 'organ'
+                  ? 'bg-[#172a34] text-white shadow-md'
+                  : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+              }`}
+            >
+              Organ &amp; Chronic Care (5)
+            </button>
+          </div>
         </div>
 
         {/* Packages Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {packages.map((pkg) => {
-            const bookingText = `Hello Dr. BST Hospital Jagatpura,%0A%0AI would like to book the *${pkg.name}* (${pkg.price}). Please assist me with appointment booking.`;
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredPackages.map((pkg) => {
+            const bookingText = encodeURIComponent(
+              `Hello Dr. BST Hospital Jagatpura,\n\nI would like to book the *${pkg.name}* (${pkg.price}). Please assist me with appointment booking.`
+            );
             const whatsappUrl = `https://wa.me/917412077125?text=${bookingText}`;
 
             return (
@@ -145,8 +261,8 @@ export default function HealthPackages() {
                 key={pkg.id}
                 className="bg-white rounded-3xl overflow-hidden border border-slate-200/90 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group relative"
               >
-                {/* Tag Badge */}
-                <div className="p-6 sm:p-7 space-y-4">
+                {/* Tag Badge & Header */}
+                <div className="p-5 sm:p-6 space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="text-3xl">{pkg.icon}</span>
                     <span className={`text-[10px] sm:text-[11px] font-black text-white px-3 py-1 rounded-full uppercase tracking-wider ${pkg.badgeColor} shadow-sm`}>
@@ -155,10 +271,10 @@ export default function HealthPackages() {
                   </div>
 
                   <div>
-                    <h3 className="text-lg sm:text-xl font-black text-[#172a34] group-hover:text-[#c83220] transition-colors">
+                    <h3 className="text-lg font-black text-[#172a34] group-hover:text-[#c83220] transition-colors leading-snug">
                       {pkg.name}
                     </h3>
-                    <p className="text-xs text-slate-500 font-semibold mt-0.5">
+                    <p className="text-xs text-slate-500 font-semibold mt-1">
                       {pkg.subtitle}
                     </p>
                   </div>
@@ -177,13 +293,13 @@ export default function HealthPackages() {
                   </div>
 
                   {/* Features List */}
-                  <div className="pt-2 space-y-2.5">
-                    <span className="text-[11px] font-black uppercase text-slate-400 tracking-wider block">
-                      INCLUDED SCREENING TESTS &amp; SERVICES:
+                  <div className="pt-2 space-y-2">
+                    <span className="text-[10px] font-black uppercase text-slate-400 tracking-wider block">
+                      INCLUDED TESTS &amp; SERVICES:
                     </span>
-                    <ul className="space-y-2">
+                    <ul className="space-y-1.5">
                       {pkg.features.map((feat, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-xs text-slate-700 font-medium">
+                        <li key={idx} className="flex items-start gap-1.5 text-xs text-slate-700 font-medium leading-snug">
                           <span className="text-[#c83220] font-bold shrink-0 mt-0.5">✓</span>
                           <span>{feat}</span>
                         </li>
@@ -193,21 +309,21 @@ export default function HealthPackages() {
                 </div>
 
                 {/* Booking Button Footer */}
-                <div className="p-6 pt-0 space-y-2">
+                <div className="p-5 sm:p-6 pt-0 space-y-2">
                   <a
                     href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full bg-[#172a34] group-hover:bg-[#c83220] text-white font-bold text-xs sm:text-sm py-3 px-4 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <span>💬 Book Package on WhatsApp</span>
+                    <span>💬 Book on WhatsApp</span>
                     <span>➔</span>
                   </a>
                   <a
                     href="tel:+917412077125"
                     className="block text-center text-[11px] font-bold text-slate-500 hover:text-[#c83220] transition"
                   >
-                    📞 Or Call Helpline: +91 74120 77125
+                    📞 Helpline: +91 74120 77125
                   </a>
                 </div>
               </div>

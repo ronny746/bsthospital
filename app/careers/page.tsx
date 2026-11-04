@@ -1,14 +1,23 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import NewsTicker from '@/components/NewsTicker';
 import TopBar from '@/components/TopBar';
 import NavigationBar from '@/components/NavigationBar';
 import Footer from '@/components/Footer';
+import { API_URL, JobOpeningData, slugifyJobTitle } from '@/lib/api';
 
 export default function CareersPage() {
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
+  const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
+  const [selectedDepartment, setSelectedDepartment] = useState<string>('General Healthcare');
   const [applySuccess, setApplySuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [jobs, setJobs] = useState<JobOpeningData[]>([]);
+  const [jobsLoading, setJobsLoading] = useState(true);
 
   const [applicantForm, setApplicantForm] = useState({
     fullName: '',
@@ -20,70 +29,92 @@ export default function CareersPage() {
     coverNote: '',
   });
 
-  const jobOpenings = [
-    {
-      id: 'job-1',
-      title: 'Senior Consultant - Critical Care / ICU',
-      department: 'Critical Care Medicine',
-      location: 'Jagatpura, Jaipur',
-      experience: '5+ Years Post MD/DNB',
-      type: 'Full-time',
-      description: 'Lead patient management across 1000+ beds ICU facility. Handle complex ARDS, trauma, and multi-organ emergency cases.',
-    },
-    {
-      id: 'job-2',
-      title: 'Consultant - Cardiology',
-      department: 'Cardiology (Cath Lab)',
-      location: 'Jagatpura, Jaipur',
-      experience: '3+ Years DM / DNB Cardiology',
-      type: 'Full-time',
-      description: 'Perform emergency angioplasties, cardiac catheterization, and post-op CICU monitoring.',
-    },
-    {
-      id: 'job-3',
-      title: 'Senior Resident - Emergency & Trauma Care',
-      department: 'Emergency Medicine',
-      location: 'Jagatpura, Jaipur',
-      experience: '1-3 Years MBBS / MEM / MD',
-      type: 'Full-time',
-      description: 'Manage 24/7 Level-1 Trauma Triage, airway management, and acute stabilization.',
-    },
-    {
-      id: 'job-4',
-      title: 'ICU Nursing Officer (Staff Nurse)',
-      department: 'Nursing & Critical Care',
-      location: 'Jagatpura, Jaipur',
-      experience: '1+ Year B.Sc Nursing / GNM',
-      type: 'Shift Rotational',
-      description: 'Monitor ventilator-dependent patients, administer critical drips, and maintain sterile bedside care.',
-    },
-    {
-      id: 'job-5',
-      title: 'Senior Radiographer & CT/MRI Technician',
-      department: 'Radiology & Imaging',
-      location: 'Jagatpura, Jaipur',
-      experience: '2+ Years Diploma / B.Sc Radiology',
-      type: 'Full-time',
-      description: 'Operate multi-slice CT scanner, high-resolution ultrasound, and digital radiography units in emergency settings.',
-    },
-  ];
+  // Fetch live active jobs from database
+  useEffect(() => {
+    fetchJobs();
+  }, []);
 
-  const handleApplySubmit = (e: React.FormEvent) => {
+  const fetchJobs = async () => {
+    setJobsLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/careers/jobs`, { cache: 'no-store' });
+      const data = (await res.json()) as any;
+      if (data.success && Array.isArray(data.data)) {
+        setJobs(data.data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch jobs:', err);
+    } finally {
+      setJobsLoading(false);
+    }
+  };
+
+  const handleOpenApplyModal = (title: string, dept: string, id?: string) => {
+    setSelectedJob(title);
+    setSelectedDepartment(dept);
+    setSelectedJobId(id || null);
+    setErrorMessage('');
+    setApplySuccess(false);
+  };
+
+  const handleApplySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setApplySuccess(true);
-    setTimeout(() => {
-      setApplySuccess(false);
-      setSelectedJob(null);
-      setApplicantForm({
-        fullName: '',
-        email: '',
-        mobile: '',
-        experienceYears: '',
-        qualification: '',
-        resumeLink: '',
-        coverNote: '',
+    setIsSubmitting(true);
+    setErrorMessage('');
+
+    try {
+      const formData = new FormData();
+      formData.append('fullName', applicantForm.fullName);
+      formData.append('email', applicantForm.email);
+      formData.append('phone', applicantForm.mobile);
+      formData.append('position', selectedJob || 'General Application');
+      formData.append('department', selectedDepartment || 'General Healthcare');
+      formData.append('qualification', applicantForm.qualification);
+      formData.append('experience', applicantForm.experienceYears);
+      formData.append('coverNote', applicantForm.coverNote);
+
+      if (selectedJobId) {
+        formData.append('jobId', selectedJobId);
+      }
+
+      if (applicantForm.resumeLink) {
+        formData.append('resumeUrl', applicantForm.resumeLink);
+      }
+
+      if (resumeFile) {
+        formData.append('resume', resumeFile);
+      }
+
+      const res = await fetch(`${API_URL}/careers/apply`, {
+        method: 'POST',
+        body: formData,
       });
-    }, 2500);
+
+      const data = (await res.json()) as any;
+
+      if (data.success) {
+        setApplySuccess(true);
+        setTimeout(() => {
+          setApplicantForm({
+            fullName: '',
+            email: '',
+            mobile: '',
+            experienceYears: '',
+            qualification: '',
+            resumeLink: '',
+            coverNote: '',
+          });
+          setResumeFile(null);
+        }, 1000);
+      } else {
+        setErrorMessage(data.message || 'Failed to submit application. Please check your inputs.');
+      }
+    } catch (err) {
+      console.error('Job application error:', err);
+      setErrorMessage('Could not connect to hospital server. Please try again or call HR directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -166,71 +197,138 @@ export default function CareersPage() {
               <h2 className="text-2xl sm:text-3xl font-black text-[#172a34]">Open Positions</h2>
             </div>
             <div className="text-xs text-slate-500 font-bold bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
-              Showing {jobOpenings.length} Active Vacancies
+              Showing {jobs.length} Active Vacancies
             </div>
           </div>
 
-          <div className="space-y-4">
-            {jobOpenings.map((job) => (
-              <div
-                key={job.id}
-                className="bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-slate-200/90 hover:shadow-lg transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-5"
-              >
-                <div className="max-w-3xl">
-                  <div className="flex flex-wrap items-center gap-2 mb-2">
-                    <span className="bg-red-50 text-[#c83220] text-[11px] font-black px-2.5 py-0.5 rounded-full uppercase border border-red-200">
-                      {job.department}
-                    </span>
-                    <span className="bg-slate-100 text-slate-700 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
-                      📍 {job.location}
-                    </span>
-                    <span className="bg-slate-100 text-slate-700 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
-                      ⏳ {job.type}
-                    </span>
-                  </div>
-                  <h3 className="text-base sm:text-lg font-black text-[#172a34] mb-1">{job.title}</h3>
-                  <p className="text-slate-600 text-xs mb-2 leading-relaxed">{job.description}</p>
-                  <div className="text-[11px] font-bold text-slate-500">Requirements: {job.experience}</div>
-                </div>
+          {jobsLoading ? (
+            <div className="p-12 text-center text-slate-400 text-sm">
+              Loading current openings...
+            </div>
+          ) : jobs.length === 0 ? (
+            <div className="p-12 text-center text-slate-500 bg-white rounded-3xl border border-slate-200">
+              <p className="font-bold text-base mb-1">No vacancies actively advertised at this moment.</p>
+              <p className="text-xs text-slate-400">You can still drop your general CV below and our HR team will contact you!</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {jobs.map((job) => {
+                const jobSlug = job.slug || slugifyJobTitle(job.title);
+                return (
+                  <div
+                    key={job._id || job.title}
+                    className="bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-slate-200/90 hover:shadow-lg transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-5 group"
+                  >
+                    <div className="max-w-3xl">
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                        <span className="bg-red-50 text-[#c83220] text-[11px] font-black px-2.5 py-0.5 rounded-full uppercase border border-red-200">
+                          {job.department}
+                        </span>
+                        <span className="bg-slate-100 text-slate-700 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
+                          📍 {job.location || 'Jagatpura, Jaipur'}
+                        </span>
+                        <span className="bg-slate-100 text-slate-700 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
+                          ⏳ {job.type || 'Full-time'}
+                        </span>
+                        {job.vacancies && job.vacancies > 1 && (
+                          <span className="bg-emerald-50 text-emerald-700 text-[11px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-200">
+                            👥 {job.vacancies} Positions
+                          </span>
+                        )}
+                      </div>
+                      <Link href={`/careers/${jobSlug}`} className="block group/link">
+                        <h3 className="text-base sm:text-lg font-black text-[#172a34] group-hover/link:text-[#c83220] transition-colors mb-1 inline-flex items-center gap-1.5">
+                          <span>{job.title}</span>
+                          <span className="text-xs text-[#c83220] opacity-0 group-hover/link:opacity-100 transition-opacity">↗</span>
+                        </h3>
+                      </Link>
+                      <p className="text-slate-600 text-xs mb-2 leading-relaxed">{job.description}</p>
+                      <div className="text-[11px] font-bold text-slate-500">
+                        Requirements: <span className="text-slate-700">{job.experience}</span>
+                        {job.requirements && ` • ${job.requirements}`}
+                      </div>
+                    </div>
 
-                <button
-                  type="button"
-                  onClick={() => setSelectedJob(job.title)}
-                  className="bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-sm hover:shadow-md shrink-0 cursor-pointer"
-                >
-                  Apply Now ➔
-                </button>
-              </div>
-            ))}
+                    <div className="w-full md:w-auto shrink-0">
+                      <Link
+                        href={`/careers/${jobSlug}`}
+                        className="w-full md:w-auto text-center bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-xs px-6 py-2.5 rounded-xl transition-all shadow-sm hover:shadow-md shrink-0 inline-flex items-center justify-center gap-1.5"
+                      >
+                        <span>View Details</span>
+                        <span>➔</span>
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* GENERAL RESUME DROP BOX */}
+          <div className="mt-8 bg-gradient-to-r from-[#172a34] to-[#2c1310] text-white p-6 sm:p-8 rounded-3xl shadow-lg border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="space-y-1.5 text-center md:text-left">
+              <span className="text-[10px] font-black uppercase tracking-widest text-amber-400">
+                GENERAL APPLICANTS WELCOME
+              </span>
+              <h3 className="text-xl sm:text-2xl font-black">Don&apos;t see your specialty listed?</h3>
+              <p className="text-xs text-slate-300 max-w-xl">
+                We are constantly expanding our clinical and administrative departments. Submit your CV and our HR team will contact you for matching openings.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => handleOpenApplyModal('General Healthcare Specialist', 'General Healthcare')}
+              className="bg-amber-400 hover:bg-amber-300 text-slate-900 font-black text-xs px-6 py-3 rounded-xl transition shadow-md whitespace-nowrap cursor-pointer shrink-0"
+            >
+              Submit General Application ➔
+            </button>
           </div>
         </div>
       </section>
 
       {/* JOB APPLICATION MODAL */}
       {selectedJob && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative border-2 border-slate-200">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative border border-slate-200 my-8">
             <button
               onClick={() => setSelectedJob(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 font-bold text-lg"
+              className="absolute top-5 right-5 text-slate-400 hover:text-slate-700 font-bold text-lg p-1"
             >
               ✕
             </button>
 
             {applySuccess ? (
-              <div className="text-center py-6">
-                <div className="w-12 h-12 bg-red-100 text-[#c83220] rounded-full flex items-center justify-center mx-auto mb-3 text-2xl font-bold">
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-bold">
                   ✓
                 </div>
-                <h3 className="text-xl font-black text-[#172a34] mb-1">Application Submitted!</h3>
-                <p className="text-slate-600 text-xs font-medium">
-                  Thank you for applying for <span className="font-bold text-[#c83220]">{selectedJob}</span>. Our HR team will reach out to you shortly.
+                <h3 className="text-2xl font-black text-[#172a34] mb-2">Application Submitted!</h3>
+                <p className="text-slate-600 text-xs sm:text-sm font-medium leading-relaxed max-w-md mx-auto">
+                  Thank you for applying for <span className="font-bold text-[#c83220]">{selectedJob}</span>. Your application has been directly forwarded to the Hospital HR department.
                 </p>
+                <button
+                  type="button"
+                  onClick={() => setSelectedJob(null)}
+                  className="mt-6 bg-[#172a34] text-white font-bold text-xs px-6 py-2.5 rounded-xl hover:bg-[#c83220] transition"
+                >
+                  Close Window
+                </button>
               </div>
             ) : (
               <div>
-                <div className="text-xs font-black text-[#c83220] uppercase tracking-wider mb-0.5">Application Form</div>
-                <h3 className="text-lg font-black text-[#172a34] mb-4">Apply for {selectedJob}</h3>
+                <div className="text-[10px] font-black text-[#c83220] uppercase tracking-wider mb-0.5">
+                  HR CANDIDATE PORTAL
+                </div>
+                <h3 className="text-lg sm:text-xl font-black text-[#172a34] mb-1">Apply for {selectedJob}</h3>
+                <p className="text-[11px] text-slate-500 mb-4">
+                  Department: <span className="font-bold text-slate-700">{selectedDepartment}</span>
+                </p>
+
+                {errorMessage && (
+                  <div className="p-3 bg-red-50 border-l-4 border-red-500 text-red-700 text-xs font-semibold rounded mb-4">
+                    ⚠️ {errorMessage}
+                  </div>
+                )}
 
                 <form onSubmit={handleApplySubmit} className="space-y-3.5">
                   <div>
@@ -241,11 +339,11 @@ export default function CareersPage() {
                       value={applicantForm.fullName}
                       onChange={(e) => setApplicantForm({ ...applicantForm, fullName: e.target.value })}
                       placeholder="Dr. / Mr. / Ms. Full Name"
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#c83220]"
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#c83220] font-medium"
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1">Email Address *</label>
                       <input
@@ -254,7 +352,7 @@ export default function CareersPage() {
                         value={applicantForm.email}
                         onChange={(e) => setApplicantForm({ ...applicantForm, email: e.target.value })}
                         placeholder="doctor@example.com"
-                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#c83220]"
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#c83220] font-medium"
                       />
                     </div>
                     <div>
@@ -264,53 +362,95 @@ export default function CareersPage() {
                         required
                         value={applicantForm.mobile}
                         onChange={(e) => setApplicantForm({ ...applicantForm, mobile: e.target.value })}
-                        placeholder="+91 9876543210"
-                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#c83220]"
+                        placeholder="+91 98765 43210"
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#c83220] font-medium"
                       />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">Qualification *</label>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">Qualification &amp; Degrees *</label>
                       <input
                         type="text"
                         required
                         value={applicantForm.qualification}
                         onChange={(e) => setApplicantForm({ ...applicantForm, qualification: e.target.value })}
-                        placeholder="MBBS, MD, B.Sc Nursing"
-                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#c83220]"
+                        placeholder="MBBS, MD, B.Sc Nursing, GNM..."
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#c83220] font-medium"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">Experience (Years) *</label>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">Experience *</label>
                       <input
                         type="text"
                         required
                         value={applicantForm.experienceYears}
                         onChange={(e) => setApplicantForm({ ...applicantForm, experienceYears: e.target.value })}
-                        placeholder="e.g. 4 Years"
-                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#c83220]"
+                        placeholder="e.g. 5+ Years"
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#c83220] font-medium"
                       />
                     </div>
                   </div>
 
+                  {/* RESUME UPLOAD / FILE */}
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Resume / Portfolio Link</label>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                      Attach Resume / CV Document (PDF, Word, or Image)
+                    </label>
+                    <input
+                      type="file"
+                      accept=".pdf,.doc,.docx,image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) setResumeFile(file);
+                      }}
+                      className="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#172a34] file:text-white hover:file:bg-[#c83220] file:cursor-pointer cursor-pointer border border-slate-200 rounded-xl p-1 bg-slate-50"
+                    />
+                    {resumeFile && (
+                      <p className="text-[11px] text-emerald-700 font-bold mt-1">
+                        ✓ Selected: {resumeFile.name} ({(resumeFile.size / 1024).toFixed(0)} KB)
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                      Or Paste Resume Link (Google Drive / LinkedIn / Portfolio)
+                    </label>
                     <input
                       type="url"
                       value={applicantForm.resumeLink}
                       onChange={(e) => setApplicantForm({ ...applicantForm, resumeLink: e.target.value })}
                       placeholder="https://drive.google.com/..."
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#c83220]"
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#c83220] font-medium"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Cover Note / Remarks (Optional)</label>
+                    <textarea
+                      rows={2}
+                      value={applicantForm.coverNote}
+                      onChange={(e) => setApplicantForm({ ...applicantForm, coverNote: e.target.value })}
+                      placeholder="Brief note on your key clinical achievements or availability..."
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#c83220] font-medium"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full bg-[#c83220] hover:bg-[#a82415] text-white font-bold py-2.5 rounded-xl shadow-md transition text-xs cursor-pointer"
+                    disabled={isSubmitting}
+                    className="w-full bg-[#c83220] hover:bg-[#a82415] text-white font-bold py-3 rounded-xl shadow-md transition text-xs cursor-pointer flex items-center justify-center gap-2"
                   >
-                    Submit Job Application ➔
+                    {isSubmitting ? (
+                      <span>Submitting Application...</span>
+                    ) : (
+                      <>
+                        <span>Submit Job Application to HR</span>
+                        <span>➔</span>
+                      </>
+                    )}
                   </button>
                 </form>
               </div>

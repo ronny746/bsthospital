@@ -2,7 +2,7 @@
 
 export default function HeroSection() {
   return (
-    <section className="relative w-full h-[260px] sm:h-[380px] md:h-[520px] overflow-hidden bg-slate-950" id="home">
+    <section className="relative w-full h-full min-h-[260px] overflow-hidden bg-slate-950" id="home">
       {/* 1. CONTINUOUS VIDEO BACKGROUND - 100% UNOBSTRUCTED & PURE */}
       <div className="absolute inset-0 w-full h-full">
         <video
@@ -14,7 +14,8 @@ export default function HeroSection() {
           poster="/images/bst-hospital-exterior.jpg"
           className="w-full h-full object-cover object-center"
         >
-          <source src="/videos/hero-video.mp4" type="video/mp4" />
+          <source src="/videos/hero-hospital.mp4" type="video/mp4" />
+          <source src="/videos/IMG_6258.MOV" type="video/quicktime" />
           Your browser does not support the video tag.
         </video>
 

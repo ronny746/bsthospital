@@ -5,6 +5,7 @@ import NewsTicker from '@/components/NewsTicker';
 import TopBar from '@/components/TopBar';
 import NavigationBar from '@/components/NavigationBar';
 import Footer from '@/components/Footer';
+import { API_URL } from '@/lib/api';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -17,9 +18,31 @@ export default function ContactPage() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitting(true);
+    try {
+      // Save contact message to MongoDB backend
+      await fetch(`${API_URL}/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          department: formData.department,
+          date: formData.date,
+          message: formData.message,
+        }),
+      });
+    } catch (err) {
+      console.error('Failed to submit contact message to backend:', err);
+    } finally {
+      setSubmitting(false);
+    }
+
     const text = `Hello Dr. BST Hospital Jagatpura,%0A%0A*Name:* ${formData.name}%0A*Phone:* ${formData.phone}%0A*Email:* ${formData.email || 'N/A'}%0A*Department:* ${formData.department}%0A*Preferred Date:* ${formData.date || 'Earliest available'}%0A*Message/Concern:* ${formData.message}`;
     window.open(`https://wa.me/917412077125?text=${text}`, '_blank');
     setSubmitted(true);
@@ -297,9 +320,10 @@ export default function ContactPage() {
                 <div className="pt-2">
                   <button
                     type="submit"
+                    disabled={submitting}
                     className="w-full bg-[#c83220] hover:bg-[#a82415] text-white font-black text-xs sm:text-sm py-3.5 px-6 rounded-xl transition-all shadow-lg hover:shadow-red-600/30 flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <span>Submit Enquiry &amp; Connect via WhatsApp</span>
+                    <span>{submitting ? 'Submitting...' : 'Submit Enquiry & Connect via WhatsApp'}</span>
                     <span>➔</span>
                   </button>
                   <p className="text-[11px] text-slate-400 text-center mt-2">
