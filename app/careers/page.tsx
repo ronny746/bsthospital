@@ -140,7 +140,7 @@ export default function CareersPage() {
             <span>💼 Join Our Mission</span>
           </div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-2 leading-tight max-w-4xl text-white">
-            Build Your Healthcare Career at BST Hospital
+            Build Your Healthcare Career at Dr. B. S. Tomar Hospital
           </h1>
           <p className="text-slate-200 text-xs sm:text-sm max-w-2xl font-medium leading-relaxed">
             Work with leading medical experts, state-of-the-art ICU infrastructure, and contribute to saving lives every day in Jagatpura, Jaipur.
@@ -153,9 +153,9 @@ export default function CareersPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-3xl mx-auto mb-10">
             <span className="text-[#c83220] font-black text-xs uppercase tracking-widest mb-1.5 block">
-              LIFE AT BST HOSPITAL
+              LIFE AT DR. B. S. TOMAR HOSPITAL
             </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-[#172a34]">Why Choose BST Hospital?</h2>
+            <h2 className="text-2xl sm:text-3xl font-black text-[#172a34]">Why Choose Dr. B. S. Tomar Hospital?</h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">

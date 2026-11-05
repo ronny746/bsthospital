@@ -166,7 +166,7 @@ export default function DocumentViewerModal({ isOpen, onClose, document: doc }: 
         <div>
           Category: <span className="text-white font-bold">{docType}</span>
         </div>
-        <div className="text-slate-400 text-[11px]">BSTIMS ICU Document Verification System</div>
+        <div className="text-slate-400 text-[11px]">Dr. B. S. Tomar IMS ICU Document Verification System</div>
       </div>
     </div>
   );

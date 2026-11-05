@@ -1,6 +1,6 @@
 export default function Testimonials() {
   const testimonials = [
-    { name: 'Rajesh Kumar', text: 'The doctors at BST Hospital were incredibly supportive during my surgery. The facilities are top-notch and the nursing staff is very caring.' },
+    { name: 'Rajesh Kumar', text: 'The doctors at Dr. B. S. Tomar Hospital were incredibly supportive during my surgery. The facilities are top-notch and the nursing staff is very caring.' },
     { name: 'Sunita Devi', text: 'We brought our child for an emergency in the middle of the night. The pediatric team responded immediately. Highly recommend their 24/7 care.' },
     { name: 'Amit Sharma', text: 'Excellent diagnostic facilities. I got my MRI and blood tests done very quickly, and the specialists explained everything clearly.' },
   ];

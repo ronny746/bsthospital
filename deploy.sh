@@ -2,7 +2,7 @@
 set -e
 
 # ==========================================
-# Nims Tatkaal Seva / BST Hospital Deployment
+# Nims Tatkaal Seva / Dr. B. S. Tomar Hospital Deployment
 # ==========================================
 
 APP_NAME="bsthospital"

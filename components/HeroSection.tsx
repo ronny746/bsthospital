@@ -30,8 +30,9 @@ export default function HeroSection() {
       >
         <div className="text-right flex items-center justify-end gap-1.5 sm:gap-2">
           <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-amber-300 animate-ping"></span>
-          <span className="text-[10px] sm:text-xs md:text-sm font-black tracking-wide drop-shadow whitespace-nowrap">
-            Dr. BST Hospital, Jagatpura, Jaipur
+          <span className="text-[9px] sm:text-xs md:text-sm font-black tracking-wide drop-shadow whitespace-nowrap">
+            <span className="hidden sm:inline">Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital, Jagatpura, Jaipur</span>
+            <span className="sm:hidden">Dr. B. S. Tomar Hospital, Jagatpura, Jaipur</span>
           </span>
         </div>
       </div>

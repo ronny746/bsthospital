@@ -10,7 +10,7 @@ export default function NewsTicker() {
         ADMISSIONS OPEN 2026 - 2027 FOR MBBS
       </span>
       <span className="text-white/40">•</span>
-      <span className="font-bold text-slate-100">DR. B. S. TOMAR INSTITUTE OF MEDICAL SCIENCES & RESEARCH</span>
+      <span className="font-bold text-slate-100">DR. B. S. TOMAR INSTITUTE OF MEDICAL SCIENCES, RESEARCH &amp; HOSPITAL, JAGATPURA, JAIPUR</span>
       <span className="text-white/40">•</span>
       <span className="text-amber-300 font-bold">SUPER SPECIALTY CONSULTATIONS & DIAGNOSTICS</span>
       <span className="text-white/40">•</span>

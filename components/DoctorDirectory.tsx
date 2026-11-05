@@ -47,7 +47,7 @@ export default function DoctorDirectory() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
           {doctors.map((doc, idx) => {
             const docUrl = `/doctors/${doc._id || doc.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-            const message = `Hello BST Hospital, I would like to book a consultation with ${doc.name} (${doc.specialty} - ${doc.department}). Please share OPD timings.`;
+            const message = `Hello Dr. B. S. Tomar Hospital, I would like to book a consultation with ${doc.name} (${doc.specialty} - ${doc.department}). Please share OPD timings.`;
             const whatsappUrl = `https://wa.me/917412077125?text=${encodeURIComponent(message)}`;
 
             return (

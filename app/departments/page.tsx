@@ -218,7 +218,7 @@ export default function DepartmentsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredDepts.map((dept, idx) => {
               const whatsappUrl = `https://wa.me/917412077125?text=${encodeURIComponent(
-                `Hello Dr. BST Hospital Jagatpura, I would like to consult with the ${dept.name} department.`
+                `Hello Dr. B. S. Tomar Hospital Jagatpura, I would like to consult with the ${dept.name} department.`
               )}`;
 
               return (

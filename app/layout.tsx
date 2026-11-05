@@ -5,16 +5,16 @@ import './globals.css';
 const openSans = Open_Sans({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Dr. BST Hospital, Jagatpura Jaipur | 24/7 Emergency & Multi-Specialty Hospital',
-  description: 'Dr. BST Hospital, Jagatpura Jaipur (Dr. B.S. Tomar Institute of Medical Sciences & Research) — 1000+ beds, 24/7 advanced emergency & trauma care, super-specialty doctors, and modern healthcare.',
-  keywords: 'Dr. BST Hospital, Jagatpura Jaipur, BST Hospital Jaipur, Hospital in Jagatpura, Emergency Hospital Jaipur, ICU Hospital Jaipur',
+  title: 'Dr. B. S. Tomar Hospital | Dr. B. S. Tomar Institute of Medical Sciences, Research & Hospital, Jagatpura, Jaipur',
+  description: 'Dr. B. S. Tomar Institute of Medical Sciences, Research & Hospital, Jagatpura, Jaipur — 1000+ beds, 24/7 advanced emergency & trauma care, super-specialty doctors, and modern healthcare.',
+  keywords: 'Dr. B. S. Tomar Hospital, Dr. B. S. Tomar Institute of Medical Sciences Research & Hospital, Jagatpura Jaipur, Dr B S Tomar Hospital Jaipur, Hospital in Jagatpura, Emergency Hospital Jaipur, ICU Hospital Jaipur',
   icons: {
     icon: '/bst-favicon.png',
     shortcut: '/bst-favicon.png',
     apple: '/bst-favicon.png',
   },
   openGraph: {
-    title: 'Dr. BST Hospital, Jagatpura Jaipur',
+    title: 'Dr. B. S. Tomar Institute of Medical Sciences, Research & Hospital, Jagatpura, Jaipur',
     description: '24/7 Advanced Emergency & Multi-Specialty Healthcare in Jagatpura, Jaipur.',
     images: ['/bst-favicon.png'],
   },

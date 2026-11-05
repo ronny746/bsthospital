@@ -27,7 +27,7 @@ export default function Home() {
         Full Viewport Initial Screen (100dvh):
         Locks the TopBar, NavigationBar, Hero Video, and EmergencyTrauma into exactly 
         100% of the viewport height on ANY screen resolution and ANY zoom level (75%, 100%, 150%).
-        The ChairmanMessage ("Our Vision Behind Establishing BST Hospital...") 
+        The ChairmanMessage ("Our Vision Behind Establishing Dr. B. S. Tomar Institute of Medical Sciences, Research & Hospital...") 
         is guaranteed to be strictly below the fold and only appears upon scrolling down.
       */}
       <div className="h-[100dvh] min-h-[580px] w-full flex flex-col justify-between relative overflow-hidden bg-slate-950">

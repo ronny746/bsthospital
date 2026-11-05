@@ -7,8 +7,8 @@ export default function TopBar() {
           <span className="hidden sm:inline">24×7 Emergency:</span>
           <span>+91 74120 77125</span>
         </a>
-        <span className="hidden md:inline text-slate-300 font-medium border-l border-white/20 pl-4">
-          📍 Dr. BST Hospital, Jagatpura, Jaipur, Rajasthan 302012
+        <span className="hidden md:inline text-slate-300 font-medium border-l border-white/20 pl-4 truncate">
+          📍 Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital, Jagatpura, Jaipur, Rajasthan 302012
         </span>
       </div>
 

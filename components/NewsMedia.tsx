@@ -8,7 +8,7 @@ export default function NewsMedia() {
     { image: '1news.webp', title: 'Healthcare Excellence Awards', category: 'Awards' },
     { image: '2news.webp', title: 'Community Health Camp Organized', category: 'Community' },
     { image: '3news.webp', title: 'New Advanced ICU Wing Opened', category: 'Campus Updates' },
-    { image: '4news.webp', title: 'BST Awarded for Medical Excellence', category: 'In The News' },
+    { image: '4news.webp', title: 'Dr. B. S. Tomar Hospital Awarded for Medical Excellence', category: 'In The News' },
     { image: '5news.webp', title: 'Annual Medical Conference 2026', category: 'Events' },
     { image: '6news.webp', title: 'State-of-the-art Equipment Installed', category: 'Technology' },
   ];
@@ -46,7 +46,7 @@ export default function NewsMedia() {
                   {item.title}
                 </h3>
                 <p className="text-slate-600 text-sm mb-6">
-                  Explore the latest updates from BST's care, campus, and community initiatives.
+                  Explore the latest updates from Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital&apos;s care, campus, and community initiatives.
                 </p>
                 <button className="text-secondary font-bold text-sm inline-flex items-center group-hover:underline">
                   View image

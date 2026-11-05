@@ -568,7 +568,7 @@ export default function AdminPortal() {
           <div className="bg-[#172a34] p-8 text-center text-white border-b-4 border-[#c83220]">
             <img
               src="/bst-nav-logo.jpg"
-              alt="Dr. BST Hospital"
+              alt="Dr. B. S. Tomar Hospital"
               className="h-12 mx-auto mb-3 object-contain bg-white/95 rounded-lg p-1.5"
             />
             <h1 className="text-xl font-black tracking-tight">Admin Management Portal</h1>
@@ -628,7 +628,7 @@ export default function AdminPortal() {
 
           <div className="bg-slate-50 p-4 text-center border-t border-slate-100">
             <a href="/" className="text-xs font-bold text-[#172a34] hover:text-[#c83220]">
-              ← Return to BST Hospital Website
+              ← Return to Dr. B. S. Tomar Hospital Website
             </a>
           </div>
         </div>
@@ -664,7 +664,7 @@ export default function AdminPortal() {
             <a href="/" target="_blank" rel="noopener noreferrer" className="block">
               <img
                 src="/bst-nav-logo.jpg"
-                alt="BST Hospital"
+                alt="Dr. B. S. Tomar Hospital"
                 className="h-10 bg-white/95 rounded-lg p-1 object-contain"
               />
             </a>
@@ -2613,7 +2613,7 @@ export default function AdminPortal() {
                 {/* FOOTER BAR WITH HELPER */}
                 <div className="p-3 sm:p-3.5 bg-white border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs shrink-0">
                   <p className="text-[11px] text-slate-500 text-center sm:text-left">
-                    Document previewed directly in BST Hospital HR console. If file doesn&apos;t load in browser,{' '}
+                    Document previewed directly in Dr. B. S. Tomar Hospital HR console. If file doesn&apos;t load in browser,{' '}
                     <a
                       href={previewingResume.url}
                       target="_blank"

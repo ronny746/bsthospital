@@ -61,14 +61,14 @@ export default function DoctorDetailPage({ params }: PageProps) {
       });
 
       // 2. Open WhatsApp for instant confirmation
-      const text = `Hello Dr. BST Hospital Jagatpura,%0A%0A*OPD Appointment Request:*%0A*Doctor:* ${doctor.name} (${doctor.specialty})%0A*Patient Name:* ${patientName}%0A*Phone:* ${patientPhone}%0A*Date:* ${preferredDate || 'Earliest Available'}%0A*Preferred Slot:* ${preferredTime}%0A*Notes:* ${patientMessage || 'Consultation'}`;
+      const text = `Hello Dr. B. S. Tomar Hospital Jagatpura,%0A%0A*OPD Appointment Request:*%0A*Doctor:* ${doctor.name} (${doctor.specialty})%0A*Patient Name:* ${patientName}%0A*Phone:* ${patientPhone}%0A*Date:* ${preferredDate || 'Earliest Available'}%0A*Preferred Slot:* ${preferredTime}%0A*Notes:* ${patientMessage || 'Consultation'}`;
       window.open(`https://wa.me/917412077125?text=${text}`, '_blank');
 
       setBookingSuccess(true);
     } catch (err) {
       console.error('Appointment submit error:', err);
       // Still allow WhatsApp booking
-      const text = `Hello Dr. BST Hospital Jagatpura,%0A%0A*OPD Appointment Request:*%0A*Doctor:* ${doctor.name}%0A*Patient:* ${patientName}%0A*Phone:* ${patientPhone}`;
+      const text = `Hello Dr. B. S. Tomar Hospital Jagatpura,%0A%0A*OPD Appointment Request:*%0A*Doctor:* ${doctor.name}%0A*Patient:* ${patientName}%0A*Phone:* ${patientPhone}`;
       window.open(`https://wa.me/917412077125?text=${text}`, '_blank');
       setBookingSuccess(true);
     } finally {
@@ -120,7 +120,7 @@ export default function DoctorDetailPage({ params }: PageProps) {
   }
 
   const whatsappBookingUrl = `https://wa.me/917412077125?text=${encodeURIComponent(
-    `Hello Dr. BST Hospital Jagatpura,\n\nI would like to book an OPD Consultation with ${doctor.name} (${doctor.specialty} - ${doctor.department}). Please share available slots.`
+    `Hello Dr. B. S. Tomar Hospital Jagatpura,\n\nI would like to book an OPD Consultation with ${doctor.name} (${doctor.specialty} - ${doctor.department}). Please share available slots.`
   )}`;
 
   return (
@@ -298,7 +298,7 @@ export default function DoctorDetailPage({ params }: PageProps) {
                 </div>
                 <div>
                   <span className="text-xs font-bold text-slate-500 block">Location:</span>
-                  <span className="text-xs font-bold text-slate-700">Dr. BST Hospital, Jagatpura, Jaipur</span>
+                  <span className="text-xs font-bold text-slate-700">Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital, Jagatpura, Jaipur</span>
                 </div>
               </div>
             </div>
@@ -315,7 +315,7 @@ export default function DoctorDetailPage({ params }: PageProps) {
                   Book OPD Consultation
                 </h3>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Consult with {doctor.name} at Dr. BST Hospital
+                  Consult with {doctor.name} at Dr. B. S. Tomar Hospital
                 </p>
               </div>
 

@@ -43,7 +43,7 @@ export default function ContactPage() {
       setSubmitting(false);
     }
 
-    const text = `Hello Dr. BST Hospital Jagatpura,%0A%0A*Name:* ${formData.name}%0A*Phone:* ${formData.phone}%0A*Email:* ${formData.email || 'N/A'}%0A*Department:* ${formData.department}%0A*Preferred Date:* ${formData.date || 'Earliest available'}%0A*Message/Concern:* ${formData.message}`;
+    const text = `Hello Dr. B. S. Tomar Hospital Jagatpura,%0A%0A*Name:* ${formData.name}%0A*Phone:* ${formData.phone}%0A*Email:* ${formData.email || 'N/A'}%0A*Department:* ${formData.department}%0A*Preferred Date:* ${formData.date || 'Earliest available'}%0A*Message/Concern:* ${formData.message}`;
     window.open(`https://wa.me/917412077125?text=${text}`, '_blank');
     setSubmitted(true);
   };
@@ -71,10 +71,10 @@ export default function ContactPage() {
             <span className="text-amber-400">CONTACT US</span>
           </nav>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-3 leading-tight max-w-4xl">
-            Contact Dr. BST Hospital, Jagatpura Jaipur
+            Contact Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital, Jagatpura, Jaipur
           </h1>
           <p className="text-slate-200 text-xs sm:text-sm md:text-base max-w-3xl font-medium leading-relaxed">
-            Dr. B.S. Tomar Institute of Medical Sciences &amp; Research — 24/7 Level-1 Emergency &amp; Trauma Care, Specialist OPD Appointments &amp; Medical Administration in Jagatpura, Jaipur.
+            Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital — 24/7 Level-1 Emergency &amp; Trauma Care, Specialist OPD Appointments &amp; Medical Administration in Jagatpura, Jaipur.
           </p>
         </div>
       </section>
@@ -152,7 +152,7 @@ export default function ContactPage() {
                 </p>
               </div>
               <a
-                href="https://wa.me/917412077125?text=Hello%20Dr.%20BST%20Hospital%20Jagatpura%2C%20I%20would%20like%20to%20connect."
+                href="https://wa.me/917412077125?text=Hello%20Dr.%20B.%20S.%20Tomar%20Hospital%20Jagatpura%2C%20I%20would%20like%20to%20connect."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black py-2.5 px-4 rounded-xl transition-all shadow-md hover:scale-105"
@@ -341,7 +341,7 @@ export default function ContactPage() {
                 <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
                   <img
                     src="/images/bst-hospital-exterior.jpg"
-                    alt="Dr. BST Hospital Building Exterior, Jagatpura Jaipur"
+                    alt="Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital Building Exterior, Jagatpura, Jaipur"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute top-3 left-3 bg-[#c83220] text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md">
@@ -351,10 +351,10 @@ export default function ContactPage() {
 
                 <div className="p-6 space-y-4">
                   <h3 className="text-lg font-black text-[#172a34]">
-                    Dr. BST Hospital, Jagatpura Jaipur
+                    Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital, Jagatpura, Jaipur
                   </h3>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Dr. B.S. Tomar Institute of Medical Sciences &amp; Research is situated on the prominent growth corridor of Jagatpura, providing immediate access to residents of Sitapura, Malviya Nagar, Tonk Road, and Kota Highway.
+                    Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital is situated on the prominent growth corridor of Jagatpura, providing immediate access to residents of Sitapura, Malviya Nagar, Tonk Road, and Kota Highway.
                   </p>
 
                   <div className="space-y-3 pt-2 border-t border-slate-100 text-xs text-slate-700">
@@ -362,7 +362,7 @@ export default function ContactPage() {
                       <span className="text-base text-[#c83220] shrink-0 mt-0.5">📍</span>
                       <div>
                         <strong className="block text-slate-900 font-bold">Physical Address:</strong>
-                        <span>Dr. BST Hospital, Jagatpura, Jaipur, Rajasthan 302012</span>
+                        <span>Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital, Jagatpura, Jaipur, Rajasthan 302012</span>
                       </div>
                     </div>
 

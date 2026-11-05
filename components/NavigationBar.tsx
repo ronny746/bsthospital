@@ -9,8 +9,8 @@ export default function NavigationBar() {
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-md transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-3.5 flex items-center justify-between">
         {/* LOGO */}
-        <a href="/" className="block w-64 sm:w-80 md:w-[420px] transition-transform hover:scale-[1.01]" aria-label="Dr. BST Hospital Jagatpura Jaipur home">
-          <img src="/bst-nav-logo.jpg" alt="Dr. BST Hospital, Jagatpura Jaipur Logo" className="w-full h-auto max-h-12 sm:max-h-14 object-contain" />
+        <a href="/" className="block w-64 sm:w-80 md:w-[420px] transition-transform hover:scale-[1.01]" aria-label="Dr. B. S. Tomar Institute of Medical Sciences, Research & Hospital, Jagatpura, Jaipur home">
+          <img src="/bst-nav-logo.jpg" alt="Dr. B. S. Tomar Institute of Medical Sciences, Research & Hospital, Jagatpura, Jaipur Logo" className="w-full h-auto max-h-12 sm:max-h-14 object-contain" />
         </a>
 
         {/* MOBILE TOGGLE BUTTON */}

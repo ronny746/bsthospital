@@ -67,7 +67,7 @@ export default function AboutPage() {
             <span className="text-amber-400">ABOUT US</span>
           </nav>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-3 leading-tight max-w-4xl">
-            About Dr. BST Hospital, Jagatpura Jaipur
+            About Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital, Jagatpura, Jaipur
           </h1>
           <p className="text-slate-300 text-xs sm:text-sm md:text-base max-w-3xl font-medium leading-relaxed">
             Dr. B.S. Tomar Institute of Medical Sciences, Research & Hospital — delivering compassionate quaternary care, 1000+ beds, 24/7 Level-1 trauma response, and medical education in Jagatpura, Jaipur.
@@ -118,13 +118,13 @@ export default function AboutPage() {
             {/* Left Column: Text & Features */}
             <div className="lg:col-span-7 space-y-5">
               <span className="text-[#c83220] text-xs font-black uppercase tracking-widest block">
-                ABOUT DR. BST HOSPITAL
+                ABOUT DR. B. S. TOMAR HOSPITAL
               </span>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#172a34] leading-tight">
                 Advanced care, delivered with compassion.
               </h2>
               <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed">
-                Dr. BST Hospital was built on a simple belief — that care should be advanced enough to treat the most complex conditions, affordable enough for every family, and compassionate enough that every patient feels cared for from the moment they arrive.
+                Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital was built on a simple belief — that care should be advanced enough to treat the most complex conditions, affordable enough for every family, and compassionate enough that every patient feels cared for from the moment they arrive.
               </p>
               <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
                 Situated in Jagatpura, Jaipur, the institute bridges a crucial need for quaternary healthcare in South Jaipur, connecting Sitapura industrial zone, Tonk Road, and Kota highway corridor with direct access to advanced medical technology, 1000+ beds, and a dedicated team of specialist clinicians.
@@ -174,7 +174,7 @@ export default function AboutPage() {
                   <span>🚨 24×7 Emergency: +91 74120 77125</span>
                 </a>
                 <a
-                  href="https://wa.me/917412077125?text=Hello%20Dr.%20BST%20Hospital%20Jagatpura%2C%20I%20would%20like%20to%20book%20a%20consultation."
+                  href="https://wa.me/917412077125?text=Hello%20Dr.%20B.%20S.%20Tomar%20Hospital%20Jagatpura%2C%20I%20would%20like%20to%20book%20a%20consultation."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs px-4 py-2.5 rounded-full border border-slate-300 transition-all"
@@ -189,7 +189,7 @@ export default function AboutPage() {
               <div className="rounded-2xl overflow-hidden shadow-xl border-4 border-white bg-slate-100">
                 <img
                   src="/images/bst-hospital-exterior.jpg"
-                  alt="Dr. BST Hospital Building Exterior, Jagatpura Jaipur"
+                  alt="Dr. B. S. Tomar Institute of Medical Sciences, Research & Hospital Building Exterior, Jagatpura, Jaipur"
                   className="w-full h-64 sm:h-72 object-cover"
                 />
               </div>
@@ -241,7 +241,7 @@ export default function AboutPage() {
                 Inspirational Health: Our Vision and Mission
               </h2>
               <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed">
-                Why Dr. B.S. Tomar opened Dr. BST Hospital in Jagatpura, Jaipur:
+                Why Dr. B.S. Tomar opened Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital in Jagatpura, Jaipur:
                 To bring world-class super-specialty healthcare and critical emergency medicine right to the doorstep of South Jaipur, ensuring that every citizen has rapid access to medical care and emergency intervention.
               </p>
 
@@ -349,7 +349,7 @@ export default function AboutPage() {
                   <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-[#c83220] bg-red-50 px-2 py-0.5 rounded">
                     Founder &amp; Chancellor
                   </span>
-                  <span className="text-[11px] text-amber-600 font-bold">🏛️ NIMS &amp; BST Hospital</span>
+                  <span className="text-[11px] text-amber-600 font-bold">🏛️ NIMS &amp; Dr. B. S. Tomar Hospital</span>
                 </div>
                 <h3 className="text-base sm:text-xl font-black text-[#172a34] leading-snug">
                   Prof. (Dr.) Balvir S. Tomar
@@ -358,7 +358,7 @@ export default function AboutPage() {
                   Founder &amp; Hon&apos;ble Chancellor
                 </p>
                 <p className="text-xs text-slate-600 font-medium mt-1 leading-snug">
-                  Nims University Rajasthan, Jaipur &amp; Dr. BST Hospital
+                  Nims University Rajasthan, Jaipur &amp; Dr. B. S. Tomar Hospital
                 </p>
               </div>
             </div>
@@ -379,18 +379,18 @@ export default function AboutPage() {
               </p>
 
               <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed text-justify">
-                With a steadfast vision to elevate healthcare to global standards in India, he established NIMS Hospital and University, and has now founded <strong className="text-slate-800">Dr. BST Hospital in Jagatpura, Jaipur</strong>—combining world-class quaternary clinical infrastructure, affordable community healthcare, and groundbreaking pedagogical research.
+                With a steadfast vision to elevate healthcare to global standards in India, he established NIMS Hospital and University, and has now founded <strong className="text-slate-800">Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital in Jagatpura, Jaipur</strong>—combining world-class quaternary clinical infrastructure, affordable community healthcare, and groundbreaking pedagogical research.
               </p>
 
               {/* Action Buttons */}
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <a
-                  href="https://wa.me/917412077125?text=Hello%20Dr.%20BST%20Hospital%20Jagatpura%2C%20I%20would%20like%20to%20connect%20with%20the%20hospital."
+                  href="https://wa.me/917412077125?text=Hello%20Dr.%20B.%20S.%20Tomar%20Hospital%20Jagatpura%2C%20I%20would%20like%20to%20connect%20with%20the%20hospital."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-[#0e191f] hover:bg-[#c83220] text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl transition-all shadow-md hover:scale-105"
                 >
-                  <span>Connect With Dr. BST Hospital</span>
+                  <span>Connect With Dr. B. S. Tomar Hospital</span>
                   <span>➔</span>
                 </a>
               </div>

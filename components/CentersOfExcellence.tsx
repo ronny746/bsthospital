@@ -39,7 +39,7 @@ export default function CentersOfExcellence() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
           {departments.map(([name, kind, description, image], idx) => {
-            const whatsappUrl = `https://wa.me/917412077125?text=${encodeURIComponent(`Hello BST Hospital, I would like to consult with the ${name} department.`)}`;
+            const whatsappUrl = `https://wa.me/917412077125?text=${encodeURIComponent(`Hello Dr. B. S. Tomar Hospital, I would like to consult with the ${name} department.`)}`;
 
             return (
               <article 

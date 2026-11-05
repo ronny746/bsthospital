@@ -63,7 +63,7 @@ export default function JobDetailPage({ params }: PageProps) {
   const handleShareWhatsApp = () => {
     if (typeof window !== 'undefined' && job) {
       const text = encodeURIComponent(
-        `Job Opening at Dr. BST Hospital, Jagatpura, Jaipur:\n*${job.title}*\nDepartment: ${job.department}\nExperience: ${job.experience}\nApply here: ${window.location.href}`
+        `Job Opening at Dr. B. S. Tomar Institute of Medical Sciences, Research & Hospital, Jagatpura, Jaipur:\n*${job.title}*\nDepartment: ${job.department}\nExperience: ${job.experience}\nApply here: ${window.location.href}`
       );
       window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
     }
@@ -133,7 +133,7 @@ export default function JobDetailPage({ params }: PageProps) {
         <div className="py-24 text-center max-w-md mx-auto px-4">
           <div className="w-12 h-12 border-4 border-[#c83220] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <h2 className="text-xl font-bold text-[#172a34]">Loading Job Opening...</h2>
-          <p className="text-xs text-slate-500 mt-1">Fetching role details and clinical requirements from BST Hospital.</p>
+          <p className="text-xs text-slate-500 mt-1">Fetching role details and clinical requirements from Dr. B. S. Tomar Hospital.</p>
         </div>
         <Footer />
       </main>
@@ -348,10 +348,10 @@ export default function JobDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* WHY CHOOSE BST HOSPITAL */}
+            {/* WHY CHOOSE DR. B. S. TOMAR HOSPITAL */}
             <div className="bg-gradient-to-br from-[#172a34] to-[#203a48] text-white rounded-2xl p-6 sm:p-8 shadow-md space-y-4">
               <span className="text-amber-400 font-black text-xs uppercase tracking-widest block">
-                LIFE AT BST HOSPITAL
+                LIFE AT DR. B. S. TOMAR HOSPITAL
               </span>
               <h2 className="text-lg sm:text-xl font-black">Why Work With Us?</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-200 pt-2">
@@ -404,7 +404,7 @@ export default function JobDetailPage({ params }: PageProps) {
                     <h4 className="text-xl font-black text-emerald-950">Application Received!</h4>
                   </div>
                   <p className="text-xs text-emerald-900 leading-relaxed max-w-sm mx-auto">
-                    Thank you{submittedName ? `, ${submittedName}` : ''}. Your application for <strong className="font-black text-emerald-950">{job.title}</strong> has been successfully registered in Dr. BST Hospital’s recruitment system.
+                    Thank you{submittedName ? `, ${submittedName}` : ''}. Your application for <strong className="font-black text-emerald-950">{job.title}</strong> has been successfully registered in Dr. B. S. Tomar Hospital’s recruitment system.
                   </p>
 
                   <div className="bg-white/90 p-4 rounded-2xl border border-emerald-200 text-left text-xs space-y-2 shadow-xs">
@@ -589,7 +589,7 @@ export default function JobDetailPage({ params }: PageProps) {
                   </button>
 
                   <p className="text-[10px] text-slate-400 text-center">
-                    Your personal information and credentials are encrypted and accessed strictly by BST Hospital recruitment panel.
+                    Your personal information and credentials are encrypted and accessed strictly by Dr. B. S. Tomar Hospital recruitment panel.
                   </p>
                 </form>
               )}
@@ -603,7 +603,7 @@ export default function JobDetailPage({ params }: PageProps) {
                   </a>
                 </div>
                 <a
-                  href={`https://wa.me/917412077125?text=Hello%20BST%20Hospital%20HR%2C%20I%20am%20inquiring%20about%20the%20${encodeURIComponent(
+                  href={`https://wa.me/917412077125?text=Hello%20Dr.%20B.%20S.%20Tomar%20Hospital%20HR%2C%20I%20am%20inquiring%20about%20the%20${encodeURIComponent(
                     job.title
                   )}%20opening.`}
                   target="_blank"
@@ -627,7 +627,7 @@ export default function JobDetailPage({ params }: PageProps) {
                 <span className="text-[#c83220] font-black text-xs uppercase tracking-widest block mb-1">
                   MORE OPPORTUNITIES
                 </span>
-                <h3 className="text-xl sm:text-2xl font-black text-[#172a34]">Other Open Positions at BST Hospital</h3>
+                <h3 className="text-xl sm:text-2xl font-black text-[#172a34]">Other Open Positions at Dr. B. S. Tomar Hospital</h3>
               </div>
               <Link
                 href="/careers"

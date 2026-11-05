@@ -14,7 +14,7 @@ export default function EmergencyTrauma() {
             </span>
           </div>
           <p className="text-slate-300 text-[11px] sm:text-xs md:text-sm font-medium mt-1 leading-snug">
-            Dr. BST Hospital, Jagatpura Jaipur • Trauma team & ICU ready for immediate life-saving response.
+            Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital, Jagatpura, Jaipur • Trauma team &amp; ICU ready for immediate life-saving response.
           </p>
         </div>
 
@@ -28,7 +28,7 @@ export default function EmergencyTrauma() {
             <span>🚨 24×7 Emergency Care</span>
           </a>
           <a 
-            href="https://wa.me/917412077125?text=Hello%20Dr.%20BST%20Hospital%20Jagatpura%2C%20I%20would%20like%20to%20book%20a%20consultation."
+            href="https://wa.me/917412077125?text=Hello%20Dr.%20B.%20S.%20Tomar%20Hospital%20Jagatpura%2C%20I%20would%20like%20to%20book%20a%20consultation."
             target="_blank"
             rel="noopener noreferrer"
             className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1 bg-white/10 hover:bg-white/20 text-white font-bold text-[11px] sm:text-xs md:text-sm px-3 sm:px-4 py-2 sm:py-2.5 rounded-full border border-white/20 transition-all whitespace-nowrap"

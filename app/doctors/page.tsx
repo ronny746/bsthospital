@@ -216,7 +216,7 @@ export default function DoctorsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {filteredDoctors.map((doc, idx) => {
                 const docUrl = `/doctors/${doc._id || doc.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-                const message = `Hello Dr. BST Hospital Jagatpura, I would like to book a consultation with ${doc.name} (${doc.specialty} - ${doc.department}). Please share OPD slot details.`;
+                const message = `Hello Dr. B. S. Tomar Hospital Jagatpura, I would like to book a consultation with ${doc.name} (${doc.specialty} - ${doc.department}). Please share OPD slot details.`;
                 const whatsappUrl = `https://wa.me/917412077125?text=${encodeURIComponent(message)}`;
 
                 return (

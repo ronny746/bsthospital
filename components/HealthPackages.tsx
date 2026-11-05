@@ -210,7 +210,7 @@ export default function HealthPackages() {
             Preventive Health Checkup Packages
           </h2>
           <p className="text-slate-600 text-xs sm:text-base leading-relaxed">
-            Early detection saves lives. Dr. BST Hospital offers comprehensive, physician-curated health checkup packages with accurate diagnostics, same-day reports, and expert doctor consultations.
+            Early detection saves lives. Dr. B. S. Tomar Hospital offers comprehensive, physician-curated health checkup packages with accurate diagnostics, same-day reports, and expert doctor consultations.
           </p>
 
           {/* Filter Tabs */}
@@ -252,7 +252,7 @@ export default function HealthPackages() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredPackages.map((pkg) => {
             const bookingText = encodeURIComponent(
-              `Hello Dr. BST Hospital Jagatpura,\n\nI would like to book the *${pkg.name}* (${pkg.price}). Please assist me with appointment booking.`
+              `Hello Dr. B. S. Tomar Hospital Jagatpura,\n\nI would like to book the *${pkg.name}* (${pkg.price}). Please assist me with appointment booking.`
             );
             const whatsappUrl = `https://wa.me/917412077125?text=${bookingText}`;
 
@@ -340,7 +340,7 @@ export default function HealthPackages() {
                 Need a Customized Corporate or Family Health Package?
               </h4>
               <p className="text-xs text-slate-300">
-                Dr. BST Hospital provides tailored health audits for corporate employees, senior citizens, and insurance policyholders.
+                Dr. B. S. Tomar Hospital provides tailored health audits for corporate employees, senior citizens, and insurance policyholders.
               </p>
             </div>
           </div>
