@@ -1,12 +1,7 @@
 export const API_URL =
   typeof window !== 'undefined'
-    ? process.env.NEXT_PUBLIC_API_URL &&
-      !process.env.NEXT_PUBLIC_API_URL.startsWith('http://')
-      ? process.env.NEXT_PUBLIC_API_URL
-      : '/api'
-    : process.env.BACKEND_INTERNAL_URL
-      ? `${process.env.BACKEND_INTERNAL_URL.replace(/\/$/, '')}/api`
-      : 'http://srv2008573.hstgr.cloud:5432/api';
+    ? '/api'
+    : 'http://srv2008573.hstgr.cloud:5432/api';
 
 export interface DoctorData {
   _id?: string;
@@ -155,7 +150,7 @@ export async function fetchJobBySlugOrId(identifier: string): Promise<{
 // Helper: Fetch all doctors
 export async function fetchDoctors(params?: { category?: string; search?: string }): Promise<DoctorData[]> {
   try {
-    const url = new URL(`${API_URL}/doctors`);
+    const url = new URL(typeof window !== 'undefined' ? `${window.location.origin}/api/doctors` : `${API_URL}/doctors`);
     if (params?.category && params.category !== 'All') {
       url.searchParams.append('category', params.category);
     }

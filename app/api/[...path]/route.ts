@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const BACKEND_BASE =
-  process.env.BACKEND_INTERNAL_URL || 'http://srv2008573.hstgr.cloud:5432';
+const BACKEND_BASE = 'http://srv2008573.hstgr.cloud:5432';
 
 async function proxyRequest(
   request: NextRequest,
@@ -15,8 +14,8 @@ async function proxyRequest(
 
     const reqHeaders = new Headers();
     request.headers.forEach((value, key) => {
-      // Omit host and Cloudflare-specific or problematic hop-by-hop headers
       const lower = key.toLowerCase();
+      // Omit host, connection, content-length and CF edge internal headers
       if (
         lower !== 'host' &&
         lower !== 'connection' &&
@@ -26,9 +25,6 @@ async function proxyRequest(
         reqHeaders.set(key, value);
       }
     });
-
-    // Provide proper host for the backend
-    reqHeaders.set('host', 'srv2008573.hstgr.cloud:5432');
 
     let body: ArrayBuffer | undefined = undefined;
     if (request.method !== 'GET' && request.method !== 'HEAD') {
@@ -45,7 +41,6 @@ async function proxyRequest(
     const resHeaders = new Headers();
     backendRes.headers.forEach((value, key) => {
       const lower = key.toLowerCase();
-      // Let Cloudflare/Vinext handle compression and content-length
       if (
         lower !== 'content-encoding' &&
         lower !== 'content-length' &&
