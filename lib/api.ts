@@ -1,5 +1,6 @@
 export const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5432/api';
+  process.env.NEXT_PUBLIC_API_URL ||
+  (typeof window !== 'undefined' ? '/api' : 'http://200.97.168.107:5432/api');
 
 export interface DoctorData {
   _id?: string;
