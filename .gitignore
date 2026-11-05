@@ -37,3 +37,4 @@ next-env.d.ts
 /outputs/
 /work/
 public/videos/*.mov
+!public/videos/IMG_6258-2.mov
