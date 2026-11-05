@@ -2,9 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "bsthospital",
   "compatibility_date": "2026-05-15",
-  "compatibility_flags": ["nodejs_compat"],
   "vars": {
     "NEXT_PUBLIC_API_URL": "http://200.97.168.107:5432/api"
   }
 }
-
