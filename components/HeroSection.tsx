@@ -15,7 +15,6 @@ export default function HeroSection() {
           className="w-full h-full object-cover object-center"
         >
           <source src="/videos/hero-hospital.mp4" type="video/mp4" />
-          <source src="/videos/IMG_6258.MOV" type="video/quicktime" />
           Your browser does not support the video tag.
         </video>
 
