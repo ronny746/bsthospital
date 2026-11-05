@@ -1,6 +1,12 @@
 export const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
-  (typeof window !== 'undefined' ? '/api' : 'http://200.97.168.107:5432/api');
+  typeof window !== 'undefined'
+    ? process.env.NEXT_PUBLIC_API_URL &&
+      !process.env.NEXT_PUBLIC_API_URL.startsWith('http://')
+      ? process.env.NEXT_PUBLIC_API_URL
+      : '/api'
+    : process.env.BACKEND_INTERNAL_URL
+      ? `${process.env.BACKEND_INTERNAL_URL.replace(/\/$/, '')}/api`
+      : 'http://srv2008573.hstgr.cloud:5432/api';
 
 export interface DoctorData {
   _id?: string;
