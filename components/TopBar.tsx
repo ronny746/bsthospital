@@ -13,7 +13,7 @@ export default function TopBar() {
       </div>
 
       <div className="flex items-center gap-2 sm:gap-4 shrink-0">
-        <a href="/careers" className="hidden sm:inline text-slate-300 hover:text-white transition text-[11px] font-semibold">
+        <a href="/careers" className="text-slate-300 hover:text-white transition text-[11px] font-semibold">
           Careers
         </a>
 

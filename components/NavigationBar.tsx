@@ -53,18 +53,6 @@ export default function NavigationBar() {
           >
             Doctors
           </a>
-          <a
-            href="/careers"
-            className="text-xs sm:text-sm font-bold text-slate-700 hover:text-[#c83220] transition-colors py-1"
-          >
-            Careers
-          </a>
-          <a
-            href="/contact"
-            className="text-xs sm:text-sm font-bold text-slate-700 hover:text-[#c83220] transition-colors py-1"
-          >
-            Contact Us
-          </a>
 
           {/* RED ANIMATED 24/7 EMERGENCY CARE BUTTON */}
           <a
