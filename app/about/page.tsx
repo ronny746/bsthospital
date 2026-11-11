@@ -167,14 +167,14 @@ export default function AboutPage() {
               {/* Red Contact / OPD Button */}
               <div className="pt-2 flex flex-wrap gap-3">
                 <a
-                  href="tel:+917412077125"
+                  href="tel:01412602222"
                   className="inline-flex items-center gap-2 bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-xs px-5 py-2.5 rounded-full shadow-md transition-all hover:scale-105"
                 >
                   <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-                  <span>🚨 24×7 Emergency: +91 74120 77125</span>
+                  <span>🚨 24×7 Emergency: 0141-2602222</span>
                 </a>
                 <a
-                  href="https://wa.me/917412077125?text=Hello%20Dr.%20B.%20S.%20Tomar%20Hospital%20Jagatpura%2C%20I%20would%20like%20to%20book%20a%20consultation."
+                  href="https://wa.me/919216076757?text=Hello%20Dr.%20B.%20S.%20Tomar%20Hospital%20Jagatpura%2C%20I%20would%20like%20to%20book%20a%20consultation."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs px-4 py-2.5 rounded-full border border-slate-300 transition-all"
@@ -385,7 +385,7 @@ export default function AboutPage() {
               {/* Action Buttons */}
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <a
-                  href="https://wa.me/917412077125?text=Hello%20Dr.%20B.%20S.%20Tomar%20Hospital%20Jagatpura%2C%20I%20would%20like%20to%20connect%20with%20the%20hospital."
+                  href="https://wa.me/919216076757?text=Hello%20Dr.%20B.%20S.%20Tomar%20Hospital%20Jagatpura%2C%20I%20would%20like%20to%20connect%20with%20the%20hospital."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-[#0e191f] hover:bg-[#c83220] text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl transition-all shadow-md hover:scale-105"

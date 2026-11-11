@@ -50,12 +50,18 @@ export default function NavigationBar() {
           >
             Doctors
           </a>
+          <a
+            href="/contact"
+            className="text-sm xl:text-base font-bold text-slate-700 hover:text-[#c83220] transition-colors py-1 whitespace-nowrap"
+          >
+            Contact Us
+          </a>
         </nav>
 
         {/* 3. RIGHT: 24/7 EMERGENCY CARE BUTTON (DESKTOP) & MOBILE HAMBURGER */}
         <div className="flex items-center gap-3 shrink-0">
           <a
-            href="tel:+917412077125"
+            href="tel:01412602222"
             className="hidden sm:inline-flex items-center justify-center gap-2 bg-[#c83220] hover:bg-[#a82415] text-white px-4 sm:px-5 xl:px-6 py-2 xl:py-2.5 rounded-full text-xs xl:text-sm font-black shadow-md shadow-red-600/30 hover:scale-105 transition-all border border-red-400 whitespace-nowrap"
           >
             <span className="w-2 h-2 rounded-full bg-amber-300 animate-ping"></span>
@@ -104,7 +110,21 @@ export default function NavigationBar() {
               Doctors
             </a>
             <a
-              href="tel:+917412077125"
+              href="/contact"
+              onClick={() => setMenuOpen(false)}
+              className="text-base font-bold text-slate-700 hover:text-[#c83220] transition-colors py-1"
+            >
+              Contact Us
+            </a>
+            <a
+              href="/careers"
+              onClick={() => setMenuOpen(false)}
+              className="text-sm font-semibold text-slate-500 hover:text-[#c83220] transition-colors py-1"
+            >
+              💼 Careers
+            </a>
+            <a
+              href="tel:01412602222"
               className="w-full bg-[#c83220] hover:bg-[#a82415] text-white px-5 py-3 rounded-full text-xs font-black shadow-md flex items-center justify-center gap-2 border border-red-400 mt-2"
             >
               <span className="w-2 h-2 rounded-full bg-amber-300 animate-ping"></span>

@@ -14,7 +14,7 @@ export default function NewsTicker() {
       <span className="text-white/40">•</span>
       <span className="text-amber-300 font-bold">SUPER SPECIALTY CONSULTATIONS & DIAGNOSTICS</span>
       <span className="text-white/40">•</span>
-      <span className="text-secondary font-extrabold">CALL EMERGENCY: +91 74120 77125</span>
+      <span className="text-secondary font-extrabold">CALL EMERGENCY: 0141-2602222</span>
       <span className="text-white/40">•</span>
     </div>
   );

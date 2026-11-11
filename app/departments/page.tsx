@@ -129,10 +129,11 @@ export default function DepartmentsPage() {
                 matchDepartment(doc.department, doc.category, dept.name)
               );
 
-              const whatsappUrl = `https://wa.me/917412077125?text=${encodeURIComponent(
+              const whatsappUrl = `https://wa.me/919216076757?text=${encodeURIComponent(
                 `Hello Dr. B. S. Tomar Hospital Jagatpura, I would like to consult with the ${dept.name} department.`
               )}`;
 
+              const deptPageUrl = `/departments/${dept.id}`;
               const doctorsPageUrl = `/doctors?department=${encodeURIComponent(dept.name)}`;
 
               return (
@@ -142,7 +143,7 @@ export default function DepartmentsPage() {
                 >
                   <div>
                     {/* Image */}
-                    <div className="relative aspect-[16/10] bg-slate-100 overflow-hidden">
+                    <a href={deptPageUrl} className="block relative aspect-[16/10] bg-slate-100 overflow-hidden cursor-pointer">
                       <img
                         src={dept.image}
                         alt={dept.name}
@@ -163,13 +164,15 @@ export default function DepartmentsPage() {
                           <span>{deptDoctors.length} Specialists Available</span>
                         </span>
                       )}
-                    </div>
+                    </a>
 
                     {/* Content */}
                     <div className="p-6">
-                      <h3 className="text-lg font-black text-[#172a34] mb-2 group-hover:text-[#c83220] transition-colors leading-snug">
-                        {dept.name}
-                      </h3>
+                      <a href={deptPageUrl}>
+                        <h3 className="text-lg font-black text-[#172a34] mb-2 group-hover:text-[#c83220] transition-colors leading-snug">
+                          {dept.name}
+                        </h3>
+                      </a>
                       <p className="text-slate-600 text-xs leading-relaxed mb-4">{dept.desc}</p>
 
                       {/* Key highlights */}
@@ -187,13 +190,13 @@ export default function DepartmentsPage() {
                     </div>
                   </div>
 
-                  {/* Actions: View Doctors & WhatsApp */}
+                  {/* Actions: View Department Page & WhatsApp */}
                   <div className="p-6 pt-0 space-y-2">
                     <a
-                      href={doctorsPageUrl}
+                      href={deptPageUrl}
                       className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-[#172a34] font-bold text-xs transition"
                     >
-                      <span>👨‍⚕️ View Specialists {deptDoctors.length > 0 ? `(${deptDoctors.length})` : ''}</span>
+                      <span>🏥 Department Overview &amp; Doctors {deptDoctors.length > 0 ? `(${deptDoctors.length})` : ''}</span>
                       <span>➔</span>
                     </a>
                     <a

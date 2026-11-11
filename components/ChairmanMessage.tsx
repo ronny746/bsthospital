@@ -134,7 +134,7 @@ export default function ChairmanMessage() {
               {/* Action Buttons */}
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <a
-                  href="https://wa.me/917412077125?text=Hello%20Dr.%20B.%20S.%20Tomar%20Hospital%2C%20I%20would%20like%20to%20connect%20regarding%20the%20hospital%20in%20Jagatpura."
+                  href="https://wa.me/919216076757?text=Hello%20Dr.%20B.%20S.%20Tomar%20Hospital%2C%20I%20would%20like%20to%20connect%20regarding%20the%20hospital%20in%20Jagatpura."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-[#0e191f] hover:bg-[#c83220] text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl transition-all shadow-md hover:scale-105"
@@ -143,11 +143,11 @@ export default function ChairmanMessage() {
                   <span>➔</span>
                 </a>
                 <a
-                  href="tel:+917412077125"
+                  href="tel:01412602222"
                   className="inline-flex items-center gap-2 bg-red-50 hover:bg-red-100 text-[#c83220] font-black text-xs sm:text-sm px-5 py-3 rounded-xl border border-red-200 transition-all shadow-sm"
                 >
                   <span className="w-2 h-2 rounded-full bg-[#c83220] animate-ping"></span>
-                  <span>Emergency: +91 74120 77125</span>
+                  <span>Emergency: 0141-2602222</span>
                 </a>
               </div>
 

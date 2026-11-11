@@ -33,13 +33,13 @@ export default function CentersOfExcellence() {
             </h2>
           </div>
           <p className="text-slate-600 text-xs sm:text-sm max-w-md font-medium">
-            20+ clinical departments equipped with modular operation theatres, modern intensive care units, and experienced specialists.
+            35+ clinical departments equipped with modular operation theatres, modern intensive care units, and experienced specialists.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
           {departments.map(([name, kind, description, image], idx) => {
-            const whatsappUrl = `https://wa.me/917412077125?text=${encodeURIComponent(`Hello Dr. B. S. Tomar Hospital, I would like to consult with the ${name} department.`)}`;
+            const whatsappUrl = `https://wa.me/919216076757?text=${encodeURIComponent(`Hello Dr. B. S. Tomar Hospital, I would like to consult with the ${name} department.`)}`;
 
             return (
               <article 

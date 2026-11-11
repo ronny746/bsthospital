@@ -119,11 +119,11 @@ export default function ContactPage() {
                 </p>
               </div>
               <a
-                href="tel:+917412077125"
+                href="tel:01412602222"
                 className="inline-flex items-center justify-center gap-2 bg-[#c83220] hover:bg-[#a82415] text-white text-xs font-black py-2.5 px-4 rounded-xl transition-all shadow-md hover:scale-105"
               >
                 <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-                <span>+91 74120 77125</span>
+                <span>0141-2602222</span>
               </a>
             </div>
 
@@ -140,14 +140,14 @@ export default function ContactPage() {
                   OPD &amp; Appointments
                 </h3>
                 <p className="text-slate-600 text-xs mb-4">
-                  Mon – Sat: 9:00 AM – 5:00 PM for all 20+ clinical specialties.
+                  Mon – Sat: 9:00 AM to 4:00 PM for all 35+ clinical specialties.
                 </p>
               </div>
               <a
-                href="tel:+919116010407"
+                href="tel:9216076757"
                 className="inline-flex items-center justify-center gap-2 bg-[#172a34] hover:bg-[#0e191f] text-white text-xs font-bold py-2.5 px-4 rounded-xl transition-all shadow-sm"
               >
-                <span>Call: +91 91160 10407</span>
+                <span>Call: +91 92160 76757</span>
               </a>
             </div>
 
@@ -168,7 +168,7 @@ export default function ContactPage() {
                 </p>
               </div>
               <a
-                href="https://wa.me/917412077125?text=Hello%20Dr.%20B.%20S.%20Tomar%20Hospital%20Jagatpura%2C%20I%20would%20like%20to%20connect."
+                href="https://wa.me/919216076757?text=Hello%20Dr.%20B.%20S.%20Tomar%20Hospital%20Jagatpura%2C%20I%20would%20like%20to%20connect."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black py-2.5 px-4 rounded-xl transition-all shadow-md hover:scale-105"
@@ -194,10 +194,10 @@ export default function ContactPage() {
                 </p>
               </div>
               <a
-                href="mailto:info@bstmedicalcollege.com"
+                href="mailto:info@jp.bstims.edu.in"
                 className="inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-[#172a34] border border-slate-300 text-xs font-bold py-2.5 px-4 rounded-xl transition-all shadow-sm"
               >
-                <span>info@bstmedicalcollege.com</span>
+                <span>info@jp.bstims.edu.in</span>
               </a>
             </div>
 
@@ -408,7 +408,7 @@ export default function ContactPage() {
                           </div>
                           <div className="flex justify-between border-b border-slate-100 pb-0.5">
                             <span>Outpatient OPD:</span>
-                            <span className="font-semibold">Mon – Sat: 9:00 AM – 5:00 PM</span>
+                            <span className="font-semibold">Mon – Sat: 9:00 AM to 4:00 PM</span>
                           </div>
                           <div className="flex justify-between border-b border-slate-100 pb-0.5">
                             <span>Diagnostic Pathology &amp; Imaging:</span>
@@ -425,18 +425,18 @@ export default function ContactPage() {
 
                   <div className="pt-2 flex gap-2">
                     <a
-                      href="https://maps.google.com/?q=Jagatpura,+Jaipur,+Rajasthan"
+                      href="https://www.google.com/maps/search/?api=1&query=Dr.+B.+S.+Tomar+Institute+of+Medical+Sciences,+Research+%26+Hospital,+Jagatpura,+Jaipur"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 text-center bg-[#172a34] hover:bg-[#0e191f] text-white text-xs font-bold py-2.5 px-3 rounded-xl transition"
+                      className="flex-1 text-center bg-[#172a34] hover:bg-[#0e191f] text-white text-xs font-bold py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5"
                     >
-                      📍 Open Navigation
+                      <span>📍 Open Navigation</span>
                     </a>
                     <a
-                      href="tel:+917412077125"
-                      className="flex-1 text-center bg-[#c83220] hover:bg-[#a82415] text-white text-xs font-black py-2.5 px-3 rounded-xl transition"
+                      href="tel:9216076757"
+                      className="flex-1 text-center bg-[#c83220] hover:bg-[#a82415] text-white text-xs font-black py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5"
                     >
-                      📞 Call Now
+                      <span>📞 Call Appointment</span>
                     </a>
                   </div>
                 </div>

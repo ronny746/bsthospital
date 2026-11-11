@@ -21,14 +21,14 @@ export default function EmergencyTrauma() {
         {/* Buttons: Clean side-by-side on mobile without overflow */}
         <div className="flex items-center gap-2 w-full sm:w-auto justify-center shrink-0 mt-0.5 sm:mt-0">
           <a 
-            href="tel:+917412077125"
+            href="tel:01412602222"
             className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-[11px] sm:text-xs md:text-sm px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full shadow-md hover:scale-105 transition-transform text-center border border-red-400 whitespace-nowrap"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-amber-300 animate-ping"></span>
             <span>🚨 24×7 Emergency Care</span>
           </a>
           <a 
-            href="https://wa.me/917412077125?text=Hello%20Dr.%20B.%20S.%20Tomar%20Hospital%20Jagatpura%2C%20I%20would%20like%20to%20book%20a%20consultation."
+            href="https://wa.me/919216076757?text=Hello%20Dr.%20B.%20S.%20Tomar%20Hospital%20Jagatpura%2C%20I%20would%20like%20to%20book%20a%20consultation."
             target="_blank"
             rel="noopener noreferrer"
             className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1 bg-white/10 hover:bg-white/20 text-white font-bold text-[11px] sm:text-xs md:text-sm px-3 sm:px-4 py-2 sm:py-2.5 rounded-full border border-white/20 transition-all whitespace-nowrap"

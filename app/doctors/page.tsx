@@ -8,6 +8,7 @@ import NavigationBar from '@/components/NavigationBar';
 import Footer from '@/components/Footer';
 import { fetchDoctors, DoctorData } from '@/lib/api';
 import { matchDepartment } from '@/lib/departments';
+import DoctorAvatar from '@/components/DoctorAvatar';
 
 function DoctorsContent() {
   const searchParams = useSearchParams();
@@ -294,7 +295,7 @@ function DoctorsContent() {
               {filteredDoctors.map((doc, idx) => {
                 const docUrl = `/doctors/${doc._id || doc.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
                 const message = `Hello Dr. B. S. Tomar Hospital Jagatpura, I would like to book a consultation with ${doc.name} (${doc.specialty} - ${doc.department}). Please share OPD slot details.`;
-                const whatsappUrl = `https://wa.me/917412077125?text=${encodeURIComponent(message)}`;
+                const whatsappUrl = `https://wa.me/919216076757?text=${encodeURIComponent(message)}`;
 
                 return (
                   <div
@@ -304,12 +305,12 @@ function DoctorsContent() {
                     <div>
                       {/* Doctor Photo - Responsive aspect ratio prevents awkward zooming & cropping */}
                       <a href={docUrl} className="block relative aspect-square sm:aspect-[4/5] bg-gradient-to-b from-slate-100 to-slate-200 overflow-hidden cursor-pointer">
-                        <img
-                          src={doc.image || '/doctors/doctor-womens-health.png'}
+                        <DoctorAvatar
+                          src={doc.image}
                           alt={doc.name}
-                          className="w-full h-full object-cover object-[center_12%] opacity-95 group-hover:scale-105 transition-transform duration-500"
+                          className="w-full h-full object-cover object-[center_12%] group-hover:scale-105 transition-transform duration-500"
                         />
-                        <div className="absolute top-2.5 right-2.5 bg-[#172a34]/90 text-amber-300 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider backdrop-blur-sm">
+                        <div className="absolute top-2.5 right-2.5 bg-[#172a34]/90 text-amber-300 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider backdrop-blur-sm z-10">
                           {doc.experience || 'Experienced'}
                         </div>
                       </a>

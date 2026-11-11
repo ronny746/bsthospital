@@ -254,7 +254,7 @@ export default function HealthPackages() {
             const bookingText = encodeURIComponent(
               `Hello Dr. B. S. Tomar Hospital Jagatpura,\n\nI would like to book the *${pkg.name}* (${pkg.price}). Please assist me with appointment booking.`
             );
-            const whatsappUrl = `https://wa.me/917412077125?text=${bookingText}`;
+            const whatsappUrl = `https://wa.me/919216076757?text=${bookingText}`;
 
             return (
               <div
@@ -320,10 +320,10 @@ export default function HealthPackages() {
                     <span>➔</span>
                   </a>
                   <a
-                    href="tel:+917412077125"
+                    href="tel:9216076757"
                     className="block text-center text-[11px] font-bold text-slate-500 hover:text-[#c83220] transition"
                   >
-                    📞 Helpline: +91 74120 77125
+                    📞 Helpline: +91 92160 76757
                   </a>
                 </div>
               </div>

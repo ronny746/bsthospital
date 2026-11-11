@@ -43,9 +43,9 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2.5 text-xs font-medium">
               <li>
-                <a href="tel:+917412077125" className="text-red-400 font-bold hover:underline flex items-center gap-1.5">
+                <a href="tel:01412602222" className="text-red-400 font-bold hover:underline flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-                  <span>🚨 24/7 Emergency Assistance</span>
+                  <span>🚨 24/7 Emergency: 0141-2602222</span>
                 </a>
               </li>
               <li><a href="/#departments" className="hover:text-[#c83220] transition-colors">Emergency & Trauma Care</a></li>
@@ -69,13 +69,13 @@ export default function Footer() {
               <li className="flex items-start gap-2.5">
                 <span className="text-[#c83220] mt-0.5">📞</span>
                 <div>
-                  <a href="tel:+917412077125" className="block hover:text-white font-bold">+91 74120 77125</a>
-                  <a href="tel:+919116010407" className="block hover:text-white font-medium">+91 91160 10407</a>
+                  <a href="tel:01412602222" className="block hover:text-white font-bold">Emergency: 0141-2602222</a>
+                  <a href="tel:9216076757" className="block hover:text-white font-medium">Helpline: +91 92160 76757</a>
                 </div>
               </li>
               <li className="flex items-start gap-2.5">
                 <span className="text-[#c83220] mt-0.5">✉️</span>
-                <a href="mailto:info@bstmedicalcollege.com" className="hover:text-white">info@bstmedicalcollege.com</a>
+                <a href="mailto:info@jp.bstims.edu.in" className="hover:text-white">info@jp.bstims.edu.in</a>
               </li>
             </ul>
           </div>
@@ -94,7 +94,7 @@ export default function Footer() {
               </p>
             </div>
             <a
-              href="https://maps.google.com/?q=Jagatpura,+Jaipur,+Rajasthan"
+              href="https://www.google.com/maps/search/?api=1&query=Dr.+B.+S.+Tomar+Institute+of+Medical+Sciences,+Research+%26+Hospital,+Jagatpura,+Jaipur"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs font-bold text-[#e5b64a] hover:text-white bg-white/10 hover:bg-white/20 border border-white/15 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 self-start sm:self-auto"
@@ -106,7 +106,13 @@ export default function Footer() {
           <div className="w-full h-56 sm:h-64 rounded-2xl overflow-hidden border border-white/10 shadow-inner">
             <iframe
               title="Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital Location Map"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d113912.4497677462!2d75.7661559!3d26.8372645!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396dc91e4a7a8d5f%3A0x6b1076b4a3a60c0!2sJagatpura%2C%20Jaipur%2C%20Rajasthan!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+              src="https://maps.google.com/maps?q=Dr.+B.+S.+Tomar+Institute+of+Medical+Sciences+Research+and+Hospital+Jagatpura+Jaipur&t=&z=16&ie=UTF8&iwloc=&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen={false}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
               width="100%"
               height="100%"
               style={{ border: 0 }}

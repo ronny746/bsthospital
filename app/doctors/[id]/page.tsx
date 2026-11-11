@@ -6,6 +6,7 @@ import TopBar from '@/components/TopBar';
 import NavigationBar from '@/components/NavigationBar';
 import Footer from '@/components/Footer';
 import { fetchDoctorById, DoctorData, API_URL } from '@/lib/api';
+import DoctorAvatar from '@/components/DoctorAvatar';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -128,7 +129,7 @@ export default function DoctorDetailPage({ params }: PageProps) {
     );
   }
 
-  const whatsappBookingUrl = `https://wa.me/917412077125?text=${encodeURIComponent(
+  const whatsappBookingUrl = `https://wa.me/919216076757?text=${encodeURIComponent(
     `Hello Dr. B. S. Tomar Hospital Jagatpura,\n\nI would like to book an OPD Consultation with ${doctor.name} (${doctor.specialty} - ${doctor.department}). Please share available slots.`
   )}`;
 
@@ -156,12 +157,12 @@ export default function DoctorDetailPage({ params }: PageProps) {
             {/* Doctor Image - Large, crisp & responsive on mobile */}
             <div className="w-full max-w-[320px] sm:max-w-[360px] md:w-72 lg:w-80 shrink-0 mx-auto md:mx-0">
               <div className="relative rounded-3xl overflow-hidden border-4 border-white shadow-2xl bg-gradient-to-b from-slate-100 to-slate-200 aspect-square sm:aspect-[4/5]">
-                <img
-                  src={doctor.image || '/doctors/doctor-womens-health.png'}
+                <DoctorAvatar
+                  src={doctor.image}
                   alt={doctor.name}
                   className="w-full h-full object-cover object-[center_12%]"
                 />
-                <div className="absolute top-3 right-3 bg-[#172a34]/90 text-amber-300 text-[10px] sm:text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm border border-amber-300/30 shadow-md">
+                <div className="absolute top-3 right-3 bg-[#172a34]/90 text-amber-300 text-[10px] sm:text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm border border-amber-300/30 shadow-md z-10">
                   {doctor.experience} Exp
                 </div>
                 {doctor.isAvailable && (
@@ -188,12 +189,12 @@ export default function DoctorDetailPage({ params }: PageProps) {
                   {doctor.name}
                 </h1>
                 <p className="text-xs sm:text-sm md:text-base font-bold text-slate-600 mt-1">
-                  {doctor.designation} &bull; {doctor.department}
+                  {doctor.department} &bull; {doctor.specialty}
                 </p>
               </div>
 
               {/* Quick Info Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 pt-2 text-left">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 pt-2 text-left">
                 <div className="bg-slate-50 p-3 sm:p-3.5 rounded-2xl border border-slate-200/80">
                   <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
                     Qualifications
@@ -208,16 +209,7 @@ export default function DoctorDetailPage({ params }: PageProps) {
                     OPD Timings
                   </span>
                   <span className="text-xs font-extrabold text-[#172a34] block mt-0.5">
-                    {doctor.opdTimings}
-                  </span>
-                </div>
-
-                <div className="bg-slate-50 p-3 sm:p-3.5 rounded-2xl border border-slate-200/80">
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
-                    Consultation Fee
-                  </span>
-                  <span className="text-xs font-black text-emerald-700 block mt-0.5">
-                    {doctor.consultationFee || '₹500'}
+                    {doctor.opdTimings || 'Mon - Sat: 9:00 AM - 4:00 PM'}
                   </span>
                 </div>
               </div>
@@ -234,10 +226,10 @@ export default function DoctorDetailPage({ params }: PageProps) {
                   <span>➔</span>
                 </a>
                 <a
-                  href="tel:+917412077125"
+                  href="tel:+919216076757"
                   className="w-full sm:w-auto bg-[#172a34] hover:bg-[#0e191f] text-white font-bold text-xs sm:text-sm px-5 py-3.5 rounded-xl transition shadow flex items-center justify-center gap-2 text-center"
                 >
-                  <span>📞 Call Helpline: +91 74120 77125</span>
+                  <span>📞 Call Helpline: +91 92160 76757</span>
                 </a>
               </div>
             </div>

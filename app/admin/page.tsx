@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { API_URL, DoctorData, PackageInquiryData, ContactMessageData, CareerApplicationData, JobOpeningData, slugifyJobTitle } from '@/lib/api';
 import { HOSPITAL_DEPARTMENTS, MASTER_CATEGORIES, matchDepartment } from '@/lib/departments';
 
@@ -68,14 +68,14 @@ export default function AdminPortal() {
   const [doctorForm, setDoctorForm] = useState({
     name: '',
     specialty: '',
-    department: 'General & Laparoscopic Surgery',
+    department: 'General Surgery',
     category: 'General Surgery',
-    designation: 'Senior Consultant & Specialist',
+    designation: '',
     qualification: '',
     experience: '10+ Years',
     opdTimings: 'Mon - Sat: 9:00 AM - 4:00 PM',
-    consultationFee: '₹500',
-    phone: '+91 74120 77125',
+    consultationFee: '',
+    phone: '9216076757',
     email: '',
     about: '',
     specializations: '',
@@ -83,6 +83,41 @@ export default function AdminPortal() {
     isFeatured: false,
     isAvailable: true,
   });
+
+  // Searchable Department Selector States (in Add/Edit Doctor Modal)
+  const [deptPickerOpen, setDeptPickerOpen] = useState(false);
+  const [deptPickerSearch, setDeptPickerSearch] = useState('');
+  const [deptPickerCategory, setDeptPickerCategory] = useState<string>('All');
+  const deptPickerRef = useRef<HTMLDivElement>(null);
+
+  // Filtered department list for the search dropdown
+  const filteredDeptPickerList = useMemo(() => {
+    return HOSPITAL_DEPARTMENTS.filter((dept) => {
+      const matchCat = deptPickerCategory === 'All' || dept.category === deptPickerCategory;
+      const q = deptPickerSearch.toLowerCase().trim();
+      const matchQuery =
+        !q ||
+        dept.name.toLowerCase().includes(q) ||
+        dept.shortName.toLowerCase().includes(q) ||
+        dept.desc.toLowerCase().includes(q);
+      return matchCat && matchQuery;
+    });
+  }, [deptPickerSearch, deptPickerCategory]);
+
+  // Click outside listener to close department picker
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (deptPickerRef.current && !deptPickerRef.current.contains(event.target as Node)) {
+        setDeptPickerOpen(false);
+      }
+    }
+    if (deptPickerOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [deptPickerOpen]);
 
   const categories = MASTER_CATEGORIES;
 
@@ -396,22 +431,22 @@ export default function AdminPortal() {
   // Open Full Page for New Doctor
   const handleOpenNewDoctor = () => {
     setEditingDoctorId(null);
-    setImagePreview('/doctors/doctor-orthopaedics.png');
+    setImagePreview('');
     setDoctorForm({
       name: '',
       specialty: '',
-      department: 'General & Laparoscopic Surgery',
+      department: 'General Surgery',
       category: 'General Surgery',
-      designation: 'Senior Consultant & Specialist',
+      designation: '',
       qualification: '',
       experience: '10+ Years',
       opdTimings: 'Mon - Sat: 9:00 AM - 4:00 PM',
-      consultationFee: '₹500',
-      phone: '+91 74120 77125',
+      consultationFee: '',
+      phone: '9216076757',
       email: '',
       about: '',
       specializations: '',
-      image: '/doctors/doctor-orthopaedics.png',
+      image: '',
       isFeatured: false,
       isAvailable: true,
     });
@@ -421,22 +456,22 @@ export default function AdminPortal() {
   // Open Full Page for Edit Doctor
   const handleOpenEditDoctor = (doc: DoctorData) => {
     setEditingDoctorId(doc._id || null);
-    setImagePreview(doc.image || '/doctors/doctor-orthopaedics.png');
+    setImagePreview(doc.image || '');
     setDoctorForm({
       name: doc.name,
       specialty: doc.specialty,
       department: doc.department,
-      category: doc.category || 'General Surgery',
-      designation: doc.designation || 'Senior Consultant & Specialist',
+      category: doc.category || doc.department || 'General Surgery',
+      designation: doc.designation || '',
       qualification: doc.qualification,
       experience: doc.experience || '10+ Years',
       opdTimings: doc.opdTimings || 'Mon - Sat: 9:00 AM - 4:00 PM',
-      consultationFee: doc.consultationFee || '₹500',
-      phone: doc.phone || '+91 74120 77125',
+      consultationFee: doc.consultationFee || '',
+      phone: doc.phone || '9216076757',
       email: doc.email || '',
       about: doc.about || '',
       specializations: Array.isArray(doc.specializations) ? doc.specializations.join(', ') : '',
-      image: doc.image || '/doctors/doctor-orthopaedics.png',
+      image: doc.image || '',
       isFeatured: Boolean(doc.isFeatured),
       isAvailable: doc.isAvailable !== undefined ? doc.isAvailable : true,
     });
@@ -1009,11 +1044,20 @@ export default function AdminPortal() {
 
                   <div className="flex flex-col sm:flex-row items-center gap-6 pt-1">
                     <div className="relative w-32 h-32 rounded-3xl overflow-hidden border-2 border-slate-200 bg-slate-50 shrink-0 shadow-inner flex items-center justify-center group">
-                      <img
-                        src={imagePreview || '/doctors/doctor-orthopaedics.png'}
-                        alt="Doctor Preview"
-                        className="w-full h-full object-cover object-top"
-                      />
+                      {imagePreview ? (
+                        <img
+                          src={imagePreview}
+                          alt="Doctor Preview"
+                          onError={() => setImagePreview('')}
+                          className="w-full h-full object-cover object-top"
+                        />
+                      ) : (
+                        <div className="flex flex-col items-center justify-center text-slate-400 p-2 text-center">
+                          <span className="text-3xl mb-1">👨‍⚕️</span>
+                          <span className="text-[10px] font-bold text-slate-500">No Photo Uploaded</span>
+                          <span className="text-[9px] text-slate-400">Shows Doctor Icon</span>
+                        </div>
+                      )}
                       {uploadingImage && (
                         <div className="absolute inset-0 bg-black/60 text-white text-[11px] font-bold flex flex-col items-center justify-center p-2 text-center">
                           <span className="animate-spin mb-1">⏳</span>
@@ -1036,8 +1080,21 @@ export default function AdminPortal() {
                         Choose a clear, professional portrait photo (JPG, PNG, WEBP). It will be stored in S3 and live updated on website.
                       </p>
                       {doctorForm.image && (
-                        <div className="text-[11px] text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 font-mono truncate max-w-xl">
-                          ✓ S3 Path: {doctorForm.image}
+                        <div className="flex items-center gap-2 pt-1">
+                          <div className="text-[11px] text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 font-mono truncate max-w-md flex-1">
+                            ✓ S3 Path: {doctorForm.image}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setDoctorForm((prev) => ({ ...prev, image: '' }));
+                              setImagePreview('');
+                            }}
+                            className="px-3 py-1.5 text-xs font-bold text-red-600 hover:bg-red-50 border border-red-200 rounded-xl transition cursor-pointer shrink-0"
+                            title="Remove Photo and use Doctor Icon"
+                          >
+                            🗑️ Remove Photo
+                          </button>
                         </div>
                       )}
                     </div>
@@ -1083,101 +1140,212 @@ export default function AdminPortal() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="sm:col-span-1">
+                  <div className="grid grid-cols-1 gap-4">
+                    <div ref={deptPickerRef} className="relative">
                       <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
                         <span>Department Name *</span>
-                        <span className="text-[10px] text-[#c83220] font-semibold">({HOSPITAL_DEPARTMENTS.length} Available)</span>
+                        <span className="text-[10px] text-[#c83220] font-semibold">({HOSPITAL_DEPARTMENTS.length} Specialized Departments)</span>
                       </label>
-                      <input
-                        type="text"
-                        required
-                        list="hospital-departments-datalist"
-                        value={doctorForm.department}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          const matched = HOSPITAL_DEPARTMENTS.find(
-                            (d) => d.name.toLowerCase() === val.toLowerCase()
-                          );
-                          setDoctorForm({
-                            ...doctorForm,
-                            department: val,
-                            category: matched ? matched.doctorCategory : doctorForm.category,
-                          });
-                        }}
-                        placeholder="Select or type department..."
-                        className="w-full px-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#c83220] focus:outline-none font-medium bg-white"
-                      />
-                      <datalist id="hospital-departments-datalist">
-                        {HOSPITAL_DEPARTMENTS.map((d) => (
-                          <option key={d.id} value={d.name}>
-                            {d.name} ({d.category})
-                          </option>
-                        ))}
-                      </datalist>
 
-                      {/* Quick Dropdown Picker */}
-                      <select
-                        value=""
-                        onChange={(e) => {
-                          if (e.target.value) {
-                            const matched = HOSPITAL_DEPARTMENTS.find((d) => d.name === e.target.value);
-                            setDoctorForm({
-                              ...doctorForm,
-                              department: e.target.value,
-                              category: matched ? matched.doctorCategory : doctorForm.category,
-                            });
-                          }
-                        }}
-                        className="mt-1.5 w-full text-[11px] text-slate-600 border border-slate-200 rounded-lg py-1 px-2 bg-slate-50 cursor-pointer"
-                      >
-                        <option value="">▼ Select from Full Department List...</option>
-                        {HOSPITAL_DEPARTMENTS.map((d) => (
-                          <option key={d.id} value={d.name}>
-                            {d.name} ({d.category})
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                      {/* Main Department Input & Button */}
+                      <div className="flex gap-2">
+                        <div className="relative flex-1">
+                          <input
+                            type="text"
+                            required
+                            value={doctorForm.department}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              const matched = HOSPITAL_DEPARTMENTS.find(
+                                (d) => d.name.toLowerCase() === val.toLowerCase()
+                              );
+                              setDoctorForm({
+                                ...doctorForm,
+                                department: val,
+                                category: matched ? matched.doctorCategory : val,
+                              });
+                            }}
+                            placeholder="Select or type department name..."
+                            className="w-full px-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#c83220] focus:outline-none font-medium bg-white"
+                          />
+                          {doctorForm.department && (
+                            <button
+                              type="button"
+                              onClick={() => setDoctorForm({ ...doctorForm, department: '', category: '' })}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs p-1"
+                              title="Clear Department"
+                            >
+                              ✕
+                            </button>
+                          )}
+                        </div>
 
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                        Department Category (Filter Tag) *
-                      </label>
-                      <select
-                        value={doctorForm.category}
-                        onChange={(e) => setDoctorForm({ ...doctorForm, category: e.target.value })}
-                        className="w-full px-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#c83220] focus:outline-none bg-white font-medium"
-                      >
-                        {categories.map((c) => (
-                          <option key={c} value={c}>
-                            {c}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                        <button
+                          type="button"
+                          onClick={() => setDeptPickerOpen(!deptPickerOpen)}
+                          className={`px-4 py-2.5 text-xs sm:text-sm font-bold rounded-xl border transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-xs ${
+                            deptPickerOpen
+                              ? 'bg-[#172a34] text-white border-[#172a34]'
+                              : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300'
+                          }`}
+                        >
+                          <span>🔍 Browse &amp; Search</span>
+                          <span
+                            className="text-[10px] inline-block transition-transform duration-200"
+                            style={{ transform: deptPickerOpen ? 'rotate(180deg)' : 'none' }}
+                          >
+                            ▼
+                          </span>
+                        </button>
+                      </div>
 
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                        Designation / Position
-                      </label>
-                      <input
-                        type="text"
-                        value={doctorForm.designation}
-                        onChange={(e) => setDoctorForm({ ...doctorForm, designation: e.target.value })}
-                        placeholder="e.g. Senior Consultant & Specialist"
-                        className="w-full px-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#c83220] focus:outline-none font-medium"
-                      />
+                      {/* SEARCHABLE DEPARTMENT POPUP */}
+                      {deptPickerOpen && (
+                        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+                          {/* Search Header */}
+                          <div className="p-3 bg-slate-50 border-b border-slate-200 space-y-2">
+                            <div className="relative">
+                              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">🔍</span>
+                              <input
+                                type="text"
+                                autoFocus
+                                value={deptPickerSearch}
+                                onChange={(e) => setDeptPickerSearch(e.target.value)}
+                                placeholder="Search by name (e.g. Gynaecology, Surgery, ENT, Radiology...)"
+                                className="w-full pl-9 pr-8 py-2 text-xs sm:text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#c83220] focus:outline-none bg-white font-medium"
+                              />
+                              {deptPickerSearch && (
+                                <button
+                                  type="button"
+                                  onClick={() => setDeptPickerSearch('')}
+                                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs"
+                                >
+                                  ✕
+                                </button>
+                              )}
+                            </div>
+
+                            {/* Category Filter Pills */}
+                            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                              {['All', 'Clinical', 'Surgical', 'Diagnostics', 'Support'].map((cat) => {
+                                const isSel = deptPickerCategory === cat;
+                                return (
+                                  <button
+                                    key={cat}
+                                    type="button"
+                                    onClick={() => setDeptPickerCategory(cat)}
+                                    className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition cursor-pointer ${
+                                      isSel
+                                        ? 'bg-[#c83220] text-white shadow-xs'
+                                        : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
+                                    }`}
+                                  >
+                                    {cat}
+                                  </button>
+                                );
+                              })}
+                              <span className="text-[10px] text-slate-400 ml-auto font-medium">
+                                {filteredDeptPickerList.length} of {HOSPITAL_DEPARTMENTS.length}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Filtered Department List */}
+                          <div className="max-h-64 overflow-y-auto p-2 space-y-1 divide-y divide-slate-100">
+                            {filteredDeptPickerList.length === 0 ? (
+                              <div className="p-4 text-center text-xs text-slate-500">
+                                <p className="mb-2">No standard department found matching &ldquo;{deptPickerSearch}&rdquo;.</p>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setDoctorForm({
+                                      ...doctorForm,
+                                      department: deptPickerSearch,
+                                      category: 'General',
+                                    });
+                                    setDeptPickerOpen(false);
+                                  }}
+                                  className="text-[#c83220] font-bold hover:underline"
+                                >
+                                  Use &ldquo;{deptPickerSearch}&rdquo; as custom department ➔
+                                </button>
+                              </div>
+                            ) : (
+                              filteredDeptPickerList.map((dept) => {
+                                const isSelected = doctorForm.department.toLowerCase() === dept.name.toLowerCase();
+                                return (
+                                  <button
+                                    key={dept.id}
+                                    type="button"
+                                    onClick={() => {
+                                      setDoctorForm({
+                                        ...doctorForm,
+                                        department: dept.name,
+                                        category: dept.doctorCategory,
+                                      });
+                                      setDeptPickerOpen(false);
+                                      setDeptPickerSearch('');
+                                    }}
+                                    className={`w-full text-left p-2.5 rounded-xl transition flex items-center justify-between gap-3 cursor-pointer group ${
+                                      isSelected
+                                        ? 'bg-red-50/80 border border-red-200'
+                                        : 'hover:bg-slate-50'
+                                    }`}
+                                  >
+                                    <div className="min-w-0">
+                                      <div className="flex items-center gap-2">
+                                        <span className={`text-xs sm:text-sm font-bold ${
+                                          isSelected ? 'text-[#c83220]' : 'text-slate-800 group-hover:text-[#c83220]'
+                                        }`}>
+                                          {dept.name}
+                                        </span>
+                                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                          dept.category === 'Surgical'
+                                            ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                                            : dept.category === 'Clinical'
+                                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                            : dept.category === 'Diagnostics'
+                                            ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                                            : 'bg-purple-50 text-purple-700 border border-purple-200'
+                                        }`}>
+                                          {dept.category}
+                                        </span>
+                                      </div>
+                                      <p className="text-[11px] text-slate-500 truncate mt-0.5">{dept.desc}</p>
+                                    </div>
+
+                                    {isSelected && (
+                                      <span className="text-[#c83220] font-black text-sm shrink-0">✓</span>
+                                    )}
+                                  </button>
+                                );
+                              })
+                            )}
+                          </div>
+
+                          {/* Footer */}
+                          <div className="p-2 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[11px] text-slate-500">
+                            <span>Click a department to select</span>
+                            <button
+                              type="button"
+                              onClick={() => setDeptPickerOpen(false)}
+                              className="font-bold text-slate-700 hover:text-black px-2 py-0.5 rounded-lg hover:bg-slate-200"
+                            >
+                              Close ✕
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
 
-                {/* CARD 3: QUALIFICATIONS & PRICING */}
+                {/* CARD 3: QUALIFICATIONS & TIMINGS */}
                 <div className="bg-white p-6 sm:p-7 rounded-3xl border border-slate-200 shadow-sm space-y-4">
                   <div className="border-b border-slate-100 pb-3 flex items-center gap-2">
                     <span className="text-xl">🎓</span>
                     <h4 className="font-black text-sm text-[#172a34]">
-                      Qualifications, Experience &amp; OPD Pricing
+                      Qualifications, Experience &amp; Contact
                     </h4>
                   </div>
 
@@ -1204,35 +1372,22 @@ export default function AdminPortal() {
                         type="text"
                         value={doctorForm.experience}
                         onChange={(e) => setDoctorForm({ ...doctorForm, experience: e.target.value })}
-                        placeholder="e.g. 15+ Years"
+                        placeholder="e.g. 10+ Years"
                         className="w-full px-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#c83220] focus:outline-none font-medium"
                       />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                        OPD Consultation Fee
-                      </label>
-                      <input
-                        type="text"
-                        value={doctorForm.consultationFee}
-                        onChange={(e) => setDoctorForm({ ...doctorForm, consultationFee: e.target.value })}
-                        placeholder="₹500"
-                        className="w-full px-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#c83220] focus:outline-none font-medium"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                        Contact Helpline / Phone
+                        Contact Helpline / WhatsApp Phone
                       </label>
                       <input
                         type="text"
                         value={doctorForm.phone}
                         onChange={(e) => setDoctorForm({ ...doctorForm, phone: e.target.value })}
-                        placeholder="+91 74120 77125"
+                        placeholder="9216076757"
                         className="w-full px-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#c83220] focus:outline-none font-medium"
                       />
                     </div>
@@ -1485,10 +1640,10 @@ export default function AdminPortal() {
                       <thead className="bg-slate-50 text-slate-500 uppercase text-[10px] tracking-wider border-b border-slate-200">
                         <tr>
                           <th className="py-3.5 px-5 font-bold">Doctor</th>
-                          <th className="py-3.5 px-4 font-bold">Specialty &amp; Category</th>
+                          <th className="py-3.5 px-4 font-bold">Specialty &amp; Department</th>
                           <th className="py-3.5 px-4 font-bold">Qualification &amp; Exp</th>
                           <th className="py-3.5 px-4 font-bold">OPD Timings</th>
-                          <th className="py-3.5 px-4 font-bold">Fee</th>
+                          <th className="py-3.5 px-4 font-bold">Helpline</th>
                           <th className="py-3.5 px-4 font-bold text-center w-16">Action</th>
                         </tr>
                       </thead>
@@ -1503,11 +1658,24 @@ export default function AdminPortal() {
                               {/* DOCTOR IDENTITY */}
                               <td className="py-3.5 px-5 min-w-[270px]">
                                 <div className="flex items-center gap-3.5">
-                                  <img
-                                    src={doc.image || '/doctors/doctor-womens-health.png'}
-                                    alt={doc.name}
-                                    className="w-12 h-12 rounded-2xl object-cover object-top border-2 border-slate-200 shadow-xs shrink-0 bg-slate-100"
-                                  />
+                                  {doc.image ? (
+                                    <img
+                                      src={doc.image}
+                                      alt={doc.name}
+                                      onError={(e) => {
+                                        (e.currentTarget as HTMLImageElement).style.display = 'none';
+                                        const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                                        if (fallback) fallback.style.display = 'flex';
+                                      }}
+                                      className="w-12 h-12 rounded-2xl object-cover object-top border-2 border-slate-200 shadow-xs shrink-0 bg-slate-100"
+                                    />
+                                  ) : null}
+                                  <div
+                                    style={{ display: doc.image ? 'none' : 'flex' }}
+                                    className="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 border-2 border-slate-200 items-center justify-center text-xl shrink-0 shadow-xs"
+                                  >
+                                    🩺
+                                  </div>
                                   <div className="min-w-0 flex-1">
                                     <button
                                       type="button"
@@ -1517,18 +1685,18 @@ export default function AdminPortal() {
                                     >
                                       {doc.name}
                                     </button>
-                                    <p className="text-[11px] text-slate-500 truncate max-w-[200px]" title={doc.designation}>
-                                      {doc.designation || 'Medical Specialist'}
+                                    <p className="text-[11px] text-slate-500 truncate max-w-[200px]" title={doc.department}>
+                                      🏢 {doc.department}
                                     </p>
                                   </div>
                                 </div>
                               </td>
 
-                              {/* SPECIALTY & CATEGORY */}
+                              {/* SPECIALTY & DEPARTMENT */}
                               <td className="py-3.5 px-4 min-w-[210px]">
                                 <p className="font-bold text-slate-800 text-xs sm:text-sm line-clamp-1">{doc.specialty}</p>
                                 <span className="inline-block bg-blue-50 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 border border-blue-200/60">
-                                  {doc.category || doc.department}
+                                  {doc.department}
                                 </span>
                               </td>
 
@@ -1546,14 +1714,14 @@ export default function AdminPortal() {
                               <td className="py-3.5 px-4 min-w-[160px] text-slate-600 font-medium text-xs">
                                 <div className="flex items-center gap-1.5">
                                   <span className="text-slate-400">🕒</span>
-                                  <span>{doc.opdTimings || 'Mon - Sat: 9am - 4pm'}</span>
+                                  <span>{doc.opdTimings || 'Mon - Sat: 9:00 AM - 4:00 PM'}</span>
                                 </div>
                               </td>
 
-                              {/* CONSULTATION FEE */}
+                              {/* HELPLINE */}
                               <td className="py-3.5 px-4 min-w-[100px]">
-                                <span className="font-black text-emerald-700 text-xs sm:text-sm bg-emerald-50 px-2.5 py-1 rounded-xl border border-emerald-200/80 inline-block">
-                                  {doc.consultationFee || '₹500'}
+                                <span className="font-bold text-slate-700 text-xs bg-slate-100 px-2.5 py-1 rounded-xl border border-slate-200 inline-block">
+                                  📞 {doc.phone || '9216076757'}
                                 </span>
                               </td>
 

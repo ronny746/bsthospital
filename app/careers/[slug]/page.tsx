@@ -598,12 +598,12 @@ export default function JobDetailPage({ params }: PageProps) {
               <div className="mt-6 pt-5 border-t border-slate-100 flex items-center justify-between text-xs">
                 <div>
                   <span className="text-[10px] text-slate-400 font-bold block">Hospital HR Desk</span>
-                  <a href="tel:+917412077125" className="text-[#172a34] font-black hover:text-[#c83220] transition">
-                    📞 +91 74120 77125
+                  <a href="tel:9216076757" className="text-[#172a34] font-black hover:text-[#c83220] transition">
+                    📞 +91 92160 76757
                   </a>
                 </div>
                 <a
-                  href={`https://wa.me/917412077125?text=Hello%20Dr.%20B.%20S.%20Tomar%20Hospital%20HR%2C%20I%20am%20inquiring%20about%20the%20${encodeURIComponent(
+                  href={`https://wa.me/919216076757?text=Hello%20Dr.%20B.%20S.%20Tomar%20Hospital%20HR%2C%20I%20am%20inquiring%20about%20the%20${encodeURIComponent(
                     job.title
                   )}%20opening.`}
                   target="_blank"
