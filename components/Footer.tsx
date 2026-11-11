@@ -83,18 +83,21 @@ export default function Footer() {
         </div>
 
         {/* EMBEDDED GOOGLE MAP LOCATION SECTION */}
-        <div className="mb-12 bg-slate-900 p-4 rounded-3xl border border-white/10 shadow-xl">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-3 px-2">
-            <div className="flex items-center gap-2 text-xs font-black uppercase text-[#e5b64a] tracking-wider">
-              <span>📍 Hospital Location Map</span>
-              <span>•</span>
-              <span className="text-white font-bold">Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital, Jagatpura, Jaipur</span>
+        <div className="mb-12 bg-slate-900 p-4 sm:p-5 rounded-3xl border border-white/10 shadow-xl">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3.5 px-1 sm:px-2">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 text-xs sm:text-sm font-black uppercase text-[#e5b64a] tracking-wider whitespace-nowrap">
+                <span>📍 Hospital Location Map</span>
+              </div>
+              <p className="text-xs sm:text-sm text-white font-bold leading-snug">
+                Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital, Jagatpura, Jaipur
+              </p>
             </div>
             <a
               href="https://maps.google.com/?q=Jagatpura,+Jaipur,+Rajasthan"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[11px] font-bold text-[#c83220] hover:underline flex items-center gap-1"
+              className="text-xs font-bold text-[#e5b64a] hover:text-white bg-white/10 hover:bg-white/20 border border-white/15 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 self-start sm:self-auto"
             >
               <span>Open in Google Maps</span>
               <span>➔</span>
