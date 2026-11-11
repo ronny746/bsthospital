@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import NewsTicker from '@/components/NewsTicker';
 import TopBar from '@/components/TopBar';
 import NavigationBar from '@/components/NavigationBar';
@@ -236,12 +235,12 @@ export default function CareersPage() {
                           </span>
                         )}
                       </div>
-                      <Link href={`/careers/${jobSlug}`} className="block group/link">
+                      <a href={`/careers/${jobSlug}`} className="block group/link">
                         <h3 className="text-base sm:text-lg font-black text-[#172a34] group-hover/link:text-[#c83220] transition-colors mb-1 inline-flex items-center gap-1.5">
                           <span>{job.title}</span>
                           <span className="text-xs text-[#c83220] opacity-0 group-hover/link:opacity-100 transition-opacity">↗</span>
                         </h3>
-                      </Link>
+                      </a>
                       <p className="text-slate-600 text-xs mb-2 leading-relaxed">{job.description}</p>
                       <div className="text-[11px] font-bold text-slate-500">
                         Requirements: <span className="text-slate-700">{job.experience}</span>
@@ -250,13 +249,13 @@ export default function CareersPage() {
                     </div>
 
                     <div className="w-full md:w-auto shrink-0">
-                      <Link
+                      <a
                         href={`/careers/${jobSlug}`}
-                        className="w-full md:w-auto text-center bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-xs px-6 py-2.5 rounded-xl transition-all shadow-sm hover:shadow-md shrink-0 inline-flex items-center justify-center gap-1.5"
+                        className="w-full md:w-auto text-center bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-xs px-6 py-2.5 rounded-xl transition-all shadow-sm hover:shadow-md shrink-0 inline-flex items-center justify-center gap-1.5 cursor-pointer"
                       >
                         <span>View Details</span>
                         <span>➔</span>
-                      </Link>
+                      </a>
                     </div>
                   </div>
                 );

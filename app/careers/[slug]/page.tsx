@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, use } from 'react';
-import Link from 'next/link';
 import NewsTicker from '@/components/NewsTicker';
 import TopBar from '@/components/TopBar';
 import NavigationBar from '@/components/NavigationBar';
@@ -153,18 +152,18 @@ export default function JobDetailPage({ params }: PageProps) {
             This job vacancy may have been filled, updated, or is no longer accepting new applications.
           </p>
           <div className="flex justify-center gap-3">
-            <Link
+            <a
               href="/careers"
               className="bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-xs px-5 py-2.5 rounded-xl transition shadow"
             >
               Browse All Vacancies ➔
-            </Link>
-            <Link
+            </a>
+            <a
               href="/"
               className="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs px-5 py-2.5 rounded-xl transition"
             >
               Back to Home
-            </Link>
+            </a>
           </div>
         </div>
         <Footer />
@@ -189,13 +188,13 @@ export default function JobDetailPage({ params }: PageProps) {
         <div className="w-full max-w-7xl 2xl:max-w-[1600px] min-[1900px]:max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10">
           {/* Breadcrumbs */}
           <nav aria-label="breadcrumb" className="flex items-center gap-2 text-xs font-bold text-slate-300 uppercase tracking-widest mb-3 flex-wrap">
-            <Link href="/" className="hover:text-white transition">
+            <a href="/" className="hover:text-white transition">
               HOME
-            </Link>
+            </a>
             <span className="text-[#c83220]">/</span>
-            <Link href="/careers" className="hover:text-white transition">
+            <a href="/careers" className="hover:text-white transition">
               CAREERS
-            </Link>
+            </a>
             <span className="text-[#c83220]">/</span>
             <span className="text-amber-400 truncate max-w-xs sm:max-w-md">{job.title}</span>
           </nav>
@@ -629,13 +628,13 @@ export default function JobDetailPage({ params }: PageProps) {
                 </span>
                 <h3 className="text-xl sm:text-2xl font-black text-[#172a34]">Other Open Positions at Dr. B. S. Tomar Hospital</h3>
               </div>
-              <Link
+              <a
                 href="/careers"
                 className="text-xs font-black text-[#c83220] hover:underline flex items-center gap-1"
               >
                 <span>View All Openings</span>
                 <span>➔</span>
-              </Link>
+              </a>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -661,12 +660,12 @@ export default function JobDetailPage({ params }: PageProps) {
 
                     <div className="flex items-center justify-between pt-3 border-t border-slate-200/70">
                       <span className="text-[11px] font-bold text-slate-500">Exp: {item.experience}</span>
-                      <Link
+                      <a
                         href={`/careers/${relSlug}`}
                         className="text-xs font-black text-[#c83220] hover:text-[#a82415] transition"
                       >
                         View & Apply ➔
-                      </Link>
+                      </a>
                     </div>
                   </div>
                 );
