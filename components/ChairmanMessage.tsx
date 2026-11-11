@@ -5,7 +5,7 @@ import React from 'react';
 export default function ChairmanMessage() {
   return (
     <section className="pt-2 sm:pt-6 md:pt-10 pb-8 sm:pb-12 bg-white relative overflow-hidden" id="about">
-      <div className="container mx-auto px-4 sm:px-6 relative z-10 max-w-7xl space-y-10 sm:space-y-14">
+      <div className="w-full max-w-7xl 2xl:max-w-[1600px] min-[1900px]:max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10 space-y-10 sm:space-y-14">
         {/* ========================================================
             PART 1: VISION & MISSION OF DR. B. S. TOMAR HOSPITAL IN JAGATPURA JAIPUR
             ======================================================== */}

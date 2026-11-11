@@ -130,7 +130,7 @@ export default function CareersPage() {
           backgroundImage: "linear-gradient(90deg, rgba(23, 42, 52, 0.94) 0%, rgba(15, 35, 46, 0.88) 45%, rgba(158, 36, 23, 0.78) 100%), url('/images/bst-hospital-exterior.jpg')",
         }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 w-full">
+        <div className="w-full max-w-7xl 2xl:max-w-[1600px] min-[1900px]:max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10">
           <nav aria-label="breadcrumb" className="flex items-center gap-2 text-xs font-bold text-slate-300 uppercase tracking-widest mb-2">
             <a href="/" className="hover:text-white transition">HOME</a>
             <span className="text-[#c83220]">/</span>
@@ -139,10 +139,10 @@ export default function CareersPage() {
           <div className="inline-flex items-center gap-2 bg-[#c83220] text-white px-3 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider mb-2 shadow-sm">
             <span>💼 Join Our Mission</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-2 leading-tight max-w-4xl text-white">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl 2xl:text-5xl font-black tracking-tight mb-2 leading-tight max-w-4xl text-white">
             Build Your Healthcare Career at Dr. B. S. Tomar Hospital
           </h1>
-          <p className="text-slate-200 text-xs sm:text-sm max-w-2xl font-medium leading-relaxed">
+          <p className="text-slate-200 text-xs sm:text-sm 2xl:text-base max-w-3xl font-medium leading-relaxed">
             Work with leading medical experts, state-of-the-art ICU infrastructure, and contribute to saving lives every day in Jagatpura, Jaipur.
           </p>
         </div>
@@ -150,37 +150,37 @@ export default function CareersPage() {
 
       {/* WHY WORK WITH US */}
       <section className="py-12 sm:py-16 bg-white border-b border-slate-200/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="w-full max-w-7xl 2xl:max-w-[1600px] min-[1900px]:max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
           <div className="text-center max-w-3xl mx-auto mb-10">
             <span className="text-[#c83220] font-black text-xs uppercase tracking-widest mb-1.5 block">
               LIFE AT DR. B. S. TOMAR HOSPITAL
             </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-[#172a34]">Why Choose Dr. B. S. Tomar Hospital?</h2>
+            <h2 className="text-2xl sm:text-3xl 2xl:text-4xl font-black text-[#172a34]">Why Choose Dr. B. S. Tomar Hospital?</h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div className="bg-[#fdfbf7] p-5 rounded-2xl border border-slate-200">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 2xl:gap-6">
+            <div className="bg-[#fdfbf7] p-5 2xl:p-6 rounded-2xl border border-slate-200">
               <div className="text-2xl mb-2">🩺</div>
-              <h3 className="font-black text-sm text-[#172a34] mb-1">Modern Infrastructure</h3>
-              <p className="text-xs text-slate-600">Access to multi-slice CT, advanced ventilators, modular OTs, and digital emergency labs.</p>
+              <h3 className="font-black text-sm 2xl:text-base text-[#172a34] mb-1">Modern Infrastructure</h3>
+              <p className="text-xs 2xl:text-sm text-slate-600">Access to multi-slice CT, advanced ventilators, modular OTs, and digital emergency labs.</p>
             </div>
 
-            <div className="bg-[#fdfbf7] p-5 rounded-2xl border border-slate-200">
+            <div className="bg-[#fdfbf7] p-5 2xl:p-6 rounded-2xl border border-slate-200">
               <div className="text-2xl mb-2">📈</div>
-              <h3 className="font-black text-sm text-[#172a34] mb-1">Career Growth</h3>
-              <p className="text-xs text-slate-600">Continuous medical education (CME), research publication support, and promotion pathways.</p>
+              <h3 className="font-black text-sm 2xl:text-base text-[#172a34] mb-1">Career Growth</h3>
+              <p className="text-xs 2xl:text-sm text-slate-600">Continuous medical education (CME), research publication support, and promotion pathways.</p>
             </div>
 
-            <div className="bg-[#fdfbf7] p-5 rounded-2xl border border-slate-200">
+            <div className="bg-[#fdfbf7] p-5 2xl:p-6 rounded-2xl border border-slate-200">
               <div className="text-2xl mb-2">💳</div>
-              <h3 className="font-black text-sm text-[#172a34] mb-1">Competitive Pay</h3>
-              <p className="text-xs text-slate-600">Industry-best compensation, medical benefits, and performance incentives.</p>
+              <h3 className="font-black text-sm 2xl:text-base text-[#172a34] mb-1">Competitive Pay</h3>
+              <p className="text-xs 2xl:text-sm text-slate-600">Industry-best compensation, medical benefits, and performance incentives.</p>
             </div>
 
-            <div className="bg-[#fdfbf7] p-5 rounded-2xl border border-slate-200">
+            <div className="bg-[#fdfbf7] p-5 2xl:p-6 rounded-2xl border border-slate-200">
               <div className="text-2xl mb-2">🤝</div>
-              <h3 className="font-black text-sm text-[#172a34] mb-1">Collaborative Culture</h3>
-              <p className="text-xs text-slate-600">Work in multi-disciplinary clinical teams focused on patient safety and compassionate care.</p>
+              <h3 className="font-black text-sm 2xl:text-base text-[#172a34] mb-1">Collaborative Culture</h3>
+              <p className="text-xs 2xl:text-sm text-slate-600">Work in multi-disciplinary clinical teams focused on patient safety and compassionate care.</p>
             </div>
           </div>
         </div>
@@ -188,13 +188,13 @@ export default function CareersPage() {
 
       {/* JOB OPENINGS LIST */}
       <section className="py-12 sm:py-16 bg-[#fdfbf7]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="w-full max-w-7xl 2xl:max-w-[1600px] min-[1900px]:max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 gap-2">
             <div>
               <span className="text-[#c83220] font-black text-xs uppercase tracking-widest mb-1 block">
                 CURRENT OPPORTUNITIES
               </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#172a34]">Open Positions</h2>
+              <h2 className="text-2xl sm:text-3xl 2xl:text-4xl font-black text-[#172a34]">Open Positions</h2>
             </div>
             <div className="text-xs text-slate-500 font-bold bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
               Showing {jobs.length} Active Vacancies

@@ -28,7 +28,7 @@ export default function GlobalHonors() {
 
   return (
     <section className="py-12 sm:py-16 bg-white border-y border-slate-200/80">
-      <div className="container mx-auto px-4 sm:px-6 max-w-7xl space-y-6">
+      <div className="w-full max-w-7xl 2xl:max-w-[1600px] min-[1900px]:max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2 border-b border-slate-200 pb-3">
           <div>
             <span className="text-[#c83220] font-black text-[10px] sm:text-xs uppercase tracking-wider block">
@@ -49,11 +49,11 @@ export default function GlobalHonors() {
               key={idx}
               className="bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-200 transition-all duration-300 flex flex-col group"
             >
-              <div className="h-40 sm:h-44 overflow-hidden bg-slate-100 relative">
+              <div className="aspect-[16/11] sm:aspect-[16/10] overflow-hidden bg-slate-900 relative">
                 <img
                   src={item.src}
                   alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />

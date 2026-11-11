@@ -60,16 +60,25 @@ export default function DoctorDetailPage({ params }: PageProps) {
         }),
       });
 
-      // 2. Open WhatsApp for instant confirmation
-      const text = `Hello Dr. B. S. Tomar Hospital Jagatpura,%0A%0A*OPD Appointment Request:*%0A*Doctor:* ${doctor.name} (${doctor.specialty})%0A*Patient Name:* ${patientName}%0A*Phone:* ${patientPhone}%0A*Date:* ${preferredDate || 'Earliest Available'}%0A*Preferred Slot:* ${preferredTime}%0A*Notes:* ${patientMessage || 'Consultation'}`;
-      window.open(`https://wa.me/917412077125?text=${text}`, '_blank');
+      // Save appointment request to backend
+      await fetch(`${API_URL}/appointments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: patientName,
+          phone: patientPhone,
+          email: patientEmail,
+          department: doctor.department,
+          doctor: doctor.name,
+          preferredDate,
+          preferredTime,
+          message: patientMessage,
+        }),
+      });
 
       setBookingSuccess(true);
     } catch (err) {
       console.error('Appointment submit error:', err);
-      // Still allow WhatsApp booking
-      const text = `Hello Dr. B. S. Tomar Hospital Jagatpura,%0A%0A*OPD Appointment Request:*%0A*Doctor:* ${doctor.name}%0A*Patient:* ${patientName}%0A*Phone:* ${patientPhone}`;
-      window.open(`https://wa.me/917412077125?text=${text}`, '_blank');
       setBookingSuccess(true);
     } finally {
       setSubmitting(false);
@@ -131,7 +140,7 @@ export default function DoctorDetailPage({ params }: PageProps) {
 
       {/* Breadcrumb Navigation */}
       <div className="bg-[#172a34] text-white py-4 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center gap-2 text-xs font-semibold text-slate-300">
+        <div className="w-full max-w-7xl 2xl:max-w-[1600px] min-[1900px]:max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 flex items-center gap-2 text-xs font-semibold text-slate-300">
           <a href="/" className="hover:text-white transition">Home</a>
           <span className="text-[#c83220]">/</span>
           <a href="/doctors" className="hover:text-white transition">Doctors</a>
@@ -142,21 +151,21 @@ export default function DoctorDetailPage({ params }: PageProps) {
 
       {/* Doctor Hero Card */}
       <section className="py-8 sm:py-12 bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-8 lg:gap-12">
-            {/* Doctor Image */}
-            <div className="w-56 sm:w-64 lg:w-72 shrink-0">
-              <div className="relative rounded-3xl overflow-hidden border-4 border-white shadow-2xl bg-slate-100 aspect-square sm:aspect-[4/5]">
+        <div className="w-full max-w-7xl 2xl:max-w-[1600px] min-[1900px]:max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 sm:gap-8 lg:gap-12">
+            {/* Doctor Image - Large, crisp & responsive on mobile */}
+            <div className="w-full max-w-[320px] sm:max-w-[360px] md:w-72 lg:w-80 shrink-0 mx-auto md:mx-0">
+              <div className="relative rounded-3xl overflow-hidden border-4 border-white shadow-2xl bg-gradient-to-b from-slate-100 to-slate-200 aspect-square sm:aspect-[4/5]">
                 <img
                   src={doctor.image || '/doctors/doctor-womens-health.png'}
                   alt={doctor.name}
-                  className="w-full h-full object-cover object-top"
+                  className="w-full h-full object-cover object-[center_12%]"
                 />
-                <div className="absolute top-3 right-3 bg-[#172a34]/90 text-amber-300 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm border border-amber-300/30">
+                <div className="absolute top-3 right-3 bg-[#172a34]/90 text-amber-300 text-[10px] sm:text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm border border-amber-300/30 shadow-md">
                   {doctor.experience} Exp
                 </div>
                 {doctor.isAvailable && (
-                  <div className="absolute bottom-3 left-3 right-3 bg-emerald-950/80 backdrop-blur-md text-emerald-300 text-[11px] font-bold px-3 py-1.5 rounded-xl flex items-center justify-center gap-1.5 border border-emerald-500/30">
+                  <div className="absolute bottom-3 left-3 right-3 bg-emerald-950/85 backdrop-blur-md text-emerald-300 text-[11px] font-bold px-3 py-1.5 rounded-xl flex items-center justify-center gap-1.5 border border-emerald-500/30 shadow-md">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                     <span>Available for OPD Today</span>
                   </div>
@@ -165,10 +174,10 @@ export default function DoctorDetailPage({ params }: PageProps) {
             </div>
 
             {/* Doctor Details */}
-            <div className="flex-1 space-y-4 text-center md:text-left">
+            <div className="flex-1 space-y-4 text-center md:text-left w-full">
               <div>
                 <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-2">
-                  <span className="bg-[#c83220] text-white text-[10px] sm:text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full">
+                  <span className="bg-[#c83220] text-white text-[10px] sm:text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">
                     {doctor.specialty}
                   </span>
                   <span className="bg-slate-100 text-slate-700 text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full border border-slate-200">
@@ -178,15 +187,15 @@ export default function DoctorDetailPage({ params }: PageProps) {
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#172a34] tracking-tight">
                   {doctor.name}
                 </h1>
-                <p className="text-sm sm:text-base font-bold text-slate-600 mt-1">
+                <p className="text-xs sm:text-sm md:text-base font-bold text-slate-600 mt-1">
                   {doctor.designation} &bull; {doctor.department}
                 </p>
               </div>
 
               {/* Quick Info Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-                <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200/80">
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 pt-2 text-left">
+                <div className="bg-slate-50 p-3 sm:p-3.5 rounded-2xl border border-slate-200/80">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
                     Qualifications
                   </span>
                   <span className="text-xs font-extrabold text-[#172a34] leading-snug block mt-0.5">
@@ -194,8 +203,8 @@ export default function DoctorDetailPage({ params }: PageProps) {
                   </span>
                 </div>
 
-                <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200/80">
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">
+                <div className="bg-slate-50 p-3 sm:p-3.5 rounded-2xl border border-slate-200/80">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
                     OPD Timings
                   </span>
                   <span className="text-xs font-extrabold text-[#172a34] block mt-0.5">
@@ -203,8 +212,8 @@ export default function DoctorDetailPage({ params }: PageProps) {
                   </span>
                 </div>
 
-                <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200/80 col-span-2 sm:col-span-1">
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">
+                <div className="bg-slate-50 p-3 sm:p-3.5 rounded-2xl border border-slate-200/80">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
                     Consultation Fee
                   </span>
                   <span className="text-xs font-black text-emerald-700 block mt-0.5">
@@ -214,19 +223,19 @@ export default function DoctorDetailPage({ params }: PageProps) {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-3">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center md:justify-start gap-2.5 sm:gap-3 pt-2 w-full">
                 <a
                   href={whatsappBookingUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl transition shadow-lg flex items-center gap-2 cursor-pointer"
+                  className="w-full sm:w-auto bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span>💬 Instant WhatsApp Booking</span>
                   <span>➔</span>
                 </a>
                 <a
                   href="tel:+917412077125"
-                  className="bg-[#172a34] hover:bg-[#0e191f] text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-xl transition shadow flex items-center gap-2"
+                  className="w-full sm:w-auto bg-[#172a34] hover:bg-[#0e191f] text-white font-bold text-xs sm:text-sm px-5 py-3.5 rounded-xl transition shadow flex items-center justify-center gap-2 text-center"
                 >
                   <span>📞 Call Helpline: +91 74120 77125</span>
                 </a>
@@ -237,7 +246,7 @@ export default function DoctorDetailPage({ params }: PageProps) {
       </section>
 
       {/* Main Content & Appointment Form */}
-      <section className="py-10 sm:py-14 max-w-7xl mx-auto px-4 sm:px-6 w-full">
+      <section className="py-10 sm:py-14 w-full max-w-7xl 2xl:max-w-[1600px] min-[1900px]:max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Left Column: Doctor Bio & Specializations */}

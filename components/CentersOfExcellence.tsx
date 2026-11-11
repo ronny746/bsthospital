@@ -22,7 +22,7 @@ export default function CentersOfExcellence() {
 
   return (
     <section className="py-8 sm:py-16 md:py-20 bg-cream" id="departments">
-      <div className="container mx-auto px-3 sm:px-6 max-w-7xl">
+      <div className="w-full max-w-7xl 2xl:max-w-[1600px] min-[1900px]:max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 sm:mb-10 border-b border-slate-200 pb-3 sm:pb-6 gap-3 sm:gap-4">
           <div className="max-w-2xl">
             <span className="text-[#c83220] font-black tracking-widest text-[11px] sm:text-xs uppercase mb-1 sm:mb-2 block">

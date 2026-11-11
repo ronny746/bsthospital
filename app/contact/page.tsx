@@ -19,13 +19,15 @@ export default function ContactPage() {
 
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    setSubmitError(null);
     try {
       // Save contact message to MongoDB backend
-      await fetch(`${API_URL}/contact`, {
+      const res = await fetch(`${API_URL}/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -37,15 +39,29 @@ export default function ContactPage() {
           message: formData.message,
         }),
       });
-    } catch (err) {
+
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        throw new Error(data?.message || 'Failed to submit enquiry. Please try again.');
+      }
+
+      setSubmitted(true);
+      setFormData({
+        name: '',
+        phone: '',
+        email: '',
+        department: 'General Consultation',
+        date: '',
+        message: '',
+      });
+    } catch (err: unknown) {
       console.error('Failed to submit contact message to backend:', err);
+      const msg = err instanceof Error ? err.message : 'Failed to submit enquiry. Please try again.';
+      setSubmitError(msg);
     } finally {
       setSubmitting(false);
     }
-
-    const text = `Hello Dr. B. S. Tomar Hospital Jagatpura,%0A%0A*Name:* ${formData.name}%0A*Phone:* ${formData.phone}%0A*Email:* ${formData.email || 'N/A'}%0A*Department:* ${formData.department}%0A*Preferred Date:* ${formData.date || 'Earliest available'}%0A*Message/Concern:* ${formData.message}`;
-    window.open(`https://wa.me/917412077125?text=${text}`, '_blank');
-    setSubmitted(true);
   };
 
   return (
@@ -64,7 +80,7 @@ export default function ContactPage() {
             "linear-gradient(90deg, rgba(23, 42, 52, 0.94) 0%, rgba(15, 35, 46, 0.88) 45%, rgba(158, 36, 23, 0.78) 100%), url('/images/bst-hospital-exterior.jpg')",
         }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 text-center md:text-left w-full">
+        <div className="w-full max-w-7xl 2xl:max-w-[1600px] min-[1900px]:max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10 text-center md:text-left">
           <nav aria-label="breadcrumb" className="flex items-center justify-center md:justify-start gap-2 text-xs font-bold text-slate-300 uppercase tracking-widest mb-2">
             <a href="/" className="hover:text-white transition">HOME</a>
             <span className="text-[#c83220]">/</span>
@@ -83,7 +99,7 @@ export default function ContactPage() {
           4 QUICK ACTION HELPLINE CARDS
           ======================================================== */}
       <section className="py-8 sm:py-12 bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="w-full max-w-7xl 2xl:max-w-[1600px] min-[1900px]:max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             
             {/* Card 1: 24/7 Emergency */}
@@ -193,7 +209,7 @@ export default function ContactPage() {
           MAIN FORM & HOSPITAL INFO SECTION
           ======================================================== */}
       <section className="py-12 sm:py-20 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="w-full max-w-7xl 2xl:max-w-[1600px] min-[1900px]:max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
           <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             
             {/* Left Column: Interactive Contact Form (7 cols) */}
@@ -205,13 +221,20 @@ export default function ContactPage() {
                 Send an Enquiry or Book an Appointment
               </h2>
               <p className="text-slate-600 text-xs sm:text-sm mb-6 leading-relaxed">
-                Fill out the form below and our hospital patient relations desk will assist you promptly. You can also connect directly via WhatsApp.
+                Fill out the form below and our hospital patient relations desk will assist you promptly. Your enquiry will be saved directly in our administrative portal.
               </p>
 
               {submitted && (
                 <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-800 text-xs sm:text-sm font-semibold flex items-center gap-3">
                   <span className="text-xl">✅</span>
-                  <span>Thank you! Your enquiry has been initiated. Our patient team will respond shortly.</span>
+                  <span>Thank you! Your enquiry has been received and saved successfully. Our hospital administration team will contact you shortly.</span>
+                </div>
+              )}
+
+              {submitError && (
+                <div className="mb-6 p-4 bg-rose-50 border border-rose-200 rounded-2xl text-rose-800 text-xs sm:text-sm font-semibold flex items-center gap-3">
+                  <span className="text-xl">⚠️</span>
+                  <span>{submitError}</span>
                 </div>
               )}
 
@@ -321,9 +344,9 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full bg-[#c83220] hover:bg-[#a82415] text-white font-black text-xs sm:text-sm py-3.5 px-6 rounded-xl transition-all shadow-lg hover:shadow-red-600/30 flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full bg-[#c83220] hover:bg-[#a82415] text-white font-black text-xs sm:text-sm py-3.5 px-6 rounded-xl transition-all shadow-lg hover:shadow-red-600/30 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
                   >
-                    <span>{submitting ? 'Submitting...' : 'Submit Enquiry & Connect via WhatsApp'}</span>
+                    <span>{submitting ? 'Submitting Enquiry...' : 'Submit Enquiry'}</span>
                     <span>➔</span>
                   </button>
                   <p className="text-[11px] text-slate-400 text-center mt-2">

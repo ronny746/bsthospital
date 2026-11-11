@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { API_URL, DoctorData, PackageInquiryData, ContactMessageData, CareerApplicationData, JobOpeningData, slugifyJobTitle } from '@/lib/api';
+import { HOSPITAL_DEPARTMENTS, MASTER_CATEGORIES, matchDepartment } from '@/lib/departments';
 
 export default function AdminPortal() {
   // Auth state
@@ -13,7 +14,7 @@ export default function AdminPortal() {
   const [loginError, setLoginError] = useState('');
 
   // Sidebar & Navigation state
-  const [activeTab, setActiveTab] = useState<'doctors' | 'enquiries' | 'contacts' | 'careers'>('doctors');
+  const [activeTab, setActiveTab] = useState<'doctors' | 'departments' | 'enquiries' | 'contacts' | 'careers'>('doctors');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Data states
@@ -47,6 +48,7 @@ export default function AdminPortal() {
   // Search & Filter state for Doctors Table
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState('All');
+  const [selectedDepartmentFilter, setSelectedDepartmentFilter] = useState('All');
   const [activeActionMenuId, setActiveActionMenuId] = useState<string | null>(null);
 
   // Career Applications Filter & Detail State
@@ -82,18 +84,7 @@ export default function AdminPortal() {
     isAvailable: true,
   });
 
-  const categories = [
-    'General Surgery',
-    'Internal Medicine',
-    'Orthopedics',
-    'Gynaecology',
-    'Pediatrics',
-    'Critical Care / ICU',
-    'ENT & Ophthalmology',
-    'Dermatology',
-    'Radiodiagnosis',
-    'Pathology',
-  ];
+  const categories = MASTER_CATEGORIES;
 
   // Check existing token on mount
   useEffect(() => {
@@ -535,7 +526,11 @@ export default function AdminPortal() {
       (doc.qualification && doc.qualification.toLowerCase().includes(q));
     const matchCat =
       selectedCategoryFilter === 'All' || doc.category === selectedCategoryFilter;
-    return matchSearch && matchCat;
+    const matchDept =
+      selectedDepartmentFilter === 'All' ||
+      doc.department === selectedDepartmentFilter ||
+      matchDepartment(doc.department, doc.category, selectedDepartmentFilter);
+    return matchSearch && matchCat && matchDept;
   });
 
   // Filtered career applications list
@@ -721,6 +716,34 @@ export default function AdminPortal() {
               </span>
             </button>
 
+            {/* Tab: Hospital Departments */}
+            <button
+              onClick={() => {
+                setActiveTab('departments');
+                setIsEditingDoctor(false);
+                setSidebarOpen(false);
+              }}
+              className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+                activeTab === 'departments'
+                  ? 'bg-[#c83220] text-white shadow-lg shadow-red-900/30 font-black'
+                  : 'text-slate-300 hover:bg-white/10 hover:text-white'
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <span className="text-base">🏢</span>
+                <span>Hospital Departments</span>
+              </div>
+              <span
+                className={`text-[10px] px-2 py-0.5 rounded-full font-black ${
+                  activeTab === 'departments'
+                    ? 'bg-white text-[#c83220]'
+                    : 'bg-white/15 text-slate-300'
+                }`}
+              >
+                {HOSPITAL_DEPARTMENTS.length}
+              </span>
+            </button>
+
             {/* Tab 2: Package Enquiries */}
             <button
               onClick={() => {
@@ -860,7 +883,9 @@ export default function AdminPortal() {
                       ? `✏️ Edit Specialist: ${doctorForm.name}`
                       : '➕ Add New Medical Specialist'
                     : activeTab === 'doctors'
-                    ? '👨‍⚕️ Doctors Directory & Profiles (48 Specialists)'
+                    ? `👨‍⚕️ Doctors Directory & Profiles (${doctors.length} Specialists)`
+                    : activeTab === 'departments'
+                    ? `🏢 Complete Hospital Departments (${HOSPITAL_DEPARTMENTS.length} Specialized Departments)`
                     : activeTab === 'enquiries'
                     ? '📋 Preventive Health Package Enquiries'
                     : activeTab === 'contacts'
@@ -1060,17 +1085,59 @@ export default function AdminPortal() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="sm:col-span-1">
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                        Department Name *
+                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                        <span>Department Name *</span>
+                        <span className="text-[10px] text-[#c83220] font-semibold">({HOSPITAL_DEPARTMENTS.length} Available)</span>
                       </label>
                       <input
                         type="text"
                         required
+                        list="hospital-departments-datalist"
                         value={doctorForm.department}
-                        onChange={(e) => setDoctorForm({ ...doctorForm, department: e.target.value })}
-                        placeholder="e.g. General & Laparoscopic Surgery"
-                        className="w-full px-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#c83220] focus:outline-none font-medium"
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          const matched = HOSPITAL_DEPARTMENTS.find(
+                            (d) => d.name.toLowerCase() === val.toLowerCase()
+                          );
+                          setDoctorForm({
+                            ...doctorForm,
+                            department: val,
+                            category: matched ? matched.doctorCategory : doctorForm.category,
+                          });
+                        }}
+                        placeholder="Select or type department..."
+                        className="w-full px-4 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#c83220] focus:outline-none font-medium bg-white"
                       />
+                      <datalist id="hospital-departments-datalist">
+                        {HOSPITAL_DEPARTMENTS.map((d) => (
+                          <option key={d.id} value={d.name}>
+                            {d.name} ({d.category})
+                          </option>
+                        ))}
+                      </datalist>
+
+                      {/* Quick Dropdown Picker */}
+                      <select
+                        value=""
+                        onChange={(e) => {
+                          if (e.target.value) {
+                            const matched = HOSPITAL_DEPARTMENTS.find((d) => d.name === e.target.value);
+                            setDoctorForm({
+                              ...doctorForm,
+                              department: e.target.value,
+                              category: matched ? matched.doctorCategory : doctorForm.category,
+                            });
+                          }
+                        }}
+                        className="mt-1.5 w-full text-[11px] text-slate-600 border border-slate-200 rounded-lg py-1 px-2 bg-slate-50 cursor-pointer"
+                      >
+                        <option value="">▼ Select from Full Department List...</option>
+                        {HOSPITAL_DEPARTMENTS.map((d) => (
+                          <option key={d.id} value={d.name}>
+                            {d.name} ({d.category})
+                          </option>
+                        ))}
+                      </select>
                     </div>
 
                     <div>
@@ -1336,7 +1403,25 @@ export default function AdminPortal() {
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                    {/* Department Filter */}
+                    <select
+                      value={selectedDepartmentFilter}
+                      onChange={(e) => setSelectedDepartmentFilter(e.target.value)}
+                      className="w-full sm:w-auto px-3 py-2 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#c83220] bg-white font-medium text-slate-700"
+                    >
+                      <option value="All">All Departments ({doctors.length})</option>
+                      {HOSPITAL_DEPARTMENTS.map((dept) => {
+                        const count = doctors.filter((d) => matchDepartment(d.department, d.category, dept.name)).length;
+                        return (
+                          <option key={dept.id} value={dept.name}>
+                            {dept.shortName} ({count})
+                          </option>
+                        );
+                      })}
+                    </select>
+
+                    {/* Category Filter */}
                     <select
                       value={selectedCategoryFilter}
                       onChange={(e) => setSelectedCategoryFilter(e.target.value)}
@@ -1353,7 +1438,21 @@ export default function AdminPortal() {
                       })}
                     </select>
 
-                    <span className="text-[11px] font-bold text-slate-500 whitespace-nowrap hidden md:inline">
+                    {(selectedDepartmentFilter !== 'All' || selectedCategoryFilter !== 'All' || searchQuery) && (
+                      <button
+                        onClick={() => {
+                          setSelectedDepartmentFilter('All');
+                          setSelectedCategoryFilter('All');
+                          setSearchQuery('');
+                        }}
+                        className="text-xs text-[#c83220] hover:underline font-bold px-2 py-1 cursor-pointer"
+                        title="Reset all filters"
+                      >
+                        Reset ↺
+                      </button>
+                    )}
+
+                    <span className="text-[11px] font-bold text-slate-500 whitespace-nowrap hidden lg:inline">
                       Showing {filteredDoctors.length} of {doctors.length}
                     </span>
                   </div>
@@ -1537,6 +1636,170 @@ export default function AdminPortal() {
           )}
 
           {/* ========================================================
+              TAB: COMPLETE HOSPITAL DEPARTMENTS DIRECTORY
+              ======================================================== */}
+          {activeTab === 'departments' && (
+            <div className="space-y-6">
+              {/* Top Stats Cards */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
+                    Total Departments
+                  </span>
+                  <div className="text-2xl font-black text-[#172a34] mt-1">
+                    {HOSPITAL_DEPARTMENTS.length}
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-0.5">Clinical, surgical &amp; diagnostics</p>
+                </div>
+
+                <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
+                    Specialists Faculty
+                  </span>
+                  <div className="text-2xl font-black text-[#172a34] mt-1">{doctors.length}</div>
+                  <p className="text-[11px] text-slate-500 mt-0.5">Assigned across hospital units</p>
+                </div>
+
+                <div className="bg-white p-5 rounded-3xl border border-emerald-200 shadow-xs bg-emerald-50/20">
+                  <span className="text-[10px] uppercase font-bold text-emerald-700 block tracking-wider">
+                    Surgical Theatres &amp; ICU
+                  </span>
+                  <div className="text-2xl font-black text-emerald-800 mt-1">
+                    {HOSPITAL_DEPARTMENTS.filter((d) => d.category === 'Surgical' || d.category === 'Clinical').length}
+                  </div>
+                  <p className="text-[11px] text-emerald-700/80 mt-0.5">Modular OTs, ICU &amp; Inpatient</p>
+                </div>
+
+                <div className="bg-white p-5 rounded-3xl border border-amber-200 shadow-xs bg-amber-50/20">
+                  <span className="text-[10px] uppercase font-bold text-amber-700 block tracking-wider">
+                    24/7 Diagnostics &amp; Blood Bank
+                  </span>
+                  <div className="text-2xl font-black text-amber-800 mt-1">
+                    {HOSPITAL_DEPARTMENTS.filter((d) => d.category === 'Diagnostics').length}
+                  </div>
+                  <p className="text-[11px] text-amber-700/80 mt-0.5">CT, DR, Labs &amp; Blood Center</p>
+                </div>
+              </div>
+
+              {/* Department Directory Container */}
+              <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden p-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-5 border-b border-slate-100 gap-3">
+                  <div>
+                    <h3 className="text-base font-black text-[#172a34]">
+                      Complete Hospital Departments List ({HOSPITAL_DEPARTMENTS.length} Departments)
+                    </h3>
+                    <p className="text-xs text-slate-500 mt-0.5">
+                      Explore all hospital disciplines, view assigned doctors, or assign new specialists.
+                    </p>
+                  </div>
+                  <button
+                    onClick={handleOpenNewDoctor}
+                    className="bg-[#c83220] hover:bg-[#a82415] text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow-sm flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span>➕ Add Doctor</span>
+                  </button>
+                </div>
+
+                {/* Grid of All Departments */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-6">
+                  {HOSPITAL_DEPARTMENTS.map((dept) => {
+                    const deptDocs = doctors.filter((doc) =>
+                      matchDepartment(doc.department, doc.category, dept.name)
+                    );
+
+                    return (
+                      <div
+                        key={dept.id}
+                        className="bg-slate-50/80 rounded-2xl border border-slate-200/90 p-5 flex flex-col justify-between hover:shadow-md hover:border-[#c83220]/40 transition group"
+                      >
+                        <div>
+                          <div className="flex items-start justify-between gap-2 mb-2">
+                            <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-white text-[#c83220] border border-slate-200 shadow-2xs">
+                              {dept.category}
+                            </span>
+                            <span
+                              className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                deptDocs.length > 0
+                                  ? 'bg-emerald-100 text-emerald-800'
+                                  : 'bg-slate-200 text-slate-600'
+                              }`}
+                            >
+                              {deptDocs.length} {deptDocs.length === 1 ? 'Doctor' : 'Doctors'}
+                            </span>
+                          </div>
+
+                          <h4 className="text-sm font-black text-[#172a34] group-hover:text-[#c83220] transition-colors leading-snug">
+                            {dept.name}
+                          </h4>
+                          <p className="text-[11px] text-slate-500 mt-1 line-clamp-2 leading-relaxed">
+                            {dept.desc}
+                          </p>
+
+                          {/* Assigned Doctors List */}
+                          {deptDocs.length > 0 ? (
+                            <div className="mt-4 pt-3 border-t border-slate-200/60">
+                              <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1.5 tracking-wider">
+                                Assigned Faculty ({deptDocs.length}):
+                              </span>
+                              <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1 scrollbar-thin">
+                                {deptDocs.map((doc, dIdx) => (
+                                  <div
+                                    key={doc._id || dIdx}
+                                    className="flex items-center justify-between text-xs bg-white px-2.5 py-1.5 rounded-lg border border-slate-200/70"
+                                  >
+                                    <div className="flex items-center gap-2 truncate">
+                                      <span className="text-sm">🩺</span>
+                                      <span className="font-bold text-slate-800 truncate">{doc.name}</span>
+                                    </div>
+                                    <span className="text-[10px] text-slate-500 font-medium shrink-0 ml-1">
+                                      {doc.specialty}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="mt-4 pt-3 border-t border-slate-200/60 text-[11px] text-slate-400 italic">
+                              No specialist faculty assigned yet.
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Actions */}
+                        <div className="mt-4 pt-3 border-t border-slate-200 flex items-center gap-2">
+                          <button
+                            onClick={() => {
+                              setSelectedDepartmentFilter(dept.name);
+                              setActiveTab('doctors');
+                            }}
+                            className="flex-1 py-1.5 px-2 bg-white hover:bg-slate-100 text-[#172a34] border border-slate-200 rounded-lg text-xs font-bold transition text-center cursor-pointer"
+                          >
+                            View in Doctors ({deptDocs.length})
+                          </button>
+                          <button
+                            onClick={() => {
+                              handleOpenNewDoctor();
+                              setDoctorForm((prev) => ({
+                                ...prev,
+                                department: dept.name,
+                                category: dept.doctorCategory || prev.category,
+                              }));
+                            }}
+                            className="py-1.5 px-2.5 bg-[#c83220] hover:bg-[#a82415] text-white rounded-lg text-xs font-bold transition cursor-pointer"
+                            title={`Add Doctor to ${dept.name}`}
+                          >
+                            ➕ Add Doctor
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ========================================================
               TAB 2: PACKAGE ENQUIRIES
               ======================================================== */}
           {activeTab === 'enquiries' && (
@@ -1624,11 +1887,16 @@ export default function AdminPortal() {
                           {msg.department || 'General'}
                         </span>
                       </div>
-                      <div className="flex items-center gap-4 text-xs text-slate-600">
-                        <a href={`tel:${msg.phone}`} className="font-bold text-[#c83220] hover:underline">
+                      <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600">
+                        <a href={`tel:${msg.phone}`} className="font-bold text-[#c83220] hover:underline flex items-center gap-1">
                           📞 {msg.phone}
                         </a>
-                        {msg.email && <span>✉️ {msg.email}</span>}
+                        {msg.email && <span className="flex items-center gap-1">✉️ {msg.email}</span>}
+                        {msg.date && (
+                          <span className="text-[11px] bg-amber-50 text-amber-800 font-bold px-2 py-0.5 rounded-md border border-amber-200">
+                            🗓️ Preferred Date: {msg.date}
+                          </span>
+                        )}
                       </div>
                       <p className="text-xs text-slate-700 bg-white p-3 rounded-xl border border-slate-200/60 leading-relaxed">
                         &quot;{msg.message}&quot;

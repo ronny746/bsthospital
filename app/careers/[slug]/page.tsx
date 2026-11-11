@@ -186,7 +186,7 @@ export default function JobDetailPage({ params }: PageProps) {
             "linear-gradient(90deg, rgba(23, 42, 52, 0.96) 0%, rgba(15, 35, 46, 0.90) 50%, rgba(158, 36, 23, 0.85) 100%), url('/images/bst-hospital-exterior.jpg')",
         }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 w-full">
+        <div className="w-full max-w-7xl 2xl:max-w-[1600px] min-[1900px]:max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10">
           {/* Breadcrumbs */}
           <nav aria-label="breadcrumb" className="flex items-center gap-2 text-xs font-bold text-slate-300 uppercase tracking-widest mb-3 flex-wrap">
             <Link href="/" className="hover:text-white transition">
@@ -258,7 +258,7 @@ export default function JobDetailPage({ params }: PageProps) {
       </section>
 
       {/* MAIN CONTENT + APPLICATION FORM */}
-      <section className="py-10 sm:py-14 max-w-7xl mx-auto px-4 sm:px-6">
+      <section className="py-10 sm:py-14 w-full max-w-7xl 2xl:max-w-[1600px] min-[1900px]:max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* LEFT 7 COLS: JOB DETAILS */}
           <div className="lg:col-span-7 space-y-8">
@@ -621,7 +621,7 @@ export default function JobDetailPage({ params }: PageProps) {
       {/* OTHER OPEN POSITIONS */}
       {relatedJobs.length > 0 && (
         <section className="py-12 bg-white border-t border-slate-200/80">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="w-full max-w-7xl 2xl:max-w-[1600px] min-[1900px]:max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-2">
               <div>
                 <span className="text-[#c83220] font-black text-xs uppercase tracking-widest block mb-1">

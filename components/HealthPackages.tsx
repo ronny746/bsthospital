@@ -199,7 +199,7 @@ export default function HealthPackages() {
 
   return (
     <section className="py-12 sm:py-20 bg-slate-50 border-t border-slate-200" id="packages">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="w-full max-w-7xl 2xl:max-w-[1600px] min-[1900px]:max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
         
         {/* Header Title */}
         <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12">

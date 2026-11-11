@@ -1,7 +1,7 @@
 export default function EmergencyTrauma() {
   return (
     <section className="bg-gradient-to-r from-[#172a34] via-[#0f232e] to-[#791017] text-white py-3 sm:py-4.5 relative overflow-hidden border-y-2 border-[#c83220]">
-      <div className="container mx-auto px-3 sm:px-6 relative z-10 flex flex-col md:flex-row items-center justify-between gap-2.5 sm:gap-4 max-w-7xl">
+      <div className="w-full max-w-7xl 2xl:max-w-[1600px] min-[1900px]:max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10 flex flex-col md:flex-row items-center justify-between gap-2.5 sm:gap-4">
         {/* Header Text & Icon */}
         <div className="text-center md:text-left w-full md:w-auto">
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-1.5 sm:gap-2">
