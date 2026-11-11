@@ -177,3 +177,5 @@ export async function fetchDoctorById(id: string): Promise<DoctorData | null> {
     return null;
   }
 }
+
+
