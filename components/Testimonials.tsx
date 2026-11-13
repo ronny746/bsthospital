@@ -15,7 +15,7 @@ export default function Testimonials() {
             Patient Stories
           </span>
           <h2 className="text-xl sm:text-2xl md:text-4xl font-black text-primary mb-2 sm:mb-4">
-            Hear from our patients
+            Hear from Our Patients
           </h2>
         </div>
 

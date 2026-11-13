@@ -29,7 +29,7 @@ export default function CentersOfExcellence() {
               CENTERS OF CLINICAL EXCELLENCE
             </span>
             <h2 className="text-lg sm:text-2xl md:text-4xl font-black text-[#172a34] leading-tight">
-              Comprehensive super-specialty departments.
+              Comprehensive Super-Specialty Departments
             </h2>
           </div>
           <p className="text-slate-600 text-xs sm:text-sm max-w-md font-medium">

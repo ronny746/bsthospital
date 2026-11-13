@@ -19,7 +19,7 @@ import Footer from '../components/Footer';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-cream font-sans overflow-x-hidden">
+    <main className="min-h-screen bg-cream font-sans overflow-x-clip">
       {/* Sticky navigation bar appearing smoothly when scrolled down past the hero */}
       <StickyNavbar />
 

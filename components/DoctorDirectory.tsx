@@ -33,7 +33,7 @@ export default function DoctorDirectory() {
               OUR MEDICAL SPECIALISTS
             </span>
             <h2 className="text-lg sm:text-2xl md:text-4xl font-black text-[#172a34] leading-tight">
-              Expert guidance &amp; compassionate medical care.
+              Expert Guidance &amp; Compassionate Medical Care
             </h2>
           </div>
           <a

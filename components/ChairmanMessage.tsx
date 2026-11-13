@@ -23,22 +23,37 @@ export default function ChairmanMessage() {
           {/* Vision & Mission Cards Grid */}
           <div className="grid md:grid-cols-2 gap-3 sm:gap-6 mt-3.5 sm:mt-8">
             <div className="bg-white/10 backdrop-blur-md p-3.5 sm:p-6 rounded-xl sm:rounded-2xl border border-white/15 shadow-inner">
-              <div className="flex items-center gap-2 mb-1.5 sm:mb-3 text-amber-300 font-black text-xs sm:text-sm uppercase tracking-wider">
+              <div className="flex items-center gap-2 mb-2 sm:mb-3 text-amber-300 font-black text-xs sm:text-sm uppercase tracking-wider">
                 <span className="text-base sm:text-xl">🎯</span>
-                <span>Our Mission in Jagatpura</span>
+                <span>Our Mission</span>
               </div>
-              <p className="text-slate-200 text-xs sm:text-sm leading-relaxed">
-                To enhance community health by delivering compassionate, round-the-clock emergency and super-specialty healthcare. We are committed to ethical treatment, modern diagnostics, accessible patient beds, and training 150+ dedicated MBBS medical professionals each year under the Indian Medical Trust.
-              </p>
+              <ul className="text-slate-200 text-xs sm:text-sm leading-relaxed space-y-2">
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-300 font-bold mt-0.5">•</span>
+                  <span>To Educate future doctors with skill, compassion and ethics.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-300 font-bold mt-0.5">•</span>
+                  <span>To provide high-quality, patient - centered healthcare for our Community.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-300 font-bold mt-0.5">•</span>
+                  <span>To encourage research and innovation that improves medicine and saves lives.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-300 font-bold mt-0.5">•</span>
+                  <span>To create a safe, respectful, and supportive environment for learning and healing.</span>
+                </li>
+              </ul>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-md p-3.5 sm:p-6 rounded-xl sm:rounded-2xl border border-white/15 shadow-inner">
-              <div className="flex items-center gap-2 mb-1.5 sm:mb-3 text-emerald-300 font-black text-xs sm:text-sm uppercase tracking-wider">
+            <div className="bg-white/10 backdrop-blur-md p-3.5 sm:p-6 rounded-xl sm:rounded-2xl border border-white/15 shadow-inner flex flex-col justify-start">
+              <div className="flex items-center gap-2 mb-2 sm:mb-3 text-emerald-300 font-black text-xs sm:text-sm uppercase tracking-wider">
                 <span className="text-base sm:text-xl">👁️</span>
                 <span>Our Vision</span>
               </div>
               <p className="text-slate-200 text-xs sm:text-sm leading-relaxed">
-                To be recognized as Rajasthan&apos;s apex institution for quaternary healthcare excellence, world-class medical pedagogy, and clinical research—setting modern benchmarks in patient outcomes, compassionate healing, and surgical innovation.
+                To be trusted leader in medical education, research, and patient care and to be known for excellence and compassion
               </p>
             </div>
           </div>
@@ -119,7 +134,7 @@ export default function ChairmanMessage() {
                   VISIONARY LEADERSHIP
                 </span>
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-black text-[#172a34] leading-tight">
-                  The <span className="text-[#c83220]">Leading Voice</span> in Unlocking Potential, and Changing Lives.
+                  The <span className="text-[#c83220]">Leading Voice</span> in Unlocking Potential &amp; Changing Lives
                 </h2>
               </div>
 

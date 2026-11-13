@@ -8,7 +8,7 @@ export default function StickyNavbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 280) {
+      if (window.scrollY > 80) {
         setIsVisible(true);
       } else {
         setIsVisible(false);

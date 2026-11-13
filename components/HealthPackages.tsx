@@ -2,6 +2,86 @@
 
 import React, { useState } from 'react';
 
+// Medical clinical SVG icons
+function StethoscopeIcon({ className = "w-6 h-6 text-blue-600" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4.5 3v5a4.5 4.5 0 0 0 9 0V3" />
+      <path d="M9 12.5v3.5a3 3 0 0 0 6 0v-2" />
+      <circle cx="17" cy="14" r="2" />
+      <path d="M3 3h3" />
+      <path d="M12 3h3" />
+    </svg>
+  );
+}
+
+function ExecutiveShieldIcon({ className = "w-6 h-6 text-[#c83220]" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      <path d="M9 12h6" />
+      <path d="M12 9v6" />
+    </svg>
+  );
+}
+
+function HeartEcgIcon({ className = "w-6 h-6 text-rose-600" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+      <path d="M2 13h4l2 -4l3 7l2 -5l2 2h7" strokeWidth="1.8" />
+    </svg>
+  );
+}
+
+function SeniorCareIcon({ className = "w-6 h-6 text-purple-600" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 21a9 9 0 0 0 9-9c0-4.97-4.03-9-9-9s-9 4.03-9 9a9 9 0 0 0 9 9z" />
+      <path d="M9 12h6" />
+      <path d="M12 9v6" />
+      <circle cx="12" cy="5" r="1.5" />
+    </svg>
+  );
+}
+
+function DiabetesIcon({ className = "w-6 h-6 text-teal-600" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+      <path d="M12 10v6" />
+      <path d="M9 13h6" />
+    </svg>
+  );
+}
+
+function KidneyIcon({ className = "w-6 h-6 text-cyan-600" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M7.5 4C5 4 3 6.5 3 10c0 4.5 3 8 5.5 8c1.5 0 2.5-1 2.5-2.5c0-1.5-.5-2.5-1-3.5c-.5-1-.5-2 0-3C10.5 8 10 4 7.5 4z" />
+      <path d="M16.5 4C19 4 21 6.5 21 10c0 4.5-3 8-5.5 8c-1.5 0-2.5-1-2.5-2.5c0-1.5.5-2.5 1-3.5c.5-1 .5-2 0-3C13.5 8 14 4 16.5 4z" />
+    </svg>
+  );
+}
+
+function LiverIcon({ className = "w-6 h-6 text-amber-600" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 8c1-3 5-4 10-3c4 1 7 4 7 8c0 3-2 6-5 6c-4 0-7-2-9-4c-2-2-3-4-3-7z" />
+      <path d="M14 5c-1 3-3 6-6 7" strokeDasharray="2 2" />
+    </svg>
+  );
+}
+
+function ThyroidIcon({ className = "w-6 h-6 text-indigo-600" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 3v18" strokeDasharray="2 2" />
+      <path d="M7 6c-2.5 0-4 2-4 5.5c0 4 2 7.5 4.5 7.5c2 0 3-2.5 3.5-5c.5 2.5 1.5 5 3.5 5c2.5 0 4.5-3.5 4.5-7.5c0-3.5-1.5-5.5-4-5.5c-2 0-3 1.5-4 3c-1-1.5-2-3-4-3z" />
+    </svg>
+  );
+}
+
 interface HealthPackage {
   id: string;
   name: string;
@@ -10,7 +90,8 @@ interface HealthPackage {
   originalPrice: string;
   tag: string;
   badgeColor: string;
-  icon: string;
+  icon: React.ReactNode;
+  iconBg: string;
   category: 'general' | 'organ';
   features: string[];
 }
@@ -27,7 +108,8 @@ export default function HealthPackages() {
       originalPrice: '₹1,200',
       tag: 'POPULAR',
       badgeColor: 'bg-blue-600',
-      icon: '🩺',
+      icon: <StethoscopeIcon className="w-6 h-6 text-blue-600" />,
+      iconBg: 'bg-blue-50 border-blue-200',
       category: 'general',
       features: [
         'Complete Blood Count (CBC) & ESR',
@@ -49,7 +131,8 @@ export default function HealthPackages() {
       originalPrice: '₹5,000',
       tag: 'MOST RECOMMENDED',
       badgeColor: 'bg-[#c83220]',
-      icon: '🏆',
+      icon: <ExecutiveShieldIcon className="w-6 h-6 text-[#c83220]" />,
+      iconBg: 'bg-red-50 border-red-200',
       category: 'general',
       features: [
         'Complete Blood Count (CBC) & Blood Group (ABO & Rh)',
@@ -72,7 +155,8 @@ export default function HealthPackages() {
       originalPrice: '₹2,800',
       tag: 'HEART CARE',
       badgeColor: 'bg-rose-600',
-      icon: '❤️',
+      icon: <HeartEcgIcon className="w-6 h-6 text-rose-600" />,
+      iconBg: 'bg-rose-50 border-rose-200',
       category: 'organ',
       features: [
         'Complete Blood Count (CBC) & ESR',
@@ -93,7 +177,8 @@ export default function HealthPackages() {
       originalPrice: '₹4,500',
       tag: 'SENIOR CARE',
       badgeColor: 'bg-purple-600',
-      icon: '👴',
+      icon: <SeniorCareIcon className="w-6 h-6 text-purple-600" />,
+      iconBg: 'bg-purple-50 border-purple-200',
       category: 'general',
       features: [
         'CBC & ESR, Fasting Blood Sugar & HbA1c',
@@ -115,7 +200,8 @@ export default function HealthPackages() {
       originalPrice: '₹1,800',
       tag: 'DIABETES CARE',
       badgeColor: 'bg-teal-600',
-      icon: '🩸',
+      icon: <DiabetesIcon className="w-6 h-6 text-teal-600" />,
+      iconBg: 'bg-teal-50 border-teal-200',
       category: 'organ',
       features: [
         'Fasting Blood Sugar (FBS)',
@@ -137,7 +223,8 @@ export default function HealthPackages() {
       originalPrice: '₹2,200',
       tag: 'KIDNEY CARE',
       badgeColor: 'bg-cyan-700',
-      icon: '💧',
+      icon: <KidneyIcon className="w-6 h-6 text-cyan-600" />,
+      iconBg: 'bg-cyan-50 border-cyan-200',
       category: 'organ',
       features: [
         'CBC & ESR (Blood Count & Inflammation)',
@@ -158,7 +245,8 @@ export default function HealthPackages() {
       originalPrice: '₹1,800',
       tag: 'LIVER CARE',
       badgeColor: 'bg-amber-600',
-      icon: '🧪',
+      icon: <LiverIcon className="w-6 h-6 text-amber-600" />,
+      iconBg: 'bg-amber-50 border-amber-200',
       category: 'organ',
       features: [
         'CBC & ESR (Blood Count & Inflammation)',
@@ -179,7 +267,8 @@ export default function HealthPackages() {
       originalPrice: '₹1,200',
       tag: 'THYROID CARE',
       badgeColor: 'bg-indigo-600',
-      icon: '🦋',
+      icon: <ThyroidIcon className="w-6 h-6 text-indigo-600" />,
+      iconBg: 'bg-indigo-50 border-indigo-200',
       category: 'organ',
       features: [
         'TSH (Thyroid-Stimulating Hormone)',
@@ -219,11 +308,11 @@ export default function HealthPackages() {
               onClick={() => setActiveTab('all')}
               className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
                 activeTab === 'all'
-                  ? 'bg-[#172a34] text-white shadow-md'
+                  ? 'bg-[#c83220] text-white shadow-md'
                   : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
               }`}
             >
-              All Packages (8)
+              All Packages ({packages.length})
             </button>
             <button
               onClick={() => setActiveTab('general')}
@@ -264,7 +353,9 @@ export default function HealthPackages() {
                 {/* Tag Badge & Header */}
                 <div className="p-5 sm:p-6 space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-3xl">{pkg.icon}</span>
+                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border shadow-xs ${pkg.iconBg}`}>
+                      {pkg.icon}
+                    </div>
                     <span className={`text-[10px] sm:text-[11px] font-black text-white px-3 py-1 rounded-full uppercase tracking-wider ${pkg.badgeColor} shadow-sm`}>
                       {pkg.tag}
                     </span>

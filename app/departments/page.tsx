@@ -32,7 +32,7 @@ export default function DepartmentsPage() {
   );
 
   return (
-    <main className="min-h-screen bg-[#fdfbf7] font-sans overflow-x-hidden text-slate-800">
+    <main className="min-h-screen bg-[#fdfbf7] font-sans overflow-x-clip text-slate-800">
       <NewsTicker />
       <TopBar />
       <NavigationBar />

@@ -15,7 +15,7 @@ export default function FacilitiesGallery() {
             Campus & Infrastructure
           </span>
           <h2 className="text-xl sm:text-3xl md:text-5xl font-black text-primary leading-tight mb-2 sm:mb-4">
-            Thoughtful spaces for every care journey.
+            Thoughtful Spaces for Every Care Journey
           </h2>
           <p className="text-slate-600 text-xs sm:text-base md:text-lg">
             From patient care to advanced learning labs, our campus is designed to support clinical excellence.

@@ -20,7 +20,7 @@ export default function AcademicsHighlight() {
               Medical College & Research
             </span>
             <h2 className="text-xl sm:text-3xl md:text-5xl font-black text-primary leading-tight mb-2.5 sm:mb-6">
-              Shaping the future of global healthcare.
+              Shaping the Future of Global Healthcare
             </h2>
             <p className="text-slate-600 text-xs sm:text-base md:text-lg mb-4 sm:mb-8 leading-relaxed">
               Dr. B. S. Tomar Institute of Medical Sciences & Research is a premier teaching institution. We integrate rigorous academics with extensive clinical exposure, ensuring our students become the medical leaders of tomorrow.

@@ -48,7 +48,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-[#fdfbf7] font-sans overflow-x-hidden text-slate-800">
+    <main className="min-h-screen bg-[#fdfbf7] font-sans overflow-x-clip text-slate-800">
       <NewsTicker />
       <TopBar />
       <NavigationBar />
@@ -121,7 +121,7 @@ export default function AboutPage() {
                 ABOUT DR. B. S. TOMAR HOSPITAL
               </span>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#172a34] leading-tight">
-                Advanced care, delivered with compassion.
+                Advanced Care, Delivered with Compassion
               </h2>
               <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed">
                 Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital was built on a simple belief — that care should be advanced enough to treat the most complex conditions, affordable enough for every family, and compassionate enough that every patient feels cared for from the moment they arrive.
@@ -238,7 +238,7 @@ export default function AboutPage() {
                 OUR GUIDING PHILOSOPHY
               </span>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#172a34] leading-tight">
-                Inspirational Health: Our Vision and Mission
+                Inspirational Health: Our Vision &amp; Mission
               </h2>
               <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed">
                 Why Dr. B.S. Tomar opened Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital in Jagatpura, Jaipur:
@@ -277,9 +277,24 @@ export default function AboutPage() {
                       <span className="text-xl text-[#c83220]">🎯</span>
                       <span>Our Mission</span>
                     </h3>
-                    <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                      To enhance the health and well-being of our community by providing compassionate, high-quality healthcare services through dedicated medical professionals and advanced clinical protocols. We are devoted to ensuring that advanced quaternary care remains accessible, ethical, and transparent for every individual.
-                    </p>
+                    <ul className="text-slate-600 text-xs sm:text-sm leading-relaxed space-y-2 pt-1">
+                      <li className="flex items-start gap-2">
+                        <span className="text-[#c83220] font-black mt-0.5">•</span>
+                        <span>To Educate future doctors with skill, compassion and ethics.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-[#c83220] font-black mt-0.5">•</span>
+                        <span>To provide high-quality, patient - centered healthcare for our Community.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-[#c83220] font-black mt-0.5">•</span>
+                        <span>To encourage research and innovation that improves medicine and saves lives.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-[#c83220] font-black mt-0.5">•</span>
+                        <span>To create a safe, respectful, and supportive environment for learning and healing.</span>
+                      </li>
+                    </ul>
                   </>
                 ) : (
                   <>
@@ -287,8 +302,8 @@ export default function AboutPage() {
                       <span className="text-xl text-[#c83220]">👁️</span>
                       <span>Our Vision</span>
                     </h3>
-                    <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                      To be recognized as a premier global institution of healthcare excellence, medical education, and biomedical innovation. We strive to set new benchmarks in multi-speciality patient outcomes, community outreach, and clinical pedagogy across India and beyond.
+                    <p className="text-slate-600 text-xs sm:text-sm leading-relaxed pt-1">
+                      To be trusted leader in medical education, research, and patient care and to be known for excellence and compassion
                     </p>
                   </>
                 )}
@@ -370,7 +385,7 @@ export default function AboutPage() {
                   VISIONARY LEADERSHIP
                 </span>
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-black text-[#172a34] leading-tight">
-                  The <span className="text-[#c83220]">Leading Voice</span> in Unlocking Potential, and Changing Lives.
+                  The <span className="text-[#c83220]">Leading Voice</span> in Unlocking Potential &amp; Changing Lives
                 </h2>
               </div>
 
