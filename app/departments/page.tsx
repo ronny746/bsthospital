@@ -126,7 +126,7 @@ export default function DepartmentsPage() {
             {filteredDepts.map((dept) => {
               // Count matching doctors in this department
               const deptDoctors = doctors.filter((doc) =>
-                matchDepartment(doc.department, doc.category, dept.name)
+                matchDepartment(doc.department, doc.category, dept.name, doc.specialty)
               );
 
               const whatsappUrl = `https://wa.me/919216076757?text=${encodeURIComponent(
@@ -147,6 +147,9 @@ export default function DepartmentsPage() {
                       <img
                         src={dept.image}
                         alt={dept.name}
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src = '/images/bst-doctor-consultation.jpg';
+                        }}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         loading="lazy"
                       />

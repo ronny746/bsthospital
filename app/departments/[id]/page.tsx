@@ -6,7 +6,7 @@ import TopBar from '@/components/TopBar';
 import NewsTicker from '@/components/NewsTicker';
 import Footer from '@/components/Footer';
 import { HOSPITAL_DEPARTMENTS, matchDepartment, DepartmentItem } from '@/lib/departments';
-import { API_URL, DoctorData } from '@/lib/api';
+import { fetchDoctors, DoctorData } from '@/lib/api';
 import DoctorAvatar from '@/components/DoctorAvatar';
 
 export default function DepartmentDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -18,24 +18,41 @@ export default function DepartmentDetailPage({ params }: { params: Promise<{ id:
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 1. Match department by id, or shortName, or name
-    const found = HOSPITAL_DEPARTMENTS.find(
-      (d) =>
+    // 1. Match department by id, shortName, name, or clean slug alias
+    const cleanId = deptId.replace(/[^a-z0-9]/g, '');
+    const found = HOSPITAL_DEPARTMENTS.find((d) => {
+      const dCleanId = d.id.replace(/[^a-z0-9]/g, '');
+      const dCleanName = d.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const dCleanShort = d.shortName.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const dCleanDocCat = d.doctorCategory.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+      return (
         d.id.toLowerCase() === deptId ||
         d.shortName.toLowerCase().replace(/[^a-z0-9]+/g, '-') === deptId ||
-        d.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === deptId
-    );
+        d.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === deptId ||
+        dCleanId === cleanId ||
+        dCleanName === cleanId ||
+        dCleanShort === cleanId ||
+        dCleanDocCat === cleanId ||
+        (cleanId.includes('dermat') && dCleanName.includes('dermat')) ||
+        (cleanId.includes('anaesth') && dCleanName.includes('anaesth')) ||
+        (cleanId.includes('anesth') && dCleanName.includes('anaesth')) ||
+        (cleanId.includes('ortho') && dCleanName.includes('ortho')) ||
+        (cleanId.includes('gyn') && dCleanName.includes('gyn')) ||
+        (cleanId.includes('obs') && dCleanName.includes('obs')) ||
+        (cleanId.includes('paed') && dCleanName.includes('paed')) ||
+        (cleanId.includes('pediat') && dCleanName.includes('paed')) ||
+        (cleanId.includes('eye') && dCleanName.includes('ophthalm')) ||
+        (cleanId === 'ent' && d.id === 'ent')
+      );
+    });
     setDepartment(found || null);
 
     // 2. Fetch doctors for this department
     async function loadDoctors() {
       try {
-        const res = await fetch(`${API_URL}/doctors`);
-        if (res.ok) {
-          const data = await res.json();
-          const allDocs: DoctorData[] = Array.isArray(data) ? data : data.doctors || [];
-          setDoctors(allDocs);
-        }
+        const docs = await fetchDoctors();
+        setDoctors(docs || []);
       } catch (err) {
         console.error('Error fetching doctors for department:', err);
       } finally {
@@ -72,7 +89,7 @@ export default function DepartmentDetailPage({ params }: { params: Promise<{ id:
 
   // Filter doctors that match this department
   const deptDoctors = doctors.filter((doc) =>
-    matchDepartment(doc.department, doc.category, department.name)
+    matchDepartment(doc.department, doc.category, department.name, doc.specialty)
   );
 
   const whatsappDeptUrl = `https://wa.me/919216076757?text=${encodeURIComponent(
@@ -146,6 +163,9 @@ export default function DepartmentDetailPage({ params }: { params: Promise<{ id:
                 <img
                   src={department.image}
                   alt={department.name}
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = '/images/bst-doctor-consultation.jpg';
+                  }}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute top-3 left-3 bg-[#172a34]/90 text-amber-300 text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">
@@ -204,7 +224,7 @@ export default function DepartmentDetailPage({ params }: { params: Promise<{ id:
               </span>
             </div>
             <a
-              href="https://www.google.com/maps/search/?api=1&query=Dr.+B.+S.+Tomar+Institute+of+Medical+Sciences,+Research+%26+Hospital,+Jagatpura,+Jaipur"
+              href="https://www.google.com/maps/search/?api=1&query=Dr.+B.S.+Tomar+Institute+of+Medical+Sciences+%26+Research,+Jagatpura,+Jaipur"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold px-4 py-2.5 rounded-xl border border-slate-300 transition"

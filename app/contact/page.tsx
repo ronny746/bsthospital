@@ -425,7 +425,7 @@ export default function ContactPage() {
 
                   <div className="pt-2 flex gap-2">
                     <a
-                      href="https://www.google.com/maps/search/?api=1&query=Dr.+B.+S.+Tomar+Institute+of+Medical+Sciences,+Research+%26+Hospital,+Jagatpura,+Jaipur"
+                      href="https://www.google.com/maps/search/?api=1&query=Dr.+B.S.+Tomar+Institute+of+Medical+Sciences+%26+Research,+Jagatpura,+Jaipur"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex-1 text-center bg-[#172a34] hover:bg-[#0e191f] text-white text-xs font-bold py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5"

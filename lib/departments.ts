@@ -111,6 +111,17 @@ export const HOSPITAL_DEPARTMENTS: DepartmentItem[] = [
     facilities: ['Triage & Resuscitation Bays', 'Emergency Minor OT', 'Dedicated 24×7 Trauma Response Team'],
   },
   {
+    id: 'anaesthesiology',
+    name: 'Anaesthesiology & Critical Care',
+    shortName: 'Anaesthesia & ICU',
+    category: 'Clinical',
+    doctorCategory: 'Anaesthesiology & Critical Care',
+    badge: '24×7 ICU & Pain Management',
+    desc: 'Round-the-clock intensive care, perioperative anaesthesia, acute & chronic pain management, and Level-1 trauma critical care resuscitation.',
+    image: '/images/anesthesia.jpg',
+    facilities: ['Advanced Level-1 ICU & HDU Suites', 'Multi-Modal Pain Clinic', 'Post-Op Critical Care Unit'],
+  },
+  {
     id: 'nephrology',
     name: 'Nephrology',
     shortName: 'Nephrology',
@@ -382,7 +393,7 @@ export const HOSPITAL_DEPARTMENTS: DepartmentItem[] = [
     doctorCategory: 'Clinical Hematology',
     badge: 'Blood Disorders & Hemato-Oncology',
     desc: 'Comprehensive diagnosis and medical management of anemias, bleeding disorders, hemophilia, ITP, clotting diseases, and blood cancers.',
-    image: '/images/pathology.jpg',
+    image: '/images/bst-blood-bank.jpg',
     facilities: ['Hemophilia Comprehensive Desk', 'Bone Marrow Aspiration & Biopsy', 'Daycare Transfusion Lounge'],
   },
   {
@@ -404,7 +415,7 @@ export const HOSPITAL_DEPARTMENTS: DepartmentItem[] = [
     doctorCategory: 'Blood Bank',
     badge: '24×7 Licensed Blood Centre',
     desc: '24×7 voluntary donor blood collection, modern blood component separation (PRBC, FFP, Platelets, Cryo), apheresis, and cross-matching.',
-    image: '/images/pathology.jpg',
+    image: '/images/bst-blood-bank.jpg',
     facilities: ['Blood Component Separation Unit', 'Single Donor Platelet (SDP) Apheresis', 'Fully Automated Gel Card Cross-Match'],
   },
   {
@@ -444,6 +455,7 @@ export const MASTER_CATEGORIES: string[] = [
   'Radiology',
   'Blood Bank',
   'Cardiology',
+  'Anaesthesiology & Critical Care',
   'Neurosurgery',
   'Urology',
   'Gastroenterology',
@@ -455,48 +467,116 @@ export const MASTER_CATEGORIES: string[] = [
 ];
 
 /**
- * Normalizes a department string to match standard department names
+ * Normalizes and accurately matches a doctor to their hospital clinical department.
  */
-export function matchDepartment(docDepartment?: string, docCategory?: string, targetDepartment?: string): boolean {
+export function matchDepartment(
+  docDepartment?: string,
+  docCategory?: string,
+  targetDepartment?: string,
+  docSpecialty?: string
+): boolean {
   if (!targetDepartment || targetDepartment === 'All') return true;
   const target = targetDepartment.toLowerCase().trim();
   const dept = (docDepartment || '').toLowerCase().trim();
   const cat = (docCategory || '').toLowerCase().trim();
+  const spec = (docSpecialty || '').toLowerCase().trim();
 
+  // Exact equality match
   if (dept === target || cat === target) return true;
 
-  // Specific departmental mappings
-  if (target.includes('ophthalmology') || target.includes('eye')) {
-    return (dept.includes('ophthalmology') || dept.includes('eye') || cat.includes('ophthalmology')) && !dept.includes('ent');
-  }
-  if (target === 'ent' || target.includes('otorhinolaryngology')) {
-    return (dept.includes('ent') || dept.includes('otorh') || cat.includes('ent')) && !dept.includes('ophthalmology');
-  }
-  if (target.includes('blood bank') || target.includes('transfusion')) {
-    return dept.includes('blood') || dept.includes('transfusion') || cat.includes('blood');
-  }
-  if (target.includes('radiology') || target.includes('radiodiagnosis')) {
-    return dept.includes('radio') || dept.includes('imaging') || cat.includes('radio');
-  }
-  if (target.includes('pathology') || target.includes('microbiology')) {
-    return (dept.includes('pathology') || dept.includes('microbiology') || cat.includes('pathology')) && !dept.includes('blood');
-  }
-  if (target.includes('paediatric') || target.includes('pediatric')) {
-    return dept.includes('paed') || dept.includes('ped') || cat.includes('ped');
-  }
-  if (target.includes('gynaecology') || target.includes('obstetric')) {
-    return dept.includes('gyn') || dept.includes('obs') || cat.includes('gyn');
-  }
-  if (target.includes('general medicine') || target.includes('internal medicine')) {
-    return dept.includes('general medicine') || dept.includes('internal medicine') || cat.includes('general medicine') || cat.includes('internal medicine');
-  }
-  if (target.includes('orthop')) {
-    return dept.includes('ortho') || cat.includes('ortho');
-  }
-  if (target.includes('general surgery')) {
-    return dept.includes('general surgery') || cat.includes('general surgery') || (dept.includes('laparoscopic') && !dept.includes('gyn'));
+  // 1. Ophthalmology & Eye Care
+  if (target.includes('ophthalm') || target.includes('eye')) {
+    return (dept.includes('ophthalm') || dept.includes('eye') || cat.includes('ophthalm') || spec.includes('ophthalm')) && !dept.includes('ent');
   }
 
-  // Keyword / Partial matching
+  // 2. ENT - Otorhinolaryngology (Word boundary match to avoid substring match in 'department' or 'replacement')
+  if (target === 'ent' || target.includes('otorhinolaryngology') || /\bent\b/i.test(target)) {
+    return (/\bent\b/i.test(dept) || /\bent\b/i.test(cat) || dept.includes('otorh') || spec.includes('otorh')) && !dept.includes('ophthalm');
+  }
+
+  // 3. Blood Bank & Transfusion Medicine
+  if (target.includes('blood bank') || target.includes('transfusion')) {
+    return dept.includes('blood') || dept.includes('transfusion') || cat.includes('blood') || spec.includes('transfusion');
+  }
+
+  // 4. Radiology & Imaging / Radiodiagnosis / Nuclear Medicine
+  if (target.includes('radiology') || target.includes('radiodiagnosis') || target.includes('imaging') || target.includes('interventional radiology') || target.includes('nuclear medicine')) {
+    return dept.includes('radio') || dept.includes('imaging') || cat.includes('radio') || spec.includes('radio') || spec.includes('imaging');
+  }
+
+  // 5. Pathology & Laboratory Medicine / Microbiology
+  if (target.includes('pathology') || target.includes('microbiology') || target.includes('laboratory') || target.includes('clinical hematology')) {
+    return (dept.includes('patholog') || dept.includes('microbiolog') || cat.includes('patholog') || spec.includes('patholog')) && !dept.includes('blood');
+  }
+
+  // 6. Paediatrics & Child Health / Neonatology (Exclude orthopedics!)
+  if (target.includes('paediatric') || target.includes('pediatric') || target.includes('neonat')) {
+    if (dept.includes('ortho') || cat.includes('ortho') || spec.includes('ortho')) return false;
+    return dept.includes('paed') || dept.includes('pediat') || cat.includes('paed') || cat.includes('pediat') || spec.includes('paed') || spec.includes('pediat') || dept.includes('neonat');
+  }
+
+  // 7. Obstetrics & Gynaecology / IVF
+  if (target.includes('gynaecology') || target.includes('obstetric') || target.includes('gynae') || target.includes('ivf')) {
+    return dept.includes('gyn') || dept.includes('obs') || cat.includes('gyn') || cat.includes('obs') || spec.includes('gyn') || spec.includes('obs');
+  }
+
+  // 8. Orthopaedics & Joint Replacement / Spine Surgery
+  if (target.includes('orthop') || target.includes('joint') || target.includes('spine')) {
+    return dept.includes('ortho') || cat.includes('ortho') || spec.includes('ortho') || spec.includes('joint');
+  }
+
+  // 9. General & Laparoscopic Surgery
+  if (target.includes('general surgery') || target.includes('laparoscopic surgery') || target.includes('surgical gastroenterology')) {
+    if (dept.includes('gyn') || cat.includes('gyn') || spec.includes('gyn') || dept.includes('ortho') || spec.includes('ortho') || dept.includes('ophthalm')) return false;
+    return dept.includes('general surgery') || cat.includes('general surgery') || dept.includes('general & lap') || (dept.includes('laparoscop') && !dept.includes('gyn')) || dept.includes('surgery');
+  }
+
+  // 10. General Medicine / Internal Medicine
+  if (target.includes('general medicine') || target.includes('internal medicine')) {
+    if (dept.includes('psych') || cat.includes('psych') || spec.includes('psych')) return false;
+    return dept.includes('general medicine') || dept.includes('internal medicine') || cat.includes('general medicine') || cat.includes('internal medicine') || (dept === 'general medicine') || spec.includes('general physician');
+  }
+
+  // 11. Dermatology & Skin (Skin & V.D.)
+  if (target.includes('dermatology') || target.includes('skin')) {
+    return dept.includes('derm') || dept.includes('skin') || cat.includes('derm') || spec.includes('derm') || dept.includes('dvl');
+  }
+
+  // 12. Anaesthesiology & Critical Care / ICU
+  if (target.includes('anaesthesia') || target.includes('anesthesia') || target.includes('critical care') || target.includes('icu')) {
+    return dept.includes('anaesth') || dept.includes('anesth') || cat.includes('critical care') || dept.includes('critical care') || dept.includes('icu') || cat.includes('icu') || spec.includes('anaesth') || spec.includes('anesth');
+  }
+
+  // 13. Psychiatry & Behavioral Sciences
+  if (target.includes('psychiatry') || target.includes('behavioral') || target.includes('clinical psychology')) {
+    return dept.includes('psych') || cat.includes('psych') || spec.includes('psych');
+  }
+
+  // 14. Dental & Maxillofacial Surgery
+  if (target.includes('dental') || target.includes('maxillofacial')) {
+    return dept.includes('dental') || cat.includes('dental') || spec.includes('dental') || dept.includes('maxillo') || spec.includes('maxillo');
+  }
+
+  // 15. Cardiology & CTVS
+  if (target.includes('cardio') || target.includes('ctvs')) {
+    return dept.includes('cardio') || cat.includes('cardio') || spec.includes('cardio');
+  }
+
+  // 16. Neurology & Neurosurgery
+  if (target.includes('neuro')) {
+    return dept.includes('neuro') || cat.includes('neuro') || spec.includes('neuro');
+  }
+
+  // 17. Nephrology & Kidney Care
+  if (target.includes('nephro')) {
+    return dept.includes('nephro') || dept.includes('kidney');
+  }
+
+  // 18. Oncology & Cancer Care
+  if (target.includes('onco') || target.includes('cancer')) {
+    return dept.includes('onco') || cat.includes('onco') || spec.includes('onco') || dept.includes('cancer');
+  }
+
+  // Fallback substring matching
   return dept.includes(target) || cat.includes(target);
 }

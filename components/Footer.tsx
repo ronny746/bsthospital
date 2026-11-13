@@ -94,25 +94,19 @@ export default function Footer() {
               </p>
             </div>
             <a
-              href="https://www.google.com/maps/search/?api=1&query=Dr.+B.+S.+Tomar+Institute+of+Medical+Sciences,+Research+%26+Hospital,+Jagatpura,+Jaipur"
+              href="https://www.google.com/maps/search/?api=1&query=Dr.+B.S.+Tomar+Institute+of+Medical+Sciences+%26+Research,+Jagatpura,+Jaipur"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-bold text-[#e5b64a] hover:text-white bg-white/10 hover:bg-white/20 border border-white/15 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 self-start sm:self-auto"
+              className="text-xs font-bold text-[#e5b64a] hover:text-white bg-white/10 hover:bg-white/20 border border-white/15 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 shrink-0 self-start sm:self-auto cursor-pointer"
             >
               <span>Open in Google Maps</span>
               <span>➔</span>
             </a>
           </div>
-          <div className="w-full h-56 sm:h-64 rounded-2xl overflow-hidden border border-white/10 shadow-inner">
+          <div className="w-full h-72 sm:h-80 rounded-2xl overflow-hidden border border-white/10 shadow-inner">
             <iframe
               title="Dr. B. S. Tomar Institute of Medical Sciences, Research &amp; Hospital Location Map"
-              src="https://maps.google.com/maps?q=Dr.+B.+S.+Tomar+Institute+of+Medical+Sciences+Research+and+Hospital+Jagatpura+Jaipur&t=&z=16&ie=UTF8&iwloc=&output=embed"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen={false}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
+              src="https://maps.google.com/maps?q=Dr.+B.S.+Tomar+Institute+of+Medical+Sciences+%26+Research,+Jagatpura,+Jaipur&t=&z=16&ie=UTF8&iwloc=B&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0 }}
