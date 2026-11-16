@@ -87,10 +87,17 @@ export default function DepartmentDetailPage({ params }: { params: Promise<{ id:
     );
   }
 
-  // Filter doctors that match this department
-  const deptDoctors = doctors.filter((doc) =>
-    matchDepartment(doc.department, doc.category, department.name, doc.specialty)
-  );
+  // Filter doctors that match this department (Alphabetical Order A-Z by Name)
+  const deptDoctors = doctors
+    .filter((doc) =>
+      matchDepartment(doc.department, doc.category, department.name, doc.specialty)
+    )
+    .slice()
+    .sort((a, b) => {
+      const cleanA = (a.name || '').replace(/^(dr\.?|prof\.?|doctor)\s+/i, '').trim();
+      const cleanB = (b.name || '').replace(/^(dr\.?|prof\.?|doctor)\s+/i, '').trim();
+      return cleanA.localeCompare(cleanB, undefined, { sensitivity: 'base' });
+    });
 
   const whatsappDeptUrl = `https://wa.me/919216076757?text=${encodeURIComponent(
     `Hello Dr. B. S. Tomar Hospital Jagatpura,\n\nI would like to inquire about consultation and procedures in the ${department.name} department.`

@@ -65,7 +65,7 @@ function DoctorsContent() {
     return counts;
   }, [doctorsList]);
 
-  // Dynamically extract ALL departments present among real doctors
+  // Dynamically extract ALL departments present among real doctors (Alphabetical Order A-Z)
   const uniqueDepartments = useMemo(() => {
     const deptsSet = new Set<string>();
     doctorsList.forEach((d) => {
@@ -75,19 +75,15 @@ function DoctorsContent() {
     });
 
     const sorted = Array.from(deptsSet).sort((a, b) => {
-      // Sort by doctor count descending, then alphabetically
-      const countA = departmentCounts[a] || 0;
-      const countB = departmentCounts[b] || 0;
-      if (countB !== countA) return countB - countA;
-      return a.localeCompare(b);
+      return a.localeCompare(b, undefined, { sensitivity: 'base' });
     });
 
     return ['All', ...sorted];
-  }, [doctorsList, departmentCounts]);
+  }, [doctorsList]);
 
-  // Filter doctors based on active department & search query
+  // Filter and sort doctors based on active department & search query (Alphabetical Order A-Z by Name)
   const filteredDoctors = useMemo(() => {
-    return doctorsList.filter((doc) => {
+    const list = doctorsList.filter((doc) => {
       const matchesDept =
         activeDepartment === 'All' ||
         doc.department === activeDepartment ||
@@ -104,6 +100,13 @@ function DoctorsContent() {
         (doc.designation && doc.designation.toLowerCase().includes(q));
 
       return matchesDept && matchesSearch;
+    });
+
+    // Sort doctors alphabetically by name (ignoring "Dr." / "Prof." prefix for natural alphabetical order)
+    return list.slice().sort((a, b) => {
+      const cleanA = (a.name || '').replace(/^(dr\.?|prof\.?|doctor)\s+/i, '').trim();
+      const cleanB = (b.name || '').replace(/^(dr\.?|prof\.?|doctor)\s+/i, '').trim();
+      return cleanA.localeCompare(cleanB, undefined, { sensitivity: 'base' });
     });
   }, [doctorsList, activeDepartment, searchQuery]);
 

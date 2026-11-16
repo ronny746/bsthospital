@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import NewsTicker from '@/components/NewsTicker';
 import TopBar from '@/components/TopBar';
 import NavigationBar from '@/components/NavigationBar';
@@ -25,11 +25,16 @@ export default function DepartmentsPage() {
     load();
   }, []);
 
-  const categories = ['All', 'Clinical', 'Surgical', 'Diagnostics', 'Academic', 'Support'];
+  // Category filter tabs in alphabetical order (with All Departments first)
+  const categories = ['All', 'Academic', 'Clinical', 'Diagnostics', 'Support', 'Surgical'];
 
-  const filteredDepts = HOSPITAL_DEPARTMENTS.filter((d) =>
-    activeTab === 'All' ? true : d.category === activeTab
-  );
+  // Departments sorted alphabetically (A to Z)
+  const filteredDepts = useMemo(() => {
+    return HOSPITAL_DEPARTMENTS
+      .filter((d) => (activeTab === 'All' ? true : d.category === activeTab))
+      .slice()
+      .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+  }, [activeTab]);
 
   return (
     <main className="min-h-screen bg-[#fdfbf7] font-sans overflow-x-clip text-slate-800">
