@@ -147,6 +147,24 @@ export async function fetchJobBySlugOrId(identifier: string): Promise<{
   }
 }
 
+export function slugifyDoctorName(name: string): string {
+  if (!name) return '';
+  return name
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+export function getDoctorUrl(doc: { _id?: string; name?: string }): string {
+  if (doc?.name) {
+    return `/doctors/${slugifyDoctorName(doc.name)}`;
+  }
+  return `/doctors/${doc?._id || ''}`;
+}
+
 // Helper: Fetch all doctors
 export async function fetchDoctors(params?: { category?: string; search?: string }): Promise<DoctorData[]> {
   try {
@@ -166,14 +184,31 @@ export async function fetchDoctors(params?: { category?: string; search?: string
   }
 }
 
-// Helper: Fetch single doctor
-export async function fetchDoctorById(id: string): Promise<DoctorData | null> {
+// Helper: Fetch single doctor (supports MongoDB ID, doctor name, or slug)
+export async function fetchDoctorById(idOrSlug: string): Promise<DoctorData | null> {
   try {
-    const res = await fetch(`${API_URL}/doctors/${id}`, { cache: 'no-store' });
+    const res = await fetch(`${API_URL}/doctors/${encodeURIComponent(idOrSlug)}`, { cache: 'no-store' });
     const json = (await res.json()) as { success: boolean; data: DoctorData };
-    return json.success ? json.data : null;
+    if (json.success && json.data) {
+      return json.data;
+    }
   } catch (err) {
-    console.error('fetchDoctorById error:', err);
+    console.error('fetchDoctorById direct fetch error:', err);
+  }
+
+  // Robust fallback: search in full doctors list by ID or slug
+  try {
+    const all = await fetchDoctors();
+    const targetSlug = slugifyDoctorName(idOrSlug);
+    const found = all.find((d) => {
+      if (d._id === idOrSlug) return true;
+      if (slugifyDoctorName(d.name) === targetSlug) return true;
+      if (d.name.toLowerCase() === idOrSlug.toLowerCase()) return true;
+      return false;
+    });
+    return found || null;
+  } catch (fallbackErr) {
+    console.error('fetchDoctorById fallback error:', fallbackErr);
     return null;
   }
 }

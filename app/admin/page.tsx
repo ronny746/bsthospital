@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { API_URL, DoctorData, PackageInquiryData, ContactMessageData, CareerApplicationData, JobOpeningData, slugifyJobTitle } from '@/lib/api';
+import { API_URL, DoctorData, PackageInquiryData, ContactMessageData, CareerApplicationData, JobOpeningData, slugifyJobTitle, getDoctorUrl } from '@/lib/api';
 import { HOSPITAL_DEPARTMENTS, MASTER_CATEGORIES, matchDepartment } from '@/lib/departments';
 
 export default function AdminPortal() {
@@ -1757,7 +1757,7 @@ export default function AdminPortal() {
                                       onClick={(e) => e.stopPropagation()}
                                     >
                                       <a
-                                        href={`/doctors/${doc._id}`}
+                                        href={getDoctorUrl(doc)}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="w-full flex items-center gap-2 px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition"

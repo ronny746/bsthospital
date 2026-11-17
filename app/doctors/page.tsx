@@ -6,7 +6,7 @@ import NewsTicker from '@/components/NewsTicker';
 import TopBar from '@/components/TopBar';
 import NavigationBar from '@/components/NavigationBar';
 import Footer from '@/components/Footer';
-import { fetchDoctors, DoctorData } from '@/lib/api';
+import { fetchDoctors, DoctorData, getDoctorUrl } from '@/lib/api';
 import { matchDepartment, HOSPITAL_DEPARTMENTS } from '@/lib/departments';
 import DoctorAvatar from '@/components/DoctorAvatar';
 
@@ -373,7 +373,7 @@ function DoctorsContent() {
                   {/* Grid of Doctors in this Department */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                     {group.doctors.map((doc, idx) => {
-                      const docUrl = `/doctors/${doc._id || doc.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+                      const docUrl = getDoctorUrl(doc);
                       const message = `Hello Dr. B. S. Tomar Hospital Jagatpura, I would like to book a consultation with ${doc.name} (${doc.specialty} - ${doc.department}). Please share OPD slot details.`;
                       const whatsappUrl = `https://wa.me/919216076757?text=${encodeURIComponent(message)}`;
 

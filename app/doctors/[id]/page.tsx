@@ -5,7 +5,7 @@ import NewsTicker from '@/components/NewsTicker';
 import TopBar from '@/components/TopBar';
 import NavigationBar from '@/components/NavigationBar';
 import Footer from '@/components/Footer';
-import { fetchDoctorById, DoctorData, API_URL } from '@/lib/api';
+import { fetchDoctorById, DoctorData, API_URL, slugifyDoctorName } from '@/lib/api';
 import DoctorAvatar from '@/components/DoctorAvatar';
 
 interface PageProps {
@@ -34,6 +34,12 @@ export default function DoctorDetailPage({ params }: PageProps) {
       setLoading(true);
       const data = await fetchDoctorById(doctorId);
       setDoctor(data);
+      if (typeof window !== 'undefined' && data?.name) {
+        const cleanSlug = slugifyDoctorName(data.name);
+        if (cleanSlug && doctorId !== cleanSlug) {
+          window.history.replaceState(null, '', `/doctors/${cleanSlug}`);
+        }
+      }
       setLoading(false);
     }
     loadDoctor();

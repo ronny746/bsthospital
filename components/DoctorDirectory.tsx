@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchDoctors, DoctorData } from '@/lib/api';
+import { fetchDoctors, DoctorData, getDoctorUrl } from '@/lib/api';
 import DoctorAvatar from '@/components/DoctorAvatar';
 
 export default function DoctorDirectory() {
@@ -81,7 +81,7 @@ export default function DoctorDirectory() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {doctors.map((doc, idx) => {
-              const docUrl = `/doctors/${doc._id || doc.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+              const docUrl = getDoctorUrl(doc);
               const message = `Hello Dr. B. S. Tomar Hospital, I would like to book a consultation with ${doc.name} (${doc.specialty} - ${doc.department}). Please share OPD timings.`;
               const whatsappUrl = `https://wa.me/919216076757?text=${encodeURIComponent(message)}`;
 
