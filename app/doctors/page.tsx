@@ -7,8 +7,22 @@ import TopBar from '@/components/TopBar';
 import NavigationBar from '@/components/NavigationBar';
 import Footer from '@/components/Footer';
 import { fetchDoctors, DoctorData } from '@/lib/api';
-import { matchDepartment } from '@/lib/departments';
+import { matchDepartment, HOSPITAL_DEPARTMENTS } from '@/lib/departments';
 import DoctorAvatar from '@/components/DoctorAvatar';
+
+function getDepartmentSlug(deptName: string): string | null {
+  const clean = deptName.toLowerCase().trim();
+  const found = HOSPITAL_DEPARTMENTS.find((d) => {
+    const dName = d.name.toLowerCase();
+    const dShort = d.shortName.toLowerCase();
+    return (
+      dName === clean ||
+      dShort === clean ||
+      matchDepartment(deptName, '', d.name)
+    );
+  });
+  return found ? found.id : null;
+}
 
 function DoctorsContent() {
   const searchParams = useSearchParams();
@@ -109,6 +123,39 @@ function DoctorsContent() {
       return cleanA.localeCompare(cleanB, undefined, { sensitivity: 'base' });
     });
   }, [doctorsList, activeDepartment, searchQuery]);
+
+  // Group doctors by their department, sorted alphabetically (A-Z)
+  const groupedDoctors = useMemo(() => {
+    const groups: Record<string, DoctorData[]> = {};
+
+    filteredDoctors.forEach((doc) => {
+      const dept = doc.department ? doc.department.trim() : 'General';
+      if (!groups[dept]) {
+        groups[dept] = [];
+      }
+      groups[dept].push(doc);
+    });
+
+    // Sort doctors within each department alphabetically by name (ignoring "Dr." prefix)
+    Object.keys(groups).forEach((dept) => {
+      groups[dept].sort((a, b) => {
+        const cleanA = (a.name || '').replace(/^(dr\.?|prof\.?|doctor)\s+/i, '').trim();
+        const cleanB = (b.name || '').replace(/^(dr\.?|prof\.?|doctor)\s+/i, '').trim();
+        return cleanA.localeCompare(cleanB, undefined, { sensitivity: 'base' });
+      });
+    });
+
+    // Sort departments alphabetically (A to Z)
+    const sortedDepts = Object.keys(groups).sort((a, b) =>
+      a.localeCompare(b, undefined, { sensitivity: 'base' })
+    );
+
+    return sortedDepts.map((dept) => ({
+      department: dept,
+      slug: getDepartmentSlug(dept),
+      doctors: groups[dept],
+    }));
+  }, [filteredDoctors]);
 
   return (
     <>
@@ -293,74 +340,107 @@ function DoctorsContent() {
               </button>
             </div>
           ) : (
-            /* 3. REAL DOCTORS GRID */
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-              {filteredDoctors.map((doc, idx) => {
-                const docUrl = `/doctors/${doc._id || doc.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-                const message = `Hello Dr. B. S. Tomar Hospital Jagatpura, I would like to book a consultation with ${doc.name} (${doc.specialty} - ${doc.department}). Please share OPD slot details.`;
-                const whatsappUrl = `https://wa.me/919216076757?text=${encodeURIComponent(message)}`;
-
-                return (
-                  <div
-                    key={doc._id || idx}
-                    className="bg-white rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 border border-slate-200/90 flex flex-col justify-between group"
-                  >
-                    <div>
-                      {/* Doctor Photo - Responsive aspect ratio prevents awkward zooming & cropping */}
-                      <a href={docUrl} className="block relative aspect-square sm:aspect-[4/5] bg-gradient-to-b from-slate-100 to-slate-200 overflow-hidden cursor-pointer">
-                        <DoctorAvatar
-                          src={doc.image}
-                          alt={doc.name}
-                          className="w-full h-full object-cover object-[center_12%] group-hover:scale-105 transition-transform duration-500"
-                        />
-                        <div className="absolute top-2.5 right-2.5 bg-[#172a34]/90 text-amber-300 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider backdrop-blur-sm z-10">
-                          {doc.experience || 'Experienced'}
-                        </div>
-                      </a>
-
-                      {/* Doctor Info */}
-                      <div className="p-4 sm:p-5">
-                        <span className="text-[#c83220] text-[10px] sm:text-[11px] font-black uppercase tracking-wider mb-1 block line-clamp-1">
-                          {doc.specialty}
-                        </span>
-                        <a href={docUrl}>
-                          <h3 className="text-base font-black text-[#172a34] mb-1 leading-snug group-hover:text-[#c83220] transition-colors line-clamp-1">
-                            {doc.name}
-                          </h3>
-                        </a>
-                        <p className="text-slate-600 text-[11px] font-bold mb-1 leading-snug line-clamp-1">
-                          {doc.qualification}
-                        </p>
-                        <p className="text-slate-500 text-[11px] mb-2.5 font-medium line-clamp-1">
-                          🏢 {doc.department}
-                        </p>
-                        <div className="bg-slate-50 p-2 rounded-lg border border-slate-200 text-[11px] text-slate-700 font-medium truncate">
-                          🕒 {doc.opdTimings || 'Mon - Sat: 9:00 AM - 4:00 PM'}
-                        </div>
-                      </div>
+            /* 3. REAL DOCTORS GROUPED BY DEPARTMENT */
+            <div className="space-y-12 sm:space-y-16">
+              {groupedDoctors.map((group) => (
+                <div
+                  key={group.department}
+                  id={`dept-${group.department.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+                >
+                  {/* Department Section Header with Heading, Doctor Count & Department Link */}
+                  <div className="flex flex-wrap items-center justify-between gap-3 pb-3 mb-6 border-b-2 border-slate-200">
+                    <div className="flex items-center gap-2.5 sm:gap-3">
+                      <div className="w-2.5 h-6 sm:h-7 bg-[#c83220] rounded-full shrink-0" />
+                      <h2 className="text-xl sm:text-2xl font-black text-[#172a34] tracking-tight">
+                        {group.department}
+                      </h2>
+                      <span className="text-xs font-black bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded-full border border-slate-200 shadow-2xs">
+                        {group.doctors.length} Specialist{group.doctors.length === 1 ? '' : 's'}
+                      </span>
                     </div>
 
-                    {/* ACTION BUTTONS: VIEW PROFILE & WHATSAPP */}
-                    <div className="p-4 sm:p-5 pt-0 space-y-2">
+                    {group.slug && (
                       <a
-                        href={docUrl}
-                        className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-[#172a34] font-bold text-xs transition"
+                        href={`/departments/${group.slug}`}
+                        className="text-xs font-bold text-[#c83220] hover:text-[#9e1b10] hover:underline inline-flex items-center gap-1 transition"
                       >
-                        <span>View Profile &amp; Bio</span>
+                        <span>Department Overview</span>
                         <span>➔</span>
                       </a>
-                      <a
-                        href={whatsappUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 px-3 rounded-xl bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-xs transition-all shadow-sm hover:shadow-md cursor-pointer"
-                      >
-                        <span>💬 Book Consultation</span>
-                      </a>
-                    </div>
+                    )}
                   </div>
-                );
-              })}
+
+                  {/* Grid of Doctors in this Department */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                    {group.doctors.map((doc, idx) => {
+                      const docUrl = `/doctors/${doc._id || doc.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+                      const message = `Hello Dr. B. S. Tomar Hospital Jagatpura, I would like to book a consultation with ${doc.name} (${doc.specialty} - ${doc.department}). Please share OPD slot details.`;
+                      const whatsappUrl = `https://wa.me/919216076757?text=${encodeURIComponent(message)}`;
+
+                      return (
+                        <div
+                          key={doc._id || idx}
+                          className="bg-white rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 border border-slate-200/90 flex flex-col justify-between group"
+                        >
+                          <div>
+                            {/* Doctor Photo - Responsive aspect ratio prevents awkward zooming & cropping */}
+                            <a href={docUrl} className="block relative aspect-square sm:aspect-[4/5] bg-gradient-to-b from-slate-100 to-slate-200 overflow-hidden cursor-pointer">
+                              <DoctorAvatar
+                                src={doc.image}
+                                alt={doc.name}
+                                className="w-full h-full object-cover object-[center_12%] group-hover:scale-105 transition-transform duration-500"
+                              />
+                              <div className="absolute top-2.5 right-2.5 bg-[#172a34]/90 text-amber-300 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider backdrop-blur-sm z-10">
+                                {doc.experience || 'Experienced'}
+                              </div>
+                            </a>
+
+                            {/* Doctor Info */}
+                            <div className="p-4 sm:p-5">
+                              <span className="text-[#c83220] text-[10px] sm:text-[11px] font-black uppercase tracking-wider mb-1 block line-clamp-1">
+                                {doc.specialty}
+                              </span>
+                              <a href={docUrl}>
+                                <h3 className="text-base font-black text-[#172a34] mb-1 leading-snug group-hover:text-[#c83220] transition-colors line-clamp-1">
+                                  {doc.name}
+                                </h3>
+                              </a>
+                              <p className="text-slate-600 text-[11px] font-bold mb-1 leading-snug line-clamp-1">
+                                {doc.qualification}
+                              </p>
+                              <p className="text-slate-500 text-[11px] mb-2.5 font-medium line-clamp-1">
+                                🏢 {doc.department}
+                              </p>
+                              <div className="bg-slate-50 p-2 rounded-lg border border-slate-200 text-[11px] text-slate-700 font-medium truncate">
+                                🕒 {doc.opdTimings || 'Mon - Sat: 9:00 AM - 4:00 PM'}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* ACTION BUTTONS: VIEW PROFILE & WHATSAPP */}
+                          <div className="p-4 sm:p-5 pt-0 space-y-2">
+                            <a
+                              href={docUrl}
+                              className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-[#172a34] font-bold text-xs transition"
+                            >
+                              <span>View Profile &amp; Bio</span>
+                              <span>➔</span>
+                            </a>
+                            <a
+                              href={whatsappUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 px-3 rounded-xl bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-xs transition-all shadow-sm hover:shadow-md cursor-pointer"
+                            >
+                              <span>💬 Book Consultation</span>
+                            </a>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
