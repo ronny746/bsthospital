@@ -282,7 +282,7 @@ export default function DepartmentDetailPage({ params }: { params: Promise<{ id:
               </a>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {deptDoctors.map((doc, idx) => {
                 const docUrl = getDoctorUrl(doc);
                 const message = `Hello Dr. B. S. Tomar Hospital, I would like to book a consultation with ${doc.name} (${doc.specialty} - ${doc.department}). Please share OPD slot details.`;

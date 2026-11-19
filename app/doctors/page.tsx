@@ -291,8 +291,8 @@ function DoctorsContent() {
           
           {/* 1. LOADING SHIMMER SKELETON (NO DUMMY DATA DISPLAYED) */}
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {Array.from({ length: 8 }).map((_, idx) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Array.from({ length: 6 }).map((_, idx) => (
                 <div
                   key={idx}
                   className="bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-sm animate-pulse flex flex-col justify-between"
@@ -371,7 +371,7 @@ function DoctorsContent() {
                   </div>
 
                   {/* Grid of Doctors in this Department */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {group.doctors.map((doc, idx) => {
                       const docUrl = getDoctorUrl(doc);
                       const message = `Hello Dr. B. S. Tomar Hospital Jagatpura, I would like to book a consultation with ${doc.name} (${doc.specialty} - ${doc.department}). Please share OPD slot details.`;
