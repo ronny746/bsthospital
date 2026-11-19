@@ -106,7 +106,7 @@ export default function DoctorDirectory() {
                         {doc.specialty}
                       </span>
                       <a href={docUrl}>
-                        <h3 className="text-sm sm:text-base font-black text-[#172a34] mb-0.5 group-hover:text-[#c83220] transition-colors">
+                        <h3 className="text-sm sm:text-base font-black text-[#c83220] hover:text-[#9e1b10] mb-0.5 transition-colors">
                           {doc.name}
                         </h3>
                       </a>

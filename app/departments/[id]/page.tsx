@@ -282,7 +282,7 @@ export default function DepartmentDetailPage({ params }: { params: Promise<{ id:
               </a>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {deptDoctors.map((doc, idx) => {
                 const docUrl = getDoctorUrl(doc);
                 const message = `Hello Dr. B. S. Tomar Hospital, I would like to book a consultation with ${doc.name} (${doc.specialty} - ${doc.department}). Please share OPD slot details.`;
@@ -295,55 +295,49 @@ export default function DepartmentDetailPage({ params }: { params: Promise<{ id:
                   >
                     <div>
                       {/* Doctor Photo */}
-                      <a href={docUrl} className="block relative aspect-square sm:aspect-[4/5] bg-gradient-to-b from-slate-100 to-slate-200 overflow-hidden cursor-pointer">
+                      <a href={docUrl} className="block relative h-60 sm:h-52 md:h-48 bg-gradient-to-b from-slate-100 to-slate-200 overflow-hidden cursor-pointer">
                         <DoctorAvatar
                           src={doc.image}
                           alt={doc.name}
-                          className="w-full h-full object-cover object-[center_12%] group-hover:scale-105 transition-transform duration-500"
+                          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                         />
-                        <div className="absolute top-2.5 right-2.5 bg-[#172a34]/90 text-amber-300 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider backdrop-blur-sm z-10">
+                        <div className="absolute top-2.5 right-2.5 bg-[#172a34]/90 text-amber-300 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider backdrop-blur-sm z-10 shadow-xs">
                           {doc.experience || 'Experienced'}
                         </div>
                       </a>
 
                       {/* Doctor Info */}
-                      <div className="p-4 sm:p-5">
-                        <span className="text-[#c83220] text-[10px] sm:text-[11px] font-black uppercase tracking-wider mb-1 block line-clamp-1">
-                          {doc.specialty}
-                        </span>
+                      <div className="p-3.5 sm:p-3.5">
                         <a href={docUrl}>
-                          <h3 className="text-base font-black text-[#172a34] mb-1 leading-snug group-hover:text-[#c83220] transition-colors line-clamp-1">
+                          <h3 className="text-sm sm:text-base font-black text-[#c83220] hover:text-[#9e1b10] mb-0.5 leading-snug transition-colors truncate">
                             {doc.name}
                           </h3>
                         </a>
-                        <p className="text-slate-600 text-[11px] font-bold mb-1 leading-snug line-clamp-1">
+                        <p className="text-slate-600 text-[11px] font-bold mb-1.5 leading-snug truncate">
                           {doc.qualification}
                         </p>
-                        <p className="text-slate-500 text-[11px] mb-2.5 font-medium line-clamp-1">
-                          🏢 {doc.department}
-                        </p>
-                        <div className="bg-slate-50 p-2 rounded-lg border border-slate-200 text-[11px] text-slate-700 font-medium truncate">
+                        <div className="bg-slate-50 py-1.5 sm:py-1 px-2.5 sm:px-2 rounded-md border border-slate-200/80 text-[10px] sm:text-[11px] text-slate-700 font-medium truncate">
                           🕒 {doc.opdTimings || 'Mon - Sat: 9:00 AM - 4:00 PM'}
                         </div>
                       </div>
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="p-4 sm:p-5 pt-0 space-y-2">
+                    {/* Action Buttons: Side-by-Side in 1 Row */}
+                    <div className="p-3.5 sm:p-3.5 pt-0 grid grid-cols-2 gap-2">
                       <a
                         href={docUrl}
-                        className="inline-flex items-center justify-center gap-1.5 w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-[#172a34] font-bold text-xs transition"
+                        className="inline-flex items-center justify-center gap-1 w-full py-2 sm:py-1.5 px-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-[#172a34] font-bold text-[11px] sm:text-xs transition text-center truncate"
                       >
-                        <span>View Profile &amp; Bio</span>
+                        <span>Profile</span>
                         <span>➔</span>
                       </a>
                       <a
                         href={whatsappUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 px-3 rounded-xl bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-xs transition shadow-sm hover:shadow-md cursor-pointer"
+                        className="inline-flex items-center justify-center gap-1 w-full py-2 sm:py-1.5 px-2 rounded-xl bg-[#c83220] hover:bg-[#a82415] text-white font-bold text-[11px] sm:text-xs transition shadow-xs hover:shadow-sm cursor-pointer text-center truncate"
                       >
-                        <span>💬 Book Consultation</span>
+                        <span>💬 Consult</span>
                       </a>
                     </div>
                   </div>
